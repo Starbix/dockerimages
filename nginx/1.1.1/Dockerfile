@@ -34,8 +34,8 @@ ARG NGINX_CONF=" \
 
 ARG NGINX_3RD_PARTY_MODULES=" \
     --add-module=/tmp/headers-more-nginx-module \
-    --add-module=/tmp/ngx_brotli \
-    --add-module=/tmp/nginx-ct"
+    --add-module=/tmp/ngx_brotli"
+    # --add-module=/tmp/nginx-ct"
     # --add-module=/tmp/ngx_pagespeed-${PAGESPEED_VERSION}"
 
 ARG PHP_CONF=" \
@@ -251,5 +251,7 @@ ${NGINX_3RD_PARTY_MODULES} \
  && apk del ${BUILD_DEPS} \
  && rm -rf /tmp/* /var/cache/apk/* /usr/src/* \
  && mkdir -p /nginx/logs /nginx/run /php/php-fpm.d /php/logs /php/run /php/session
+
+EXPOSE 8000 4430
 
 CMD ["run.sh"]

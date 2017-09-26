@@ -250,4 +250,6 @@ ${NGINX_3RD_PARTY_MODULES} \
  && rm -rf /tmp/* /var/cache/apk/* /usr/src/* \
  && mkdir -p /nginx/logs /nginx/run /php/php-fpm.d /php/logs /php/run /php/session
 
+EXPOSE 8000 4430
+
 CMD ["run.sh"]
