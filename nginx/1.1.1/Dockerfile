@@ -129,6 +129,8 @@ COPY rootfs /
 
 RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 
+&& apk -U upgrade \
+
 ### Packages installation
  && BUILD_DEPS=" \
     linux-headers \

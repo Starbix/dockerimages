@@ -129,6 +129,8 @@ COPY rootfs /
 
 RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 
+&& apk -U upgrade \
+
 ### Packages installation
  && BUILD_DEPS=" \
     linux-headers \
@@ -169,6 +171,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     ${CUSTOM_PKGS} \
 
 ### Source downloading
+ && cd /tmp \
  && wget http://nginx.org/download/nginx-${NGINX_VER}.tar.gz -O /tmp/nginx-${NGINX_VER}.tar.gz \
  && wget http://nginx.org/download/nginx-${NGINX_VER}.tar.gz.asc -O /tmp/nginx-${NGINX_VER}.tar.gz.asc \
  && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz \
@@ -209,8 +212,8 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 ### nginx installation
  && cd /usr/src/nginx-${NGINX_VER} \
  # Nginx patch : dynamic TLS records
- && wget https://gist.githubusercontent.com/SoftCreatR/b5047bda93e10ef048c7f7d4ffba3ec6/raw/d1e25c13769631303a651a8a8b08aa91befd73d5/nginx_1.13.5_sslconfig_combined.patch \
- && patch -p1 < nginx_1.13.5_sslconfig_combined.patch \
+ && wget https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/nginx__1.11.5_dynamic_tls_records.patch \
+ && patch -p1 < nginx__1.11.5_dynamic_tls_records.patch \
  && ./configure \
  --prefix=/nginx \
  --sbin-path=/usr/local/sbin/nginx \
@@ -254,7 +257,7 @@ ${NGINX_3RD_PARTY_MODULES} \
  && docker-php-ext-install ${PHP_EXT_LIST} \
  && apk del ${BUILD_DEPS} \
  && rm -rf /tmp/* /var/cache/apk/* /usr/src/* \
- && mkdir -p /nginx/logs /nginx/run /php/php-fpm.d /php/logs /php/run /php/session
+ && mkdir -p /nginx/log /nginx/run /php/php-fpm.d /php/logs /php/run /php/session
 
 EXPOSE 8000 4430
 
