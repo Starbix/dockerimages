@@ -147,6 +147,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     curl-dev \
     ca-certificates \
     git \
+    go \
     automake \
     file \
     jemalloc-dev \
@@ -228,6 +229,11 @@ ${NGINX_3RD_PARTY_MODULES} \
  && make install && make clean \
  && strip -s /usr/local/sbin/nginx \
 
+ && mkdir -p /tmp/go/bin \
+ && export GOPATH=/tmp/go \
+ && export GOBIN=$GOPATH/bin \
+ && go get github.com/grahamedgecombe/ct-submit \
+ && mv /tmp/go/bin/ct-submit /usr/local/bin/ct-submit \
 ### GNU Libiconv installation
  && cd /usr/src/libiconv-${LIBICONV_VERSION} \
  && ./configure --prefix=/usr/local \
