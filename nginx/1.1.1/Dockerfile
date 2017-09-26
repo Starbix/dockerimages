@@ -184,7 +184,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 
 ### openssl
 && cd /usr/src \
-&& git clone --recursive https://github.com/openssl/openssl \
+&& git clone -b tls1.3-draft-18 --single-branch https://github.com/openssl/openssl \
 && cd openssl \
 # && wget https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/openssl__1.1.0_chacha20_poly1305.patch \
 # && patch -p1 < openssl__1.1.0_chacha20_poly1305.patch \
@@ -217,7 +217,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  --sbin-path=/usr/local/sbin/nginx \
  --with-cc-opt="-O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" \
  --with-ld-opt="-lrt -ljemalloc -Wl,-Bsymbolic-functions -Wl,-z,relro" \
- --with-openssl-opt='no-async enable-ec_nistp_64_gcc_128 no-shared no-ssl2 no-ssl3 no-comp no-idea no-weak-ssl-ciphers -DOPENSSL_NO_HEARTBEATS -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
+ --with-openssl-opt='enable-tls1_3 no-async enable-ec_nistp_64_gcc_128 no-shared no-ssl2 no-ssl3 no-comp no-idea no-weak-ssl-ciphers -DOPENSSL_NO_HEARTBEATS -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
  --with-openssl=/usr/src/openssl \
  --http-log-path=/nginx/log/nginx_access.log \
  --error-log-path=/nginx/log/nginx_error.log \
