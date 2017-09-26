@@ -1,7 +1,4 @@
-![nginx-php](http://apmblog.dynatrace.com/wp-content/uploads/2014/10/PHP-on-Nginx.jpg)
-
-> This image is build and push with [drone.io](https://github.com/drone/drone), a circle-ci like self-hosted.
-> If you don't trust, you can build yourself.
+![](http://nginx.org/nginx.png)
 
 ## Description
 What is [Nginx](http://nginx.org)?
@@ -30,7 +27,7 @@ Fast, flexible and pragmatic, PHP powers everything from your blog to the most p
 
 ### simple build
 ```shell
-docker build -t xataz/nginx-php github.com/xataz/dockerfiles.git#master:nginx-php
+docker build -t starbix/nginx github.com/Starbix/dockerimages.git#master:nginx
 ```
 
 ### Build with arguments
@@ -51,7 +48,7 @@ docker build -t xataz/nginx-php \
 * GID : Choose gid for launch rtorrent (default : 991)
 
 ### Volumes
-* /nginx/sites-enabled : Place your vhost here
+* /sites-enabled : Place your vhost here
 * /nginx/log : Log emplacement
 * /nginx/run : Here is pid and lock file
 * /nginx/conf/nginx.conf : General configuration of nginx
@@ -69,23 +66,23 @@ location ~ \.php$ {
 
 ### Ports
 * 8080
-
+* 4430
 
 ## Usage
 ### Simple launch
 ```shell
-docker run -d -p 8080:8080 xataz/nginx-php
+docker run -d -p 8080:8080 starbix/nginx
 ```
 URI access : http://XX.XX.XX.XX:8080
 
 ### Advanced launch
 ```shell
-docker run -d -p 80:8080 -p 443:8443 \
-	  -v /docker/nginx/sites-enabled:/nginx/sites-enabled \
+docker run -d -p 8000:8080 -p 4430:8443 \
+	  -v /docker/nginx/sites-enabled:/sites-enabled \
       -v /docker/nginx/certs:/nginx/certs \
 	  -e UID=1001 \
 	  -e GID=1001 \
-	xataz/nginx-php
+	starbix/nginx
 ```
 URI access : http://XX.XX.XX.XX
 
