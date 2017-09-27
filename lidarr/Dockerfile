@@ -15,7 +15,7 @@ RUN apk upgrade --no-cache \
     && chmod u+x /usr/local/bin/* /etc/s6.d/*/*
 
 
-EXPOSE 7878
+EXPOSE 8686
 VOLUME /config
 
 CMD ["run.sh"]
