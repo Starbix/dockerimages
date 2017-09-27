@@ -1,6 +1,7 @@
 FROM frolvlad/alpine-mono
 
 ENV UID=991 GID=991
+ENV USEDEBUG="NO"
 
 ARG LIDARRVER=0.2.0.44
 

@@ -1,2 +1,6 @@
 #!/bin/sh
-exec mono --debug /opt/lidarr/Lidarr.exe -nobrowser -data=/config
+if [ "$USEDEBUG" = "YES" ]; then
+  exec mono --debug /opt/lidarr/Lidarr.exe -nobrowser -data=/config
+else
+  exec mono /opt/lidarr/Lidarr.exe -nobrowser -data=/config
+fi
