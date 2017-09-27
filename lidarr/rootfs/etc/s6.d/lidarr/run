@@ -1,0 +1,2 @@
+#!/bin/sh
+exec mono --debug /opt/lidarr/Lidarr.exe -nobrowser -data=/config
