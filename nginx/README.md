@@ -1,5 +1,10 @@
 ![](http://nginx.org/nginx.png)
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/starbix/nginx.svg)]()
+
+[![](https://images.microbadger.com/badges/version/starbix/nginx.svg)](https://microbadger.com/images/starbix/nginx "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/starbix/nginx.svg)](https://microbadger.com/images/starbix/nginx "Get your own image badge on microbadger.com")
+
 ## Description
 What is [Nginx](http://nginx.org)?
 
@@ -65,19 +70,19 @@ location ~ \.php$ {
 ```
 
 ### Ports
-* 8080
+* 8000
 * 4430
 
 ## Usage
 ### Simple launch
 ```shell
-docker run -d -p 8080:8080 starbix/nginx
+docker run -d -p 8000:8000 starbix/nginx
 ```
 URI access : http://XX.XX.XX.XX:8080
 
 ### Advanced launch
 ```shell
-docker run -d -p 8000:8080 -p 4430:8443 \
+docker run -d -p 8000:80 -p 4430:443 \
 	  -v /docker/nginx/sites-enabled:/sites-enabled \
       -v /docker/nginx/certs:/nginx/certs \
 	  -e UID=1001 \
