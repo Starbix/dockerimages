@@ -1,4 +1,6 @@
-![](http://nginx.org/nginx.png)
+<p align="center">
+  <img src="http://nginx.org/nginx.png">
+</p>
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/nginx.svg)]()
 
