@@ -1,6 +1,7 @@
 <p align="center">
   <img width="256" height="256" src="https://raw.githubusercontent.com/lidarr/Lidarr/develop/Logo/512.png">
 </p>
+
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/lidarr.svg)]()
 
 [![](https://images.microbadger.com/badges/version/starbix/lidarr.svg)](https://microbadger.com/images/starbix/lidarr)
