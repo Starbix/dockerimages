@@ -1,5 +1,4 @@
-![](https://raw.githubusercontent.com/lidarr/Lidarr/develop/Logo/256.png)
-
+<a href="https://github.com/lidarr/Lidarr"><img src="https://raw.githubusercontent.com/lidarr/Lidarr/develop/Logo/256.png" alt="Lidarr" /></a>
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/lidarr.svg)]()
 
 [![](https://images.microbadger.com/badges/version/starbix/lidarr.svg)](https://microbadger.com/images/starbix/lidarr)
@@ -7,6 +6,7 @@
 
 ## Description
 What is [Lidarr](http://lidarr.audio)?
+
 Looks and smells like Sonarr but made for music.
 
 ## Configuration
