@@ -25,7 +25,7 @@ Fast, flexible and pragmatic, PHP powers everything from your blog to the most p
 * NGINX_GPG : Nginx gpg fingerprint
 * NGINX_CONF : Nginx build arguments (default : see Dockerfile)
 * PHP_VER : PHP version (default : latest version)
-* PHP_MIRROR: Mirror for download PHP (default : http://fr2.php.net)
+* PHP_MIRROR: Mirror for download PHP (default : http://ch1.php.net)
 * PHP_GPG : PHP gpg fingerprint
 * PHP_CONF : PHP build arguments (default : see Dockerfile)
 * PHP_EXT_LIST : PHP extensions list, for install there (default : see Dockerfile)
@@ -39,13 +39,13 @@ docker build -t starbix/nginx github.com/Starbix/dockerimages.git#master:nginx
 
 ### Build with arguments
 ```shell
-docker build -t xataz/nginx-php \
+docker build -t starbix/nginx \
         --build-arg NGINX_VER=1.10.1 \
         --build-arg PHP_VER=5.6.27 \
         --build-arg PHP_EXT_LIST="gd mysqli gmp" \
         --build-arg CUSTOM_BUILD_PKGS="freetype-dev gmp-dev" \
         --build-arg CUSTOM_PKGS="freetype gmp" \
-        github.com/xataz/dockerfiles.git#master:nginx-php
+        github.com/starbix/dockerimages.git#master:nginx/1.1.0
 ```
 
 

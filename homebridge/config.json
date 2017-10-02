@@ -1,0 +1,29 @@
+{
+    "bridge": {
+        "name": "Deep Thought",
+        "username": "CC:22:3D:E3:CE:30",
+        "port": 51826,
+        "pin": "031-45-154"
+    },
+    "description": "Two hyperion instances",
+    "accessories": [
+        {
+            "accessory": "Hyperion",
+            "name": "Ambilight",
+            "ambilight_name": "Ambilight switch",
+            "priority": "1",
+            "host": "192.168.1.149",
+            "port": "19444"
+        },
+        {
+            "accessory": "Hyperion",
+            "name": "Regal",
+            "priority": "0",
+            "host": "192.168.1.116",
+            "port": "19444"
+        }
+    ],
+    "platforms": [
+
+    ]
+}
