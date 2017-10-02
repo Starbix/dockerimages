@@ -1,4 +1,4 @@
-![](https://github.com/lidarr/Lidarr/raw/develop/Logo/1024.png)
+![](https://raw.githubusercontent.com/lidarr/Lidarr/develop/Logo/256.png)
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/lidarr.svg)]()
 
@@ -8,3 +8,15 @@
 ## Description
 What is [Lidarr](http://lidarr.audio)?
 Looks and smells like Sonarr but made for music.
+
+## Configuration
+### Environments
+* UID : Choose uid for launch lidarr (default : 991)
+* GID : Choose gid for launch lidarr (default : 991)
+
+### Volumes
+* /config : General configuration of lidarr
+* /media (or whatever folder you choose): Where Lidarr will download the music to
+
+### Ports
+* 8686

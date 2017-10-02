@@ -49,8 +49,8 @@ docker build -t xataz/nginx-php \
 
 ## Configuration
 ### Environments
-* UID : Choose uid for launch rtorrent (default : 991)
-* GID : Choose gid for launch rtorrent (default : 991)
+* UID : Choose uid for launch nginx (default : 991)
+* GID : Choose gid for launch nginx (default : 991)
 
 ### Volumes
 * /sites-enabled : Place your vhost here
