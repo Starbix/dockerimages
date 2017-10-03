@@ -10,7 +10,7 @@
 - nginx + PHP + openssl
 - built from source
 - based on alpine
-
+- with nginx amplify
 
 ### [lidarr](https://github.com/Starbix/dockerimages/tree/master/lidarr)
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/lidarr.svg)]()

@@ -32,7 +32,7 @@ Fast, flexible and pragmatic, PHP powers everything from your blog to the most p
 * CUSTOM_BUILD_PKGS : Necessary packages for build PHP extension, there packages are remove after build (default : see Dockerfile)
 * CUSTOM_PKGS : Necessary package for PHP extension (default : see Dockerfile)
 
-### simple build
+### Simple build
 ```shell
 docker build -t starbix/nginx github.com/Starbix/dockerimages.git#master:nginx
 ```

@@ -52,7 +52,6 @@ ARG PHP_CONF=" \
     --without-readline \
     --enable-bcmath=shared \
     --enable-fpm \
-    --disable-cgi \
     --enable-mysqlnd \
     --enable-mbstring \
     --with-curl \
@@ -154,6 +153,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     file \
     jemalloc-dev \
     patch \
+    re2c \
     ${CUSTOM_BUILD_PKGS}" \
  && apk -U add \
     ${BUILD_DEPS} \
