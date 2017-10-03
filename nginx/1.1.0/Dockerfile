@@ -7,7 +7,7 @@ ARG NGINX_VER=1.13.5
 ARG PHP_VER=7.1.10
 ARG LIBICONV_VERSION=1.15
 ARG OPENSSL_VERSION=1.1.0f
-ARG PAGESPEED_VERSION=1.12.34.2-stable
+ARG PAGESPEED_VERSION=1.12.34.3-stable
 ARG GPG_NGINX="B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8"
 
 LABEL description="nginx + php image based on Alpine" \
@@ -123,12 +123,12 @@ ARG CUSTOM_PKGS=" \
     libmcrypt \
     bzip2-dev \
     icu \
+    python-dev \
     libpq"
 
 COPY rootfs /
 
 RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
-
 && apk -U upgrade \
 
 ### Packages installation
@@ -169,7 +169,6 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     pcre \
     zlib \
     ${CUSTOM_PKGS} \
-
 ### Source downloading
  && cd /tmp \
  && wget http://nginx.org/download/nginx-${NGINX_VER}.tar.gz -O /tmp/nginx-${NGINX_VER}.tar.gz \
@@ -185,7 +184,6 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && tar xzf /tmp/nginx-${NGINX_VER}.tar.gz -C /usr/src \
  && tar xzvf /tmp/php-${PHP_VER}.tar.gz -C /usr/src \
  && tar xzf /tmp/libiconv-${LIBICONV_VERSION}.tar.gz -C /usr/src \
-
 ### openssl
 && cd /usr/src/openssl-${OPENSSL_VERSION} \
 && wget https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/openssl__1.1.0_chacha20_poly1305.patch \
@@ -198,7 +196,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 && cd ngx_brotli && git submodule update --init && cd /tmp \
 && git clone https://github.com/openresty/headers-more-nginx-module --depth=1 \
 && git clone https://github.com/grahamedgecombe/nginx-ct --depth=1 \
-#
+
 # && wget https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}.tar.gz \
 # && tar xzvf v${PAGESPEED_VERSION}.tar.gz \
 # && cd ngx_pagespeed-${PAGESPEED_VERSION}/ \
@@ -211,7 +209,6 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 
 ### nginx installation
  && cd /usr/src/nginx-${NGINX_VER} \
- # Nginx patch : dynamic TLS records
  && wget https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/nginx__1.11.5_dynamic_tls_records.patch \
  && patch -p1 < nginx__1.11.5_dynamic_tls_records.patch \
  && ./configure \
@@ -227,11 +224,9 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  --lock-path=/nginx/run/nginx.lock \
 ${NGINX_CONF} \
 ${NGINX_3RD_PARTY_MODULES} \
-
  && make -j ${NB_CORES} \
  && make install && make clean \
  && strip -s /usr/local/sbin/nginx \
-
  && mkdir -p /tmp/go/bin \
  && export GOPATH=/tmp/go \
  && export GOBIN=$GOPATH/bin \
@@ -248,10 +243,14 @@ ${NGINX_3RD_PARTY_MODULES} \
  && ./configure CFLAGS="-O3 -fstack-protector-strong" ${PHP_CONF} \
  && make -j ${NB_CORES} \
  && make install \
-
-### Strip, clean, install modules
  && { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
  && make clean \
+
+### nginx amplify
+ && cd /tmp \
+ && wget https://raw.githubusercontent.com/Starbix/nginx-amplify-agent/patch-1/packages/install-source.sh \
+ && chmod u+x install-source.sh \
+ && ./install-source.sh \
  && chmod u+x /usr/local/bin/* /etc/s6.d/*/* \
  && sync \
  && docker-php-ext-install ${PHP_EXT_LIST} \

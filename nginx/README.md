@@ -60,6 +60,7 @@ docker build -t starbix/nginx \
 * /nginx/run : Here is pid and lock file
 * /nginx/conf/nginx.conf : General configuration of nginx
 * /nginx/conf.d : folder for other configuration (ex : php.conf, headers_param.conf)
+* /etc/amplify-agent : place the nginx-amplify config here
 
 if you mount /nginx/conf.d, use this php.conf :
 ```shell
