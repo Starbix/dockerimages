@@ -81,7 +81,7 @@ ARG PHP_EXT_LIST=" \
     zlib \
     sqlite3 \
     pdo_sqlite \
-    pdo_pgsql \
+    pdo \
     pdo_mysql \
     pcntl \
     curl \
@@ -95,6 +95,7 @@ ARG PHP_EXT_LIST=" \
     pgsql \
     ftp \
     exif \
+    session \
     gmp"
 
 ARG CUSTOM_BUILD_PKGS=" \
