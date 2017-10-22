@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ "$USEDEBUG" = "YES" ]; then
-  exec mono --debug /opt/lidarr/Lidarr.exe -nobrowser -data=/config
+  XDG_CONFIG_HOME="/config/xdg" exec mono --debug /opt/lidarr/Lidarr.exe -nobrowser -data=/config
 else
-  exec mono /opt/lidarr/Lidarr.exe -nobrowser -data=/config
+  XDG_CONFIG_HOME="/config/xdg" exec mono /opt/lidarr/Lidarr.exe -nobrowser -data=/config
 fi
