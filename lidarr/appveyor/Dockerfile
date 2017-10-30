@@ -11,7 +11,7 @@ RUN apk upgrade --no-cache \
     && mkdir -p /opt/lidarr \
     && export LIDARR_VERSION="$(curl 'https://ci.appveyor.com/api/projects/lidarr/lidarr' | sed -n 's/.*"version":"\(.*\)",/\1/p' | cut -d\" -f1)" \
     # && export LIDARR_BRANCH="$(curl 'https://ci.appveyor.com/api/projects/lidarr/lidarr' | sed -n 's/.*"repositoryBranch":"\(.*\)",/\1/p' | cut -d\" -f1)" \
-    && export LIDARR_BRANCH="react" \
+    && export LIDARR_BRANCH="develop" \
     && curl -o /tmp/lidarr.tar.gz -L https://ci.appveyor.com/api/projects/Lidarr/lidarr/artifacts/_artifacts/Lidarr.$LIDARR_BRANCH.$LIDARR_VERSION.linux.tar.gz \
     && tar xvzf /tmp/lidarr.tar.gz  -C /opt/lidarr --strip-components=1 \
     && rm -rf /tmp/* \
