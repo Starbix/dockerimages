@@ -148,7 +148,6 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     pkgconf \
     curl-dev \
     ca-certificates \
-    git \
     go \
     automake \
     file \
