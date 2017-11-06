@@ -167,6 +167,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     libressl \
     libwebp \
     gd \
+    git \
     pcre \
     zlib \
     ${CUSTOM_PKGS} \
