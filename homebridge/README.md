@@ -2,8 +2,8 @@
   <img src="https://github.com/Starbix/dockerimages/raw/master/homebridge/homekit-logo.png">
 </p>
 
-[![](https://images.microbadger.com/badges/image/starbix/homebridge-hyperion.svg)](https://microbadger.com/images/starbix/homebridge-hyperion)
-[![](https://images.microbadger.com/badges/version/starbix/homebridge-hyperion.svg)](https://microbadger.com/images/starbix/homebridge-hyperion)
+[![](https://images.microbadger.com/badges/image/starbix/homebridge.svg)](https://microbadger.com/images/starbix/homebridge)
+[![](https://images.microbadger.com/badges/version/starbix/homebridge.svg)](https://microbadger.com/images/starbix/homebridge)
 
 ## Description
 What is **[Homebridge](https://github.com/nfarina/homebridge)**?
