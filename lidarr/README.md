@@ -8,7 +8,7 @@
 [![](https://images.microbadger.com/badges/image/starbix/lidarr.svg)](https://microbadger.com/images/starbix/lidarr)
 
 ## Description
-What is [Lidarr](http://lidarr.audio)?
+What is **[Lidarr](http://lidarr.audio)**?
 
 Looks and smells like Sonarr but made for music.
 

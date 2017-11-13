@@ -1,0 +1,3 @@
+#!/bin/sh
+cd /opt/MediaButler
+exec node app.js

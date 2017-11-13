@@ -9,7 +9,7 @@ RUN apk upgrade --no-cache \
     && apk add --no-cache python sqlite tzdata curl libcurl su-exec s6 \
     && apk add libmediainfo --repository http://dl-3.alpinelinux.org/alpine/edge/community/ --no-cache \
     && mkdir -p /opt/lidarr \
-    && export LIDARR_VERSION="$(curl 'https://ci.appveyor.com/api/projects/lidarr/lidarr' | sed -n 's/.*"version":"\(.*\)",/\1/p' | cut -d\" -f1)" \
+    && export LIDARR_VERSION="$(curl 'https://ci.appveyor.com/api/projects/lidarr/lidarr/branch/develop' | sed -n 's/.*"version":"\(.*\)",/\1/p' | cut -d\" -f1)" \
     # && export LIDARR_BRANCH="$(curl 'https://ci.appveyor.com/api/projects/lidarr/lidarr' | sed -n 's/.*"repositoryBranch":"\(.*\)",/\1/p' | cut -d\" -f1)" \
     && export LIDARR_BRANCH="develop" \
     && curl -o /tmp/lidarr.tar.gz -L https://ci.appveyor.com/api/projects/Lidarr/lidarr/artifacts/_artifacts/Lidarr.$LIDARR_BRANCH.$LIDARR_VERSION.linux.tar.gz \
