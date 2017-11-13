@@ -20,3 +20,12 @@
 
 - lidarr
 - based on alpine
+
+### [homebridge](https://github.com/Starbix/dockerimages/tree/master/homebridge)
+[![Docker Pulls](https://img.shields.io/docker/pulls/starbix/homebridge.svg)]()
+
+[![](https://images.microbadger.com/badges/version/starbix/lidarr.svg)](https://microbadger.com/images/starbix/homebridge)
+[![](https://images.microbadger.com/badges/image/starbix/homebridge.svg)](https://microbadger.com/images/starbix/homebridge)
+
+- Homebridge with the Hyperion Plugin
+- based on debian
