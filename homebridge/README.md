@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Starbix/dockerimages/master/homekit-logo.png">
+  <img src="https://github.com/Starbix/dockerimages/raw/master/homebridge/homekit-logo.png">
 </p>
 
 [![](https://images.microbadger.com/badges/image/starbix/homebridge-hyperion.svg)](https://microbadger.com/images/starbix/homebridge-hyperion)
