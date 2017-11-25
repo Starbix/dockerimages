@@ -4,7 +4,7 @@ ARG BUILD_CORES
 ENV UID=991 GID=991
 
 ARG NGINX_VER=1.13.7
-ARG PHP_VER=7.1.11
+ARG PHP_VER=7.1.12
 ARG LIBICONV_VERSION=1.15
 ARG OPENSSL_VERSION=1.1.0g
 ARG PAGESPEED_VERSION=1.12.34.3-stable
@@ -129,9 +129,7 @@ ARG CUSTOM_PKGS=" \
 COPY rootfs /
 
 RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
-&& apk -U upgrade \
-
-### Packages installation
+ && apk -U upgrade \
  && BUILD_DEPS=" \
     linux-headers \
     libtool \
@@ -192,9 +190,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 
 ### modules
 && cd /tmp && git clone https://github.com/bagder/libbrotli --depth=1 \
-&& cd libbrotli && ./autogen.sh && ./configure \
-&& mkdir brotli/c/tools/.deps && touch brotli/c/tools/.deps/brotli-brotli.Po \
-&& make -j ${NB_CORES} && make install \
+&& cd libbrotli && ./autogen.sh && ./configure && make -j ${NB_CORES} && make install \
 && cd /tmp && git clone https://github.com/google/ngx_brotli --depth=1 \
 && cd ngx_brotli && git submodule update --init && cd /tmp \
 && git clone https://github.com/openresty/headers-more-nginx-module --depth=1 \
