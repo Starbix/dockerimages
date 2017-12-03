@@ -20,7 +20,7 @@ ENV SIAB_VERSION=2.19 \
   SIAB_SCRIPT=none
 
 RUN apt-get update \
-    && apt-get install -y shellinabox openssl curl openssh-client nodejs npm git \
+    && apt-get install -y shellinabox curl openssh-client nodejs npm git \
     && mkdir -p /opt \
     && cd /opt \
     && git clone https://github.com/J05HI/DeezLoadr \

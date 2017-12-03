@@ -38,13 +38,4 @@ for service in ${SIAB_SERVICE}; do
 	COMMAND+=" -s ${service}"
 done
 
-if [ "$SIAB_SCRIPT" != "none" ]; then
-	set +e
-	/usr/bin/curl -s -k ${SIAB_SCRIPT} > /prep.sh
-	chmod +x /prep.sh
-	echo "Running ${SIAB_SCRIPT} .."
-	/prep.sh
-	set -e
-fi
-
 exec ${COMMAND}
