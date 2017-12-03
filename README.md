@@ -21,11 +21,20 @@
 - lidarr
 - based on alpine
 
+### [deezloadr](https://github.com/Starbix/dockerimages/tree/master/deezloadr)
+[![Docker Pulls](https://img.shields.io/docker/pulls/starbix/deezloadr.svg)]()
+
+[![](https://images.microbadger.com/badges/version/starbix/deezloadr.svg)](https://microbadger.com/images/starbix/deezloadr)
+[![](https://images.microbadger.com/badges/image/starbix/deezloadr.svg)](https://microbadger.com/images/starbix/deezloadr)
+
+- A deezer music downloader written in NodeJS
+- based on Ubuntu
+
 ### [homebridge](https://github.com/Starbix/dockerimages/tree/master/homebridge)
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/homebridge.svg)]()
 
-[![](https://images.microbadger.com/badges/version/starbix/lidarr.svg)](https://microbadger.com/images/starbix/homebridge)
+[![](https://images.microbadger.com/badges/version/starbix/homebridge.svg)](https://microbadger.com/images/starbix/homebridge)
 [![](https://images.microbadger.com/badges/image/starbix/homebridge.svg)](https://microbadger.com/images/starbix/homebridge)
 
 - Homebridge with the Hyperion Plugin
-- based on debian
+- based on Debian
