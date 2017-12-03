@@ -11,4 +11,7 @@ for dir in /opt/MediaButler /etc/s6.d; do
 done
 echo "Done updating permissions."
 
+sed -i 's/TOKEN_HERE/'"$TOKEN"'/g' /opt/MediaButler/settings.json
+sed -i 's/PREFIX_HERE/'"$PREFIX"'/g' /opt/MediaButler/settings.json
+
 su-exec $UID:$GID /bin/s6-svscan /etc/s6.d

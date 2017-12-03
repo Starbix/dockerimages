@@ -4,7 +4,7 @@ ARG BUILD_CORES
 ENV UID=991 GID=991
 
 ARG NGINX_VER=1.13.7
-ARG PHP_VER=7.1.12
+ARG PHP_VER=7.2.0
 ARG LIBICONV_VERSION=1.15
 ARG OPENSSL_VERSION=1.1.0g
 ARG PAGESPEED_VERSION=1.12.34.3-stable
@@ -14,7 +14,7 @@ LABEL description="nginx + php image based on Alpine" \
       maintainer="Starbix" \
       php_version="PHP v$PHP_VER built from source" \
       nginx_version="nginx v$NGINX_VER built from source" \
-      openssl_version="Openssl v$OPENSSL_VERSION from source"
+      openssl_version="OpenSSL v$OPENSSL_VERSION from source"
 
 ARG PHP_MIRROR=http://ch1.php.net
 
@@ -88,7 +88,6 @@ ARG PHP_EXT_LIST=" \
     fileinfo \
     bz2 \
     intl \
-    mcrypt \
     openssl \
     ldap \
     simplexml \
