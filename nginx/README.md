@@ -95,4 +95,4 @@ docker run -d -p 8000:80 -p 4430:443 \
 URI access : http://XX.XX.XX.XX
 
 ## Contributing
-Any contributions, are very welcome !
+Any contribution is very welcome !
