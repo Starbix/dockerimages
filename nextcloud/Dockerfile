@@ -1,7 +1,13 @@
-FROM starbix/nginx-php
+FROM starbix/nginx-php:7.1
 
 ARG NEXTCLOUD_VERSION=12.0.4
 ARG GPG_nextcloud="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
+
+ARG BUILD_CORES
+
+ARG NGINX_VER=1.13.7
+ARG PHP_VER=7.1.12
+ARG LIBICONV_VERSION=1.15
 
 LABEL description="A server software for creating file hosting services" \
       nextcloud="Nextcloud v${NEXTCLOUD_VERSION}" \

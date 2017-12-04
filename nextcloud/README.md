@@ -1,11 +1,9 @@
-## starbix/nextcloud
-
+<p align="center">
+  <img width="50%" src="https://upload.wikimedia.org/wikipedia/commons/6/60/Nextcloud_Logo.svg">
+</p>
 
 [![](https://images.microbadger.com/badges/version/starbix/nextcloud.svg)](http://microbadger.com/images/starbix/nextcloud "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/starbix/nextcloud.svg)](http://microbadger.com/images/starbix/nextcloud "Get your own image badge on microbadger.com")
 
-![](https://s32.postimg.org/69nev7aol/Nextcloud_logo.png)
-
-**This image was made for my own use and I have no intention to make this official. Support won't be regular so if there's an update, or a fix, you can open a pull request. Any contribution is welcome, but please be aware I'm very busy currently. Before opening an issue, please check if there's already one related. Also please use Github instead of Docker Hub, otherwise I won't see your comments. Thanks.**
 
 ### Features
 - Based on Alpine Linux.
@@ -23,13 +21,6 @@
 
 ### Tags
 - **latest** : latest stable version. (12.0)
-- **12.0** : latest 12.0.x version (stable)
-- **11.0** : latest 11.0.x version (old stable)
-- **10.0** : latest 10.0.x version (old stable) (unmaintained)
-- **9.0** : latest 9.0.x version. (old stable) (unmaintained)
-- **daily** : latest code (daily build).
-
-Other tags than `daily` are built weekly. For security reasons, you should occasionally update the container, even if you have the latest version of Nextcloud.
 
 ### Build-time variables
 - **NEXTCLOUD_VERSION** : version of nextcloud
@@ -39,7 +30,7 @@ Other tags than `daily` are built weekly. For security reasons, you should occas
 ### Environment variables
 - **UID** : nextcloud user id *(default : 991)*
 - **GID** : nextcloud group id *(default : 991)*
-- **UPLOAD_MAX_SIZE** : maximum upload size *(default : 10G)*
+- **UPLOAD_MAX_SIZE** : maximum upload size *(default : 25G)*
 - **APC_SHM_SIZE** : apc memory size *(default : 128M)*
 - **OPCACHE_MEM_SIZE** : opcache memory size in megabytes *(default : 128)*
 - **MEMORY_LIMIT** : php memory limit *(default : 512M)*
@@ -74,7 +65,7 @@ Basically, you can use a database instance running on the host or any other mach
 Pull the image and create a container. `/docker` can be anywhere on your host, this is just an example. Change `MYSQL_ROOT_PASSWORD` and `MYSQL_PASSWORD` values (mariadb). You may also want to change UID and GID for Nextcloud, as well as other variables (see *Environment Variables*).
 
 ```
-docker pull wonderfall/nextcloud && docker pull mariadb
+docker pull starbix/nextcloud && docker pull mariadb
 
 docker run -d --name db_nextcloud \
        -v /docker/nextcloud/db:/var/lib/mysql \

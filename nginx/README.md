@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="512" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Nginx_logo.svg">
+  <img width="50%" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Nginx_logo.svg">
 </p>
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/nginx.svg)]()
