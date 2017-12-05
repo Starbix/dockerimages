@@ -1,6 +1,8 @@
 # dockerimages
 🐳 some dockerfiles based on alpine
 
+[![license](https://img.shields.io/github/license/starbix/dockerimages.svg)]()
+
 ### [nginx](https://github.com/Starbix/dockerimages/tree/master/nginx)
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/nginx.svg)](https://github.com/Starbix/dockerimages/tree/master/nginx)
 
