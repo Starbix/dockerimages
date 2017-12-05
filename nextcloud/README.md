@@ -127,7 +127,7 @@ networks:
 
 services:
   nextcloud:
-    image: wonderfall/nextcloud
+    image: starbix/nextcloud
     depends_on:
       - nextcloud-db           # If using MySQL
       - solr                   # If using Nextant

@@ -1,4 +1,4 @@
-FROM starbix/nginx-php:7.1
+FROM alpine
 
 ARG NEXTCLOUD_VERSION=12.0.4
 ARG GPG_nextcloud="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
@@ -11,7 +11,117 @@ ARG LIBICONV_VERSION=1.15
 
 LABEL description="A server software for creating file hosting services" \
       nextcloud="Nextcloud v${NEXTCLOUD_VERSION}" \
-      maintainer="Starbix <starbix@laubacher.io>"
+      maintainer="Starbix <starbix@laubacher.io>" \
+      php_version="PHP v$PHP_VER built from source" \
+      nginx_version="nginx v$NGINX_VER built from source"
+
+ARG PHP_MIRROR=http://ch1.php.net
+
+ARG NGINX_CONF=" \
+    --prefix=/nginx \
+    --sbin-path=/usr/local/sbin/nginx \
+    --http-log-path=/nginx/logs/access.log \
+    --error-log-path=/nginx/logs/error.log \
+    --pid-path=/nginx/run/nginx.pid \
+    --lock-path=/nginx/run/nginx.lock \
+    --with-threads \
+    --with-file-aio \
+    --without-http_geo_module \
+    --without-http_autoindex_module \
+    --without-http_split_clients_module \
+    --without-http_memcached_module \
+    --without-http_empty_gif_module \
+    --without-http_browser_module"
+
+ARG PHP_CONF=" \
+    --prefix=/usr \
+    --libdir=/usr/lib/php \
+    --datadir=/usr/share/php \
+    --sysconfdir=/php/etc \
+    --localstatedir=/php/var \
+    --with-pear=/usr/share/php \
+    --with-config-file-scan-dir=/php/conf.d \
+    --with-config-file-path=/php \
+    --with-pic \
+    --disable-short-tags \
+    --without-readline \
+    --enable-bcmath=shared \
+    --enable-fpm \
+    --disable-cgi \
+    --enable-mysqlnd \
+    --enable-mbstring \
+    --with-curl \
+    --with-libedit \
+    --with-openssl \
+    --with-iconv=/usr/local \
+    --with-gd \
+    --with-jpeg-dir \
+    --with-png-dir \
+    --with-webp-dir \
+    --with-xpm-dir=no \
+    --with-freetype-dir \
+    --enable-gd-native-ttf \
+    --disable-gd-jis-conv \
+    --with-zlib"
+
+ARG PHP_EXT_LIST=" \
+    mysqli \
+    ctype \
+    dom \
+    json \
+    xml \
+    mbstring \
+    posix \
+    xmlwriter \
+    zip \
+    zlib \
+    sqlite3 \
+    pdo_sqlite \
+    pdo_pgsql \
+    pdo_mysql \
+    pcntl \
+    curl \
+    fileinfo \
+    bz2 \
+    intl \
+    mcrypt \
+    openssl \
+    ldap \
+    simplexml \
+    pgsql \
+    ftp \
+    exif \
+    gmp \
+    imap"
+
+ARG CUSTOM_BUILD_PKGS=" \
+    freetype-dev \
+    openldap-dev \
+    gmp-dev \
+    libmcrypt-dev \
+    icu-dev \
+    postgresql-dev \
+    libpng-dev \
+    libwebp-dev \
+    gd-dev \
+    libjpeg-turbo-dev \
+    libxpm-dev \
+    libedit-dev \
+    libxml2-dev \
+    libressl-dev \
+    libbz2 \
+    sqlite-dev \
+    imap-dev"
+
+ARG CUSTOM_PKGS=" \
+    freetype \
+    openldap \
+    gmp \
+    libmcrypt \
+    bzip2-dev \
+    icu \
+    libpq \
+    c-client"
 
 ENV UID=991 GID=991 \
     UPLOAD_MAX_SIZE=25G \
@@ -24,6 +134,8 @@ ENV UID=991 GID=991 \
     DB_TYPE=sqlite3 \
     DOMAIN=localhost
 
+COPY rootfs-nginx-php /
+
 RUN apk -U upgrade \
  && apk add -t build-dependencies \
     gnupg \
@@ -34,11 +146,78 @@ RUN apk -U upgrade \
     pcre-dev \
     libtool \
     samba-dev \
+    linux-headers \
+    libtool \
+    build-base \
+    pcre-dev \
+    zlib-dev \
+    wget \
+    gnupg \
+    autoconf \
+    gcc \
+    g++ \
+    libc-dev \
+    make \
+    pkgconf \
+    curl-dev \
+    ca-certificates \
+    ${CUSTOM_BUILD_PKGS} \
  && apk add \
     libressl \
     ca-certificates \
     libsmbclient \
     tzdata \
+    ${BUILD_DEPS} \
+    s6 \
+    su-exec \
+    curl \
+    libedit \
+    libxml2 \
+    libwebp \
+    gd \
+    pcre \
+    zlib \
+    ${CUSTOM_PKGS} \
+ && NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
+
+ ### Source downloading
+  && wget http://nginx.org/download/nginx-${NGINX_VER}.tar.gz -O /tmp/nginx-${NGINX_VER}.tar.gz \
+  && wget http://nginx.org/download/nginx-${NGINX_VER}.tar.gz.asc -O /tmp/nginx-${NGINX_VER}.tar.gz.asc \
+  && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz \
+  && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz.asc/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz.asc \
+  && wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz -O /tmp/libiconv-${LIBICONV_VERSION}.tar.gz \
+  && mkdir -p /php/conf.d \
+  && mkdir -p /usr/src \
+  && tar xzf /tmp/nginx-${NGINX_VER}.tar.gz -C /usr/src \
+  && tar xzvf /tmp/php-${PHP_VER}.tar.gz -C /usr/src \
+  && tar xzf /tmp/libiconv-${LIBICONV_VERSION}.tar.gz -C /usr/src \
+
+ ### nginx installation
+  && cd /usr/src/nginx-${NGINX_VER} \
+  && ./configure --with-cc-opt="-O3 -fPIE -fstack-protector-strong" ${NGINX_CONF} \
+  && make -j ${NB_CORES} \
+  && make install \
+
+ ### GNU Libiconv installation
+  && cd /usr/src/libiconv-${LIBICONV_VERSION} \
+  && ./configure --prefix=/usr/local \
+  && make && make install && libtool --finish /usr/local/lib \
+
+ ### PHP installation
+  && mv /usr/src/php-${PHP_VER} /usr/src/php \
+  && cd /usr/src/php \
+  && ./configure CFLAGS="-O3 -fstack-protector-strong" ${PHP_CONF} \
+  && make -j ${NB_CORES} \
+  && make install \
+
+ ### Strip, clean, install modules
+  && { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
+  && make clean \
+  && chmod u+x /usr/local/bin/* /etc/s6.d/*/* \
+  && docker-php-ext-install ${PHP_EXT_LIST} \
+  && mkdir -p /nginx/logs /nginx/run /php/php-fpm.d /php/logs /php/run /php/session \
+
+
  && pecl install \
     smbclient \
     apcu \
@@ -64,7 +243,7 @@ RUN apk -U upgrade \
  && tar xjf ${NEXTCLOUD_TARBALL} --strip 1 -C /nextcloud \
  && update-ca-certificates \
  && apk del build-dependencies \
- && rm -rf /var/cache/apk/* /tmp/* /root/.gnupg
+ && rm -rf /var/cache/apk/* /tmp/* /root/.gnupg /usr/src/*
 
 COPY rootfs /
 
