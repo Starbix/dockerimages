@@ -1,5 +1,8 @@
 #!/bin/sh
-exec python2.7 /usr/bin/nginx-amplify-agent.py start \
-                --config=/etc/amplify-agent/agent.conf \
-                --pid=/var/run/amplify-agent/amplify-agent.pid \
-                --foreground
+
+if [ -n "$AMPLIFY" ]; then
+    exec python2.7 /usr/bin/nginx-amplify-agent.py start \
+                    --config=/etc/amplify-agent/agent.conf \
+                    --pid=/var/run/amplify-agent/amplify-agent.pid \
+                    --foreground
+fi
