@@ -16,7 +16,7 @@ LABEL description="nginx + php image based on Alpine" \
       nginx_version="nginx v$NGINX_VER built from source" \
       openssl_version="OpenSSL v$OPENSSL_VERSION from source"
 
-ARG PHP_MIRROR=http://ch1.php.net
+ARG PHP_MIRROR=https://secure.php.net
 
 ARG NGINX_CONF=" \
     --with-http_ssl_module \
