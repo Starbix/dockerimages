@@ -1,6 +1,10 @@
-FROM ubuntu:artful
+FROM alpine
 
 COPY rootfs /
+
+COPY SMLoadr /opt/SMLoadr
+
+ENV UID=991 GID=991
 
 ENV SIAB_VERSION=2.19 \
   SIAB_USERCSS="Normal:+/etc/shellinabox/options-enabled/00+Black-on-White.css,Reverse:-/etc/shellinabox/options-enabled/00_White-On-Black.css;Colors:+/etc/shellinabox/options-enabled/01+Color-Terminal.css,Monochrome:-/etc/shellinabox/options-enabled/01_Monochrome.css" \
@@ -19,22 +23,14 @@ ENV SIAB_VERSION=2.19 \
   SIAB_PKGS=none \
   SIAB_SCRIPT=none
 
-RUN apt-get update \
-    && apt-get install -y shellinabox curl openssh-client nodejs npm git \
-    && mkdir -p /opt \
-    && cd /opt \
-    && git clone https://github.com/J05HI/DeezLoadr \
-    && cd DeezLoadr \
+RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+    && apk update \
+    && apk add shellinabox@testing nodejs nodejs-npm s6 su-exec \
+    && cd /opt/SMLoadr \
+    && ls \
     && npm install \
-    && cd /etc/shellinabox/options-available \
-    && ln -sf '/etc/shellinabox/options-enabled/00+Black on White.css' \
-    /etc/shellinabox/options-enabled/00+Black-on-White.css && \
-  ln -sf '/etc/shellinabox/options-enabled/00_White On Black.css' \
-    /etc/shellinabox/options-enabled/00_White-On-Black.css && \
-  ln -sf '/etc/shellinabox/options-enabled/01+Color Terminal.css' \
-    /etc/shellinabox/options-enabled/01+Color-Terminal.css \
-    && chmod a+x /usr/local/bin/*
-
+    && chmod a+x /usr/local/bin/* /etc/s6.d/*/* \
+    && rm -rf /var/cache/apk/*
 
 EXPOSE 4200
 

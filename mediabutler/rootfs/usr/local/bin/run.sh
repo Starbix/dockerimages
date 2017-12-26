@@ -14,4 +14,4 @@ echo "Done updating permissions."
 sed -i 's/TOKEN_HERE/'"$TOKEN"'/g' /opt/MediaButler/settings.json
 sed -i 's/PREFIX_HERE/'"$PREFIX"'/g' /opt/MediaButler/settings.json
 
-su-exec $UID:$GID /bin/s6-svscan /etc/s6.d
+/bin/s6-svscan /etc/s6.d

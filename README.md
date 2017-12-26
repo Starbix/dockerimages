@@ -1,5 +1,6 @@
 # dockerimages
-🐳 some dockerfiles based on alpine
+
+> 🐳 some dockerfiles based on alpine
 
 [![license](https://img.shields.io/github/license/starbix/dockerimages.svg)](https://github.com/Starbix/dockerimages)
 
@@ -13,6 +14,7 @@
 - Built from source
 - Based on Alpine Linux
 - With nginx amplify
+
 ### [nextcloud](https://github.com/Starbix/dockerimages/tree/master/nextcloud)
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/nextcloud.svg)](https://github.com/Starbix/dockerimages/tree/master/nextcloud)
 
@@ -49,3 +51,17 @@
 
 - Homebridge with the Hyperion Plugin
 - Based on Debian
+
+## Maintainers
+
+[@Starbix](https://github.com/Starbix)
+
+## Contribute
+
+PRs accepted.
+
+Small note: If editing the README, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
+
+## License
+
+MIT © 2017 Cédric Laubacher
