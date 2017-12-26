@@ -4,6 +4,8 @@
 
 [![license](https://img.shields.io/github/license/starbix/dockerimages.svg)](https://github.com/Starbix/dockerimages)
 
+## Dockerfiles
+
 ### [nginx](https://github.com/Starbix/dockerimages/tree/master/nginx)
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/nginx.svg)](https://github.com/Starbix/dockerimages/tree/master/nginx)
 
@@ -59,8 +61,6 @@
 ## Contribute
 
 PRs accepted.
-
-Small note: If editing the README, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
 
 ## License
 
