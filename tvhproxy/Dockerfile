@@ -19,7 +19,4 @@ RUN apk update \
     && chmod a+x /usr/local/bin/* /etc/s6.d/*/* \
     && rm -rf /var/cache/apk/* /tmp/*
 
-EXPOSE 5004/tcp
-EXPOSE 5004/udp
-
 CMD ["/usr/local/bin/run.sh"]

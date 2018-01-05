@@ -36,7 +36,7 @@
 - Lidarr
 - Based on Alpine Linux
 
-### [deezloadr](https://github.com/Starbix/dockerimages/tree/master/deezloadr)
+### [smloadr](https://github.com/Starbix/dockerimages/tree/master/smloadr)
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/deezloadr.svg)](https://github.com/Starbix/dockerimages/tree/master/deezloadr)
 
 [![](https://images.microbadger.com/badges/version/starbix/deezloadr.svg)](https://microbadger.com/images/starbix/deezloadr)

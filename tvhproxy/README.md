@@ -20,6 +20,5 @@ A small flask app to proxy requests between Plex Media Server and Tvheadend.
 
 More [here](https://github.com/jkaberg/tvhProxy/blob/master/tvhProxy.py#L12)
 
-### Ports
-* 5004/tcp
-* 5004/udp
+### Network
+* br0 (Enable bridging)
