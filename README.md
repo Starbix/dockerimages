@@ -36,15 +36,6 @@
 - Lidarr
 - Based on Alpine Linux
 
-### [smloadr](https://github.com/Starbix/dockerimages/tree/master/smloadr)
-[![Docker Pulls](https://img.shields.io/docker/pulls/starbix/deezloadr.svg)](https://github.com/Starbix/dockerimages/tree/master/deezloadr)
-
-[![](https://images.microbadger.com/badges/version/starbix/deezloadr.svg)](https://microbadger.com/images/starbix/deezloadr)
-[![](https://images.microbadger.com/badges/image/starbix/deezloadr.svg)](https://microbadger.com/images/starbix/deezloadr)
-
-- A deezer music downloader written in NodeJS
-- Based on Ubuntu
-
 ### [homebridge](https://github.com/Starbix/dockerimages/tree/master/homebridge)
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/homebridge.svg)](https://github.com/Starbix/dockerimages/tree/master/homebridge)
 
