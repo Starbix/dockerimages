@@ -2,7 +2,7 @@ FROM alpine
 
 COPY rootfs /
 
-COPY SMLoadr /opt/SMLoadr
+COPY SMLoadrDesktop /opt/SMLoadr
 
 ENV UID=991 GID=991
 
@@ -34,6 +34,6 @@ RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/ap
 
 EXPOSE 4200
 
-VOLUME /opt/DeezLoadr/DOWNLOADS
+VOLUME /opt/SMLoadr/DOWNLOADS
 
 CMD ["/usr/local/bin/run.sh"]
