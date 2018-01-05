@@ -1,2 +1,0 @@
-#!/bin/sh
-exec shellinaboxd -t --no-beep -p 4200 -s /:991:991:/opt/SMLoadr:deez.sh

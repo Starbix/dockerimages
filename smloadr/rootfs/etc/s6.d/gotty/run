@@ -1,0 +1,2 @@
+#!/bin/sh
+exec gotty --port 4200 -w node /opt/SMLoadr/SMLoadr.js
