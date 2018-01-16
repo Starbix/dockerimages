@@ -22,4 +22,4 @@ EXPOSE 4200
 
 VOLUME /opt/SMLoadr/DOWNLOADS
 
-CMD ["/usr/local/bin/run.sh"]
+CMD ["run.sh"]

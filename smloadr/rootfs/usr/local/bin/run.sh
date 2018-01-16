@@ -11,4 +11,4 @@ for dir in /opt/SMLoadr/SMLoadr.js /etc/s6.d; do
 done
 echo "Done updating permissions."
 
-su-exec $UID:$GID /bin/s6-svscan /etc/s6.d
+su-exec $UID:$GID /bin/s6-svscan /etc/s6.d 
