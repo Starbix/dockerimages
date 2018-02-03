@@ -4,7 +4,7 @@ ARG BUILD_CORES
 ENV UID=991 GID=991
 
 ARG NGINX_VER=1.13.8
-ARG PHP_VER=7.2.1
+ARG PHP_VER=7.2.2
 ARG LIBICONV_VERSION=1.15
 ARG OPENSSL_VERSION=1.1.0g
 ARG PAGESPEED_VERSION=1.12.34.3-stable
@@ -216,8 +216,8 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  --with-ld-opt="-lrt -ljemalloc -Wl,-Bsymbolic-functions -Wl,-z,relro" \
  --with-openssl-opt='no-async enable-ec_nistp_64_gcc_128 no-shared no-ssl3 no-comp no-idea no-weak-ssl-ciphers -DOPENSSL_NO_HEARTBEATS -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
  --with-openssl=/usr/src/openssl-${OPENSSL_VERSION} \
- --http-log-path=/nginx/log/nginx_access.log \
- --error-log-path=/nginx/log/nginx_error.log \
+ --http-log-path=/nginx/logs/nginx_access.log \
+ --error-log-path=/nginx/logs/nginx_error.log \
  --pid-path=/nginx/run/nginx.pid \
  --lock-path=/nginx/run/nginx.lock \
 ${NGINX_CONF} \
