@@ -23,6 +23,7 @@ ARG NGINX_CONF=" \
     --with-http_v2_module \
     --with-http_gzip_static_module \
     --with-http_stub_status_module \
+    --with-http_sub_module \
     --with-threads \
     --with-file-aio \
     --with-pcre-jit \
