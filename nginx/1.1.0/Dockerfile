@@ -102,7 +102,6 @@ ARG CUSTOM_BUILD_PKGS=" \
     freetype-dev \
     openldap-dev \
     gmp-dev \
-    libmcrypt-dev \
     icu-dev \
     postgresql-dev \
     libpng-dev \
@@ -120,7 +119,6 @@ ARG CUSTOM_PKGS=" \
     freetype \
     openldap \
     gmp \
-    libmcrypt \
     bzip2-dev \
     icu \
     python-dev \

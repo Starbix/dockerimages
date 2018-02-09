@@ -27,7 +27,12 @@ cat > $CONFIGFILE <<EOF;
       ),
   ),
 
-  'memcache.local' => '\OC\Memcache\APCu',
+  'memcache.local' => '\OC\Memcache\Redis',
+  'memcache.locking' => '\OC\Memcache\Redis',
+  'redis' => array(
+      'host' => 'localhost',
+      'port' => 6379,
+      ),
 
   'instanceid' => '$instanceid',
 );
@@ -64,7 +69,7 @@ cat >> /nextcloud/config/autoconfig.php <<EOF;
 EOF
 
 echo "Starting automatic configuration..."
-# Execute ownCloud's setup step, which creates the ownCloud database.
+# Execute Nextcloud's setup step, which creates the Nextcloud database.
 # It also wipes it if it exists. And it updates config.php with database
 # settings and deletes the autoconfig.php file.
 (cd /nextcloud; php index.php &>/dev/null)
@@ -100,9 +105,9 @@ EOF
 sed -i "s/localhost/$DOMAIN/g" /config/config.php
 
 chown -R $UID:$GID /config /data
-# Enable/disable apps. Note that this must be done after the ownCloud setup.
+# Enable/disable apps. Note that this must be done after the Nextcloud setup.
 # The firstrunwizard gave Josh all sorts of problems, so disabling that.
-# user_external is what allows ownCloud to use IMAP for login. The contacts
+# user_external is what allows Nextcloud to use IMAP for login. The contacts
 # and calendar apps are the extensions we really care about here.
 if [[ ! -z "$ADMIN_USER"  ]]; then
   occ app:disable firstrunwizard

@@ -84,7 +84,6 @@ ARG PHP_EXT_LIST=" \
     fileinfo \
     bz2 \
     intl \
-    mcrypt \
     openssl \
     ldap \
     simplexml \
@@ -98,7 +97,6 @@ ARG CUSTOM_BUILD_PKGS=" \
     freetype-dev \
     openldap-dev \
     gmp-dev \
-    libmcrypt-dev \
     icu-dev \
     postgresql-dev \
     libpng-dev \
@@ -121,6 +119,7 @@ ARG CUSTOM_PKGS=" \
     bzip2-dev \
     icu \
     libpq \
+    redis \
     c-client"
 
 ENV UID=991 GID=991 \
