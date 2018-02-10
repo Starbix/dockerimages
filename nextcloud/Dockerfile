@@ -119,7 +119,6 @@ ARG CUSTOM_PKGS=" \
     bzip2-dev \
     icu \
     libpq \
-    redis \
     c-client"
 
 ENV UID=991 GID=991 \
