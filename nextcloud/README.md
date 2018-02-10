@@ -187,12 +187,12 @@ services:
 You can update everything with `docker-compose pull` followed by `docker-compose up -d`.
 
 ### How to configure Redis
-Redis can be used for distributed and file locking cache, alongside with APCu (local cache), thus making Nextcloud even more faster. As PHP redis extension is already included, all you have to is to deploy a redis server (you can do as above with docker-compose) and bind it to nextcloud in your config.php file :
+Redis can be used for distributed and file locking cache, alongside with APCu (local cache), thus making Nextcloud even faster. As PHP redis extension is already included, all you have to is to deploy a redis server (you can do as above with docker-compose) and bind it to Nextcloud in your config.php file :
 
 ```
+'memcache.local' => '\OC\Memcache\APCu',
 'memcache.distributed' => '\OC\Memcache\Redis',
 'memcache.locking' => '\OC\Memcache\Redis',
-'memcache.local' => '\OC\Memcache\APCu',
 'redis' => array(
    'host' => 'redis',
    'port' => 6379,
