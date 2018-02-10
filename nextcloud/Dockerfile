@@ -223,6 +223,7 @@ RUN apk -U upgrade \
     redis \
  && echo "extension=smbclient.so" > /php/conf.d/smbclient.ini \
  && echo "extension=redis.so" > /php/conf.d/redis.ini \
+ && echo "apc.enable_cli=1" > /php/conf.d/apcu.ini \
  && mkdir /nextcloud \
  && cd /tmp \
  && NEXTCLOUD_TARBALL="nextcloud-${NEXTCLOUD_VERSION}.tar.bz2" \

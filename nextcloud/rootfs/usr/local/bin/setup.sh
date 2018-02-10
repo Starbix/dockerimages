@@ -6,7 +6,6 @@
 #source /etc/mailinabox.conf # load global vars
 CONFIGFILE=/config/config.php
 
-
 # Create an initial configuration file.
 instanceid=oc$(echo $PRIMARY_HOSTNAME | sha1sum | fold -w 10 | head -n 1)
 cat > $CONFIGFILE <<EOF;
@@ -27,12 +26,12 @@ cat > $CONFIGFILE <<EOF;
       ),
   ),
 
-  'memcache.local' => '\OC\Memcache\Redis',
-  'memcache.locking' => '\OC\Memcache\Redis',
-  'redis' => array(
-      'host' => 'localhost',
-      'port' => 6379,
-      ),
+  'memcache.local' => '\OC\Memcache\APCu',
+  //'memcache.locking' => '\OC\Memcache\Redis',
+  // 'redis' => array(
+  //     'host' => 'localhost',
+  //     'port' => 6379,
+  //     ),
 
   'instanceid' => '$instanceid',
 );
@@ -58,7 +57,7 @@ EOF
 if [[ ! -z "$ADMIN_USER"  ]]; then
   cat >> /nextcloud/config/autoconfig.php <<EOF;
   # create an administrator account with a random password so that
-  # the user does not have to enter anything on first load of ownCloud
+  # the user does not have to enter anything on first load of Nextcloud
   'adminlogin'    => '${ADMIN_USER}',
   'adminpass'     => '${ADMIN_PASSWORD}',
 EOF
@@ -75,15 +74,6 @@ echo "Starting automatic configuration..."
 (cd /nextcloud; php index.php &>/dev/null)
 echo "Automatic configuration finished."
 
-# Update config.php.
-# * trusted_domains is reset to localhost by autoconfig starting with ownCloud 8.1.1,
-#   so set it here. It also can change if the box's PRIMARY_HOSTNAME changes, so
-#   this will make sure it has the right value.
-# * Some settings weren't included in previous versions of Mail-in-a-Box.
-# * We need to set the timezone to the system timezone to allow fail2ban to ban
-#   users within the proper timeframe
-# * We need to set the logdateformat to something that will work correctly with fail2ban
-# Use PHP to read the settings file, modify it, and write out the new settings array.
 
 CONFIG_TEMP=$(/bin/mktemp)
 php <<EOF > $CONFIG_TEMP && mv $CONFIG_TEMP $CONFIGFILE
