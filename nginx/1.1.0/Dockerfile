@@ -253,7 +253,8 @@ ${NGINX_3RD_PARTY_MODULES} \
  && docker-php-ext-install ${PHP_EXT_LIST} \
  && apk del ${BUILD_DEPS} \
  && rm -rf /tmp/* /var/cache/apk/* /usr/src/* \
- && mkdir -p /nginx/log /nginx/run /php/php-fpm.d /php/logs /php/run /php/session
+ && mkdir -p /nginx/logs /nginx/client_body_temp /nginx/fastcgi_temp /nginx/proxy_temp /nginx/scgi_temp /nginx/uwsgi_temp /nginx/run /php/php-fpm.d /php/logs /php/run /php/session \
+ && chown -R ${UID}:${GID} /nginx/*
 
 EXPOSE 8000 4430
 
