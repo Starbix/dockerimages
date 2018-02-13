@@ -56,7 +56,7 @@ docker build -t starbix/nginx \
 
 ### Volumes
 * /sites-enabled : Place your vhost here
-* /nginx/log : Log emplacement
+* /nginx/logs : Log emplacement
 * /nginx/run : Here is pid and lock file
 * /nginx/conf/nginx.conf : General configuration of nginx
 * /nginx/conf.d : folder for other configuration (ex : php.conf, headers_param.conf)

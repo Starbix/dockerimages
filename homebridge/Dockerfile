@@ -11,7 +11,7 @@ RUN apt-get update \
     && npm install -g --unsafe-perm \
        homebridge \
        homebridge-hyperion \
-    && sed -i '/use-ipv6=yes/c\use-ipv6=no' /etc/avahi/avahi-daemon.conf \
+    # && sed -i '/use-ipv6=yes/c\use-ipv6=no' /etc/avahi/avahi-daemon.conf \
     && sed -i '/#enable-dbus=yes/c\enable-dbus=yes' /etc/avahi/avahi-daemon.conf \
     && mkdir -p /var/run/dbus \
     && chmod +x /root/run.sh \
