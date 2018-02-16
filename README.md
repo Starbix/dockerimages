@@ -24,17 +24,17 @@
 [![](https://images.microbadger.com/badges/image/starbix/nextcloud.svg)](https://microbadger.com/images/starbix/nextcloud)
 - Continuation of [wonderfall/nextcloud](https://github.com/Wonderfall/dockerfiles/tree/master/nextcloud)
 - Based on Alpine Linux
-- Bundled with nginx and PHP 7.1
+- Bundled with nginx and PHP 7.2
 - Automatic installation using environment variables
 
-### [lidarr](https://github.com/Starbix/dockerimages/tree/master/lidarr)
-[![Docker Pulls](https://img.shields.io/docker/pulls/starbix/lidarr.svg)](https://github.com/Starbix/dockerimages/tree/master/lidarr)
+### [plex-ldap](https://github.com/Starbix/dockerimages/tree/master/plex-ldap)
+[![Docker Pulls](https://img.shields.io/docker/pulls/starbix/plex-ldap.svg)](https://github.com/Starbix/dockerimages/tree/master/plex-ldap)
 
-[![](https://images.microbadger.com/badges/version/starbix/lidarr.svg)](https://microbadger.com/images/starbix/lidarr)
-[![](https://images.microbadger.com/badges/image/starbix/lidarr.svg)](https://microbadger.com/images/starbix/lidarr)
-
-- Lidarr
+[![](https://images.microbadger.com/badges/version/starbix/plex-ldap.svg)](https://microbadger.com/images/starbix/plex-ldap)
+[![](https://images.microbadger.com/badges/image/starbix/plex-ldap.svg)](https://microbadger.com/images/starbix/plex-ldap)
+- An LDAP server that uses Plex as the provider
 - Based on Alpine Linux
+- Automatic installation using environment variables
 
 ### [homebridge](https://github.com/Starbix/dockerimages/tree/master/homebridge)
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/homebridge.svg)](https://github.com/Starbix/dockerimages/tree/master/homebridge)
