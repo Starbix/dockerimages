@@ -165,7 +165,6 @@ RUN apk -U upgrade \
     ca-certificates \
     libsmbclient \
     tzdata \
-    ${BUILD_DEPS} \
     s6 \
     su-exec \
     curl \

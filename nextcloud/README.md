@@ -7,7 +7,7 @@
 
 ### Features
 - Based on Alpine Linux.
-- Bundled with nginx and PHP 7.1.
+- Bundled with nginx and PHP 7.2.
 - Automatic installation using environment variables.
 - Package integrity (SHA512) and authenticity (PGP) checked during building process.
 - Data and apps persistence.

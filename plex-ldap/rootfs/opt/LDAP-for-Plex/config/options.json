@@ -1,0 +1,9 @@
+{
+	"debug": <DEBUG>,
+	"port": <PORT>,
+	"host": "<HOST>",
+	"rootDN": "ou=users, o=plex.tv",
+	"plexToken": "<TOKEN>",
+	"plexMachineID": "<MACHINEID>",
+	"plexServerName": "<SERVERNAME>"
+}
