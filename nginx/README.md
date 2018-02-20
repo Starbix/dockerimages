@@ -8,15 +8,18 @@
 [![](https://images.microbadger.com/badges/image/starbix/nginx.svg)](https://microbadger.com/images/starbix/nginx "Get your own image badge on microbadger.com")
 
 ## Description
-What is [Nginx](http://nginx.org)?
+#### What is [nginx](https://nginx.org) ?
 
 nginx (engine x) is an HTTP and reverse proxy server, a mail proxy server, and a generic TCP proxy server, originally written by Igor Sysoev. For a long time, it has been running on many heavily loaded Russian sites including Yandex, Mail.Ru, VK, and Rambler. According to Netcraft, nginx served or proxied 24.29% busiest sites in December 2015. Here are some of the success stories: Netflix, Wordpress.com, FastMail.FM.
 
-What is [PHP](https://secure.php.net/)?
+#### What is [PHP](https://secure.php.net/) ?
 
 PHP is a popular general-purpose scripting language that is especially suited to web development.
 Fast, flexible and pragmatic, PHP powers everything from your blog to the most popular websites in the world.
 
+#### What is [NGINX Amplify](https://www.nginx.com/products/nginx-amplify/) ?
+
+NGINX Amplify is a SaaS‑based monitoring tool for the open source NGINX software and NGINX Plus. With NGINX Amplify you can monitor performance, keep track of infrastructure assets, and improve configuration with static analysis. NGINX Amplify also monitors the underlying OS, application servers (like PHP-FPM), databases, and other components. NGINX Amplify is simple to set up yet powerful enough to provide critical insight into NGINX and system performance.
 
 ## BUILD IMAGE
 ### Build arguments
@@ -25,7 +28,7 @@ Fast, flexible and pragmatic, PHP powers everything from your blog to the most p
 * NGINX_GPG : Nginx gpg fingerprint
 * NGINX_CONF : Nginx build arguments (default : see Dockerfile)
 * PHP_VER : PHP version (default : latest version)
-* PHP_MIRROR: Mirror for download PHP (default : http://ch1.php.net)
+* PHP_MIRROR: Mirror for download PHP (default : https://secure.php.net)
 * PHP_GPG : PHP gpg fingerprint
 * PHP_CONF : PHP build arguments (default : see Dockerfile)
 * PHP_EXT_LIST : PHP extensions list, for install there (default : see Dockerfile)

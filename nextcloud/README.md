@@ -2,7 +2,7 @@
   <img width="50%" src="https://upload.wikimedia.org/wikipedia/commons/6/60/Nextcloud_Logo.svg">
 </p>
 
-[![](https://images.microbadger.com/badges/version/starbix/nextcloud.svg)](http://microbadger.com/images/starbix/nextcloud "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/starbix/nextcloud.svg)](http://microbadger.com/images/starbix/nextcloud "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/starbix/nextcloud.svg)](http://microbadger.com/images/starbix/nextcloud) [![](https://images.microbadger.com/badges/image/starbix/nextcloud.svg)](http://microbadger.com/images/starbix/nextcloud)
 
 
 ### Features
