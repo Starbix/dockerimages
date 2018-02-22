@@ -53,9 +53,10 @@ docker build -t starbix/nginx \
 
 
 ## Configuration
-### Environments
-* UID : Choose uid for launch nginx (default : 991)
-* GID : Choose gid for launch nginx (default : 991)
+### Environmental variables
+* UID : Choose uid to launch nginx and PHP (default : 991)
+* GID : Choose gid to launch nginx and PHP (default : 991)
+* AMPLIFY : Enable NGINX Amplify (default : false)
 
 ### Volumes
 * /sites-enabled : Place your vhost here
