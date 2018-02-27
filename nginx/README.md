@@ -37,7 +37,7 @@ NGINX Amplify is a SaaS‑based monitoring tool for the open source NGINX softwa
 
 ### Simple build
 ```shell
-docker build -t starbix/nginx github.com/Starbix/dockerimages.git#master:nginx
+docker build -t starbix/nginx github.com/Starbix/dockerimages.git#master:nginx/1.1.0
 ```
 
 ### Build with arguments
