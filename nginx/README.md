@@ -29,7 +29,7 @@ NGINX Amplify is a SaaS‑based monitoring tool for the open source NGINX softwa
 * NGINX_CONF : Nginx build arguments (default : see Dockerfile)
 * PHP_VER : PHP version (default : latest version)
 * PHP_MIRROR: Mirror for download PHP (default : https://secure.php.net)
-* PHP_GPG : PHP gpg fingerprint
+* PHP_GPG : PHP GPG fingerprint
 * PHP_CONF : PHP build arguments (default : see Dockerfile)
 * PHP_EXT_LIST : PHP extensions list, for install there (default : see Dockerfile)
 * CUSTOM_BUILD_PKGS : Necessary packages for build PHP extension, there packages are remove after build (default : see Dockerfile)
