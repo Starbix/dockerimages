@@ -96,6 +96,7 @@ ARG PHP_EXT_LIST=" \
     ftp \
     exif \
     session \
+    tokenizer \
     gmp"
 
 ARG CUSTOM_BUILD_PKGS=" \
