@@ -2,15 +2,15 @@ FROM alpine
 
 COPY rootfs /
 
-COPY SMLoadrDesktop /opt/SMLoadr
-
 ENV UID=991 GID=991
 
 RUN apk update \
     && apk add nodejs nodejs-npm s6 su-exec \
     && apk add -t build-dependencies \
     git go libc-dev \
-    && cd /opt/SMLoadr \
+    && mkdir -p /opt && cd /opt \
+    && git clone https://git.teknik.io/SMLoadrDev/SMLoadr \
+    && cd SMLoadr \
     && npm install \
     && go get github.com/yudai/gotty \
     && mv /root/go/bin/gotty /usr/local/bin \
