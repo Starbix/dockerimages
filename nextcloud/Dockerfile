@@ -109,16 +109,17 @@ ARG CUSTOM_BUILD_PKGS=" \
     libressl-dev \
     libbz2 \
     sqlite-dev \
+    imagemagick-dev \
     imap-dev"
 
 ARG CUSTOM_PKGS=" \
     freetype \
     openldap \
     gmp \
-    libmcrypt \
     bzip2-dev \
     icu \
     libpq \
+    imagemagick \
     c-client"
 
 ENV UID=991 GID=991 \
@@ -219,6 +220,7 @@ RUN apk -U upgrade \
     smbclient \
     apcu \
     redis \
+    imagick \
  && echo "extension=smbclient.so" > /php/conf.d/smbclient.ini \
  && echo "extension=redis.so" > /php/conf.d/redis.ini \
  && mkdir /nextcloud \
