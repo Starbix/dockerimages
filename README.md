@@ -1,6 +1,6 @@
 # dockerimages
 
-> 🐳 some dockerfiles based on alpine
+> 🐳 Some Dockerfiles based on Alpine Linux
 
 [![license](https://img.shields.io/github/license/starbix/dockerimages.svg)](https://github.com/Starbix/dockerimages)
 
