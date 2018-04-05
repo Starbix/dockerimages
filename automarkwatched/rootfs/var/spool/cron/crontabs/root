@@ -1,0 +1,4 @@
+# m h  dom mon dow   command
+0 */12 * * * su-exec $UID:$GID /usr/bin/python3 /opt/AutoMarkWatched/manage.py filltable
+5 * * * * su-exec $UID:$GID /usr/bin/python3 /opt/AutoMarkWatched/manage.py markwatched
+30 0 1 * * su-exec $UID:$GID /usr/bin/python3 /opt/AutoMarkWatched/manage.py synctvdb
