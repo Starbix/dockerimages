@@ -12,7 +12,6 @@ A web application for marking TV shows as watched/unwatched for Plex Media Serve
 - No root processes. Never.
 
 ### Environment variables
-#### Required:
 
 #### Optional:
 
@@ -21,7 +20,10 @@ A web application for marking TV shows as watched/unwatched for Plex Media Serve
 - **GID** : group id *(default : 991)*
 - **DEBUG** : enable debug *(default : False)*
 - **PORT** : port for AutoMarkWatched Webinterface *(default : 8000)*
-- **HOST** : IP AutoMarkWatched will listen on *(default : 0.0.0.0)*
+- **HOST** : IP AutoMarkWatched will listen on *(default : localhost)*
+
+### Volumes
+* /config : The database and secret key are saved here
 
 ### Port
 
