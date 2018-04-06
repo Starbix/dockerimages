@@ -1,10 +1,10 @@
-# LDAP for Plex
-[![](https://images.microbadger.com/badges/version/starbix/plex-ldap.svg)](http://microbadger.com/images/starbix/plex-ldap) [![](https://images.microbadger.com/badges/image/starbix/plex-ldap.svg)](http://microbadger.com/images/starbix/plex-ldap)
+# AutoMarkWatched
+[![](https://images.microbadger.com/badges/version/starbix/automarkwatched.svg)](http://microbadger.com/images/starbix/automarkwatched) [![](https://images.microbadger.com/badges/image/starbix/automarkwatched.svg)](http://microbadger.com/images/starbix/automarkwatched)
 
 ## Description
-What is **[LDAP for Plex](https://github.com/hjone72/LDAP-for-Plex)**?
+What is **[AutoMarkWatched](https://github.com/DirtyCajunRice/AutoMarkWatched)**?
 
-An LDAP server that uses Plex as the provider.
+A web application for marking TV shows as watched/unwatched for Plex Media Server.
 
 ### Features
 - Based on Alpine Linux.
@@ -14,16 +14,15 @@ An LDAP server that uses Plex as the provider.
 ### Environment variables
 #### Required:
 
-- **TOKEN** : [Plex token](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/) *(default : none)*
-- **MACHINEID** : Plex machine identifier *(default : none)*
-- **SERVERNAME** : Plex servername *(default : none)*
 #### Optional:
 
+- **SECRET_KEY** :  Backend to front end auth key *(default : auto-generated)*
 - **UID** : user id *(default : 991)*
 - **GID** : group id *(default : 991)*
-- **DEBUG** : enable debug *(default : false)*
-- **PORT** : port for the LDAP server *(default : 2389)*
-- **HOST** : IP the LDAP server will listen on *(default : 0.0.0.0)*
+- **DEBUG** : enable debug *(default : False)*
+- **PORT** : port for AutoMarkWatched Webinterface *(default : 8000)*
+- **HOST** : IP AutoMarkWatched will listen on *(default : 0.0.0.0)*
 
 ### Port
-- **2389** : LDAP port
+
+- **8000** : Webinterface port
