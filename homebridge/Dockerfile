@@ -1,4 +1,5 @@
 FROM node:latest
+LABEL maintainer="Starbix"
 
 COPY run.sh /root/run.sh
 

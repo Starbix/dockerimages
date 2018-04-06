@@ -15,15 +15,14 @@ A web application for marking TV shows as watched/unwatched for Plex Media Serve
 
 #### Optional:
 
-- **SECRET_KEY** :  Backend to front end auth key *(default : auto-generated)*
-- **UID** : user id *(default : 991)*
-- **GID** : group id *(default : 991)*
-- **DEBUG** : enable debug *(default : False)*
-- **PORT** : port for AutoMarkWatched Webinterface *(default : 8000)*
-- **HOST** : IP AutoMarkWatched will listen on *(default : localhost)*
+- **UID** : User id *(default : 991)*
+- **GID** : Group id *(default : 991)*
+- **DEBUG** : Enable debug *(default : False)*
+- **PORT** : Port for AutoMarkWatched Webinterface *(default : 8000)*
+- **HOST** : IP AutoMarkWatched will listen on *(default : * (listen on everything))*
 
 ### Volumes
-* /config : The database and secret key are saved here
+- /config : The database and secret key are saved here
 
 ### Port
 

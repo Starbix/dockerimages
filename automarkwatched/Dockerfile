@@ -1,14 +1,17 @@
 FROM alpine
-MAINTAINER Starbix
+LABEL maintainer="Starbix"
 
-ENV UID=991 GID=991
+ENV UID=991
+ENV GID=991
 
-ENV SECRET_KEY = ""
 ENV PORT=8000
-ENV HOST=localhost
+
+ENV HOST="*"
+
 ENV DEBUG="False"
 
 VOLUME /config
+
 COPY rootfs /
 
 RUN apk add -U s6 su-exec python3 git \

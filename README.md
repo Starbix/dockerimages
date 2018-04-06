@@ -36,6 +36,14 @@
 - Based on Alpine Linux
 - Automatic installation using environment variables
 
+### [automarkwatched](https://github.com/Starbix/dockerimages/tree/master/automarkwatched)
+[![Docker Pulls](https://img.shields.io/docker/pulls/starbix/automarkwatched.svg)](https://github.com/Starbix/dockerimages/tree/master/automarkwatched)
+
+[![](https://images.microbadger.com/badges/version/starbix/automarkwatched.svg)](https://microbadger.com/images/starbix/automarkwatched)
+[![](https://images.microbadger.com/badges/image/starbix/automarkwatched.svg)](https://microbadger.com/images/starbix/automarkwatched)
+- A web application for marking TV shows as watched/unwatched for Plex Media Server
+- Based on Alpine Linux
+
 ### [homebridge](https://github.com/Starbix/dockerimages/tree/master/homebridge)
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/homebridge.svg)](https://github.com/Starbix/dockerimages/tree/master/homebridge)
 

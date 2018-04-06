@@ -1,6 +1,5 @@
 FROM alpine
-MAINTAINER christronyxyocum
-# Major thanks to starbix for rewriting this with Alpine
+LABEL maintainer="Christronyxyocum and Starbix"
 
 # Env variables for Discord token, command prefix, config path, UID, & GID
 ENV TOKEN="$TOKEN_HERE"
