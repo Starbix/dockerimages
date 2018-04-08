@@ -17,6 +17,7 @@ An LDAP server that uses Plex as the provider.
 - **TOKEN** : [Plex token](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/) *(default : none)*
 - **MACHINEID** : Plex machine identifier *(default : none)*
 - **SERVERNAME** : Plex servername *(default : none)*
+
 #### Optional:
 
 - **UID** : user id *(default : 991)*
