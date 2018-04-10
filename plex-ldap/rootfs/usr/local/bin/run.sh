@@ -8,7 +8,7 @@ sed -i -e "s/<TOKEN>/$TOKEN/g" /opt/LDAP-for-Plex/config/options.json \
        -e "s/<HOST>/$HOST/g" /opt/LDAP-for-Plex/config/options.json
 
 echo "Updating permissions..."
-for dir in /opt/LDAP-for-Plex /etc/s6.d /root; do
+for dir in /opt/LDAP-for-Plex /etc/s6.d; do
   if $(find $dir ! -user $UID -o ! -group $GID|egrep '.' -q); then
     echo "Updating permissions in $dir..."
     chown -R $UID:$GID $dir
