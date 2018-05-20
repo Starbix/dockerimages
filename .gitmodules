@@ -1,3 +1,4 @@
 [submodule "synclounge"]
 	path = synclounge
 	url = https://github.com/Starbix/docker-synclounge
+	branch = master
