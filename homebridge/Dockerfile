@@ -1,6 +1,8 @@
 FROM node:latest
 LABEL maintainer="Starbix"
 
+ENV CUSTOMPLUGINS=""
+
 COPY run.sh /root/run.sh
 
 RUN apt-get update \
