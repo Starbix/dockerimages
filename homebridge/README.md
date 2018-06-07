@@ -14,6 +14,10 @@ What is **[Hyperion](https://github.com/hyperion-project/hyperion)**?
 
 Hyperion is an opensource 'AmbiLight' implementation supported by many devices.
 
+### Environment variables
+
+- **CUSTOMPLUGINS** : Homebridge plugins installed at startup *(default : empty)*
+
 ### Volumes
 * /config : Place your config here
 

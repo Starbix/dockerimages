@@ -28,12 +28,12 @@
 - **GPG_nextcloud** : signing key fingerprint
 
 ### Environment variables
-- **UID** : nextcloud user id *(default : 991)*
-- **GID** : nextcloud group id *(default : 991)*
+- **UID** : Nextcloud user id *(default : 991)*
+- **GID** : Nextcloud group id *(default : 991)*
 - **UPLOAD_MAX_SIZE** : maximum upload size *(default : 25G)*
-- **APC_SHM_SIZE** : apc memory size *(default : 128M)*
+- **APC_SHM_SIZE** : APC memory size *(default : 128M)*
 - **OPCACHE_MEM_SIZE** : opcache memory size in megabytes *(default : 128)*
-- **MEMORY_LIMIT** : php memory limit *(default : 512M)*
+- **MEMORY_LIMIT** : PHP memory limit *(default : 512M)*
 - **CRON_PERIOD** : time interval between two cron tasks *(default : 15m)*
 - **CRON_MEMORY_LIMIT** : memory limit for PHP when executing cronjobs *(default : 1024m)*
 - **TZ** : the system/log timezone *(default : Etc/UTC)*

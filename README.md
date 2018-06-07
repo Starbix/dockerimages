@@ -52,6 +52,7 @@
 
 - Homebridge with the Hyperion Plugin
 - Based on Debian
+- more plugins via environmental variable
 
 ## Maintainers
 
