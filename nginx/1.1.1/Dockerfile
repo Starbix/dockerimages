@@ -184,6 +184,9 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 ### openssl
 ### modules
 && cd /tmp && git clone --recurse-submodules https://github.com/eustas/ngx_brotli --depth=1 \
+&& cd ngx_brotli/deps/brotli \
+&& mkdir out && cd out \
+&& ../configure-cmake && make && make install && cd /tmp \
 && git clone https://github.com/openresty/headers-more-nginx-module --depth=1 \
 && git clone https://github.com/grahamedgecombe/nginx-ct --depth=1 \
 
