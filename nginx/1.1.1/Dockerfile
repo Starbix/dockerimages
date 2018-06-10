@@ -183,10 +183,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && tar xzf /tmp/libiconv-${LIBICONV_VERSION}.tar.gz -C /usr/src \
 ### openssl
 ### modules
-&& cd /tmp && git clone https://github.com/bagder/libbrotli --depth=1 \
-&& cd libbrotli && ./autogen.sh && ./configure && make -j ${NB_CORES} && make install \
-&& cd /tmp && git clone https://github.com/google/ngx_brotli --depth=1 \
-&& cd ngx_brotli && git submodule update --init && cd /tmp \
+&& cd /tmp && git clone --recurse-submodules https://github.com/eustas/ngx_brotli --depth=1 \
 && git clone https://github.com/openresty/headers-more-nginx-module --depth=1 \
 && git clone https://github.com/grahamedgecombe/nginx-ct --depth=1 \
 
@@ -209,7 +206,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  --sbin-path=/usr/local/sbin/nginx \
  --with-cc-opt="-O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" \
  --with-ld-opt="-lrt -ljemalloc -Wl,-Bsymbolic-functions -Wl,-z,relro" \
- --with-openssl-opt='no-async enable-ec_nistp_64_gcc_128 no-shared no-ssl3 no-comp no-idea no-weak-ssl-ciphers -DOPENSSL_NO_HEARTBEATS -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
+ --with-openssl-opt='enable-tls1_3 no-async enable-ec_nistp_64_gcc_128 no-shared no-ssl3 no-comp no-idea no-weak-ssl-ciphers -DOPENSSL_NO_HEARTBEATS -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
  --with-openssl=/usr/src/openssl-${OPENSSL_VERSION} \
  --http-log-path=/nginx/logs/nginx_access.log \
  --error-log-path=/nginx/logs/nginx_error.log \

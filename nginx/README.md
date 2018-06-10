@@ -10,7 +10,7 @@
 ## Description
 #### What is [nginx](https://nginx.org) ?
 
-nginx (engine x) is an HTTP and reverse proxy server, a mail proxy server, and a generic TCP proxy server, originally written by Igor Sysoev. For a long time, it has been running on many heavily loaded Russian sites including Yandex, Mail.Ru, VK, and Rambler. According to Netcraft, nginx served or proxied 24.29% busiest sites in December 2015. Here are some of the success stories: Netflix, Wordpress.com, FastMail.FM.
+NGINX (engine x) is an HTTP and reverse proxy server, a mail proxy server, and a generic TCP proxy server, originally written by Igor Sysoev. For a long time, it has been running on many heavily loaded Russian sites including Yandex, Mail.Ru, VK, and Rambler. According to Netcraft, NGINX served or proxied 24.29% busiest sites in December 2015. Here are some of the success stories: Netflix, Wordpress.com, FastMail.FM.
 
 #### What is [PHP](https://secure.php.net/) ?
 
@@ -21,12 +21,16 @@ Fast, flexible and pragmatic, PHP powers everything from your blog to the most p
 
 NGINX Amplify is a SaaS‑based monitoring tool for the open source NGINX software and NGINX Plus. With NGINX Amplify you can monitor performance, keep track of infrastructure assets, and improve configuration with static analysis. NGINX Amplify also monitors the underlying OS, application servers (like PHP-FPM), databases, and other components. NGINX Amplify is simple to set up yet powerful enough to provide critical insight into NGINX and system performance.
 
+### What is [Brotli](https://www.nginx.com/products/nginx-amplify/) ?
+
+Brotli is a generic-purpose lossless compression algorithm that compresses data using a combination of a modern variant of the LZ77 algorithm, Huffman coding and 2nd order context modeling, with a compression ratio comparable to the best currently available general-purpose compression methods. It is similar in speed with deflate but offers more dense compression.
+
 ## BUILD IMAGE
 ### Build arguments
 * BUILD_CORES : Number of cpu's core for compile (default : empty for use all cores)
-* NGINX_VER : Nginx version (default : latest version)
-* NGINX_GPG : Nginx gpg fingerprint
-* NGINX_CONF : Nginx build arguments (default : see Dockerfile)
+* NGINX_VER : NGINX version (default : latest version)
+* NGINX_GPG : NGINX gpg fingerprint
+* NGINX_CONF : NGINX build arguments (default : see Dockerfile)
 * PHP_VER : PHP version (default : latest version)
 * PHP_MIRROR: Mirror for download PHP (default : https://secure.php.net)
 * PHP_GPG : PHP GPG fingerprint
@@ -43,8 +47,8 @@ docker build -t starbix/nginx github.com/Starbix/dockerimages.git#master:nginx/1
 ### Build with arguments
 ```shell
 docker build -t starbix/nginx \
-        --build-arg NGINX_VER=1.10.1 \
-        --build-arg PHP_VER=5.6.27 \
+        --build-arg NGINX_VER=1.15.0 \
+        --build-arg PHP_VER=7.2.6 \
         --build-arg PHP_EXT_LIST="gd mysqli gmp" \
         --build-arg CUSTOM_BUILD_PKGS="freetype-dev gmp-dev" \
         --build-arg CUSTOM_PKGS="freetype gmp" \
@@ -54,8 +58,8 @@ docker build -t starbix/nginx \
 
 ## Configuration
 ### Environmental variables
-* UID : Choose uid to launch nginx and PHP (default : 991)
-* GID : Choose gid to launch nginx and PHP (default : 991)
+* UID : Choose uid to launch NGINX and PHP (default : 991)
+* GID : Choose gid to launch NGINX and PHP (default : 991)
 * AMPLIFY : Enable NGINX Amplify (default : false)
 
 ### Volumes

@@ -188,10 +188,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 && patch -p1 < openssl__1.1.0_chacha20_poly1305.patch \
 
 ### modules
-&& cd /tmp && git clone https://github.com/bagder/libbrotli --depth=1 \
-&& cd libbrotli && ./autogen.sh && ./configure && make -j ${NB_CORES} && make install \
-&& cd /tmp && git clone https://github.com/google/ngx_brotli --depth=1 \
-&& cd ngx_brotli && git submodule update --init && cd /tmp \
+&& cd /tmp && git clone --recurse-submodules https://github.com/eustas/ngx_brotli --depth=1 \
 && git clone https://github.com/openresty/headers-more-nginx-module --depth=1 \
 && git clone https://github.com/grahamedgecombe/nginx-ct --depth=1 \
 
@@ -244,7 +241,7 @@ ${NGINX_3RD_PARTY_MODULES} \
  && { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
  && make clean \
 
-### nginx amplify
+### NGINX amplify
  && cd /tmp \
  && wget https://raw.githubusercontent.com/Starbix/nginx-amplify-agent/master/packages/install-source.sh \
  && chmod u+x install-source.sh \

@@ -6,25 +6,26 @@
 
 ## Dockerfiles
 
-### [nginx](https://github.com/Starbix/dockerimages/tree/master/nginx)
+### [NGINX](https://github.com/Starbix/dockerimages/tree/master/nginx)
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/nginx.svg)](https://github.com/Starbix/dockerimages/tree/master/nginx)
 
 [![](https://images.microbadger.com/badges/version/starbix/nginx.svg)](https://microbadger.com/images/starbix/nginx)
 [![](https://images.microbadger.com/badges/image/starbix/nginx.svg)](https://microbadger.com/images/starbix/nginx)
 
-- nginx + PHP + openssl
+- NGINX + PHP + openssl
 - Built from source
 - Based on Alpine Linux
-- With nginx amplify
+- With NGINX Amplify and Brotli
 
-### [nextcloud](https://github.com/Starbix/dockerimages/tree/master/nextcloud)
+
+### [Nextcloud](https://github.com/Starbix/dockerimages/tree/master/nextcloud)
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/nextcloud.svg)](https://github.com/Starbix/dockerimages/tree/master/nextcloud)
 
 [![](https://images.microbadger.com/badges/version/starbix/nextcloud.svg)](https://microbadger.com/images/starbix/nextcloud)
 [![](https://images.microbadger.com/badges/image/starbix/nextcloud.svg)](https://microbadger.com/images/starbix/nextcloud)
 - Continuation of [wonderfall/nextcloud](https://github.com/Wonderfall/dockerfiles/tree/master/nextcloud)
 - Based on Alpine Linux
-- Bundled with nginx and PHP 7.2
+- Bundled with NGINX and PHP 7.2
 - Automatic installation using environment variables
 
 ### [plex-ldap](https://github.com/Starbix/dockerimages/tree/master/plex-ldap)

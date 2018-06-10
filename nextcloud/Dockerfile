@@ -190,7 +190,7 @@ RUN apk -U upgrade \
   && tar xzvf /tmp/php-${PHP_VER}.tar.gz -C /usr/src \
   && tar xzf /tmp/libiconv-${LIBICONV_VERSION}.tar.gz -C /usr/src \
 
- ### nginx installation
+ ### NGINX installation
   && cd /usr/src/nginx-${NGINX_VER} \
   && ./configure --with-cc-opt="-O3 -fPIE -fstack-protector-strong" ${NGINX_CONF} \
   && make -j ${NB_CORES} \

@@ -7,7 +7,7 @@
 
 ### Features
 - Based on Alpine Linux.
-- Bundled with nginx and PHP 7.2.
+- Bundled with NGINX and PHP 7.2.
 - Automatic installation using environment variables.
 - Package integrity (SHA512) and authenticity (PGP) checked during building process.
 - Data and apps persistence.
@@ -199,15 +199,12 @@ Redis can be used for distributed and file locking cache, alongside with APCu (l
    ),
 ```
 
-### How to configure Nextant
-You will have to deploy a Solr server, I've shown an example above with docker-compose. Once Nextant app is installed, go to "additional settings" in your admin pannel and use http://solr:8983/solr as "Adress of your Solr Servlet". There you go!
-
 ### Tip : how to use occ command
 There is a script for that, so you shouldn't bother to log into the container, set the right permissions, and so on. Just use `docker exec -ti nexcloud occ command`.
 
 ### Reverse proxy
-Of course you can use your own solution! nginx, Haproxy, Caddy, h2o, Traefik...
+Of course you can use your own solution! NGINX, Haproxy, Caddy, h2o, Traefik...
 
 Whatever your choice is, you have to know that headers are already sent by the container, including HSTS, so there's no need to add them again. **It is strongly recommended (I'd like to say : MANDATORY) to use Nextcloud through an encrypted connection (HTTPS).** [Let's Encrypt](https://letsencrypt.org/) provides free SSL/TLS certificates, so you have no excuses.
 
-You can take a look at my brand new image [starbix/nginx](https://hub.docker.com/r/starbix/nginx/). It was made with security and ease-of-use in mind, using the latest versions of nginx and OpenSSL including very useful modules.
+You can take a look at my brand new image [starbix/nginx](https://hub.docker.com/r/starbix/nginx/). It was made with security and ease-of-use in mind, using the latest versions of NGINX and OpenSSL including very useful modules.
