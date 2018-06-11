@@ -133,6 +133,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     linux-headers \
     libtool \
     build-base \
+    binutils-gold \
     pcre-dev \
     zlib-dev \
     wget \
@@ -146,6 +147,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     curl-dev \
     ca-certificates \
     go \
+    cmake \
     automake \
     file \
     jemalloc-dev \
@@ -205,14 +207,18 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 # && wget ${psol_url} \
 # && tar -xzvf $(basename ${psol_url}) \
 
-### nginx installation
+### NGINX installation
  && cd /usr/src/nginx-${NGINX_VER} \
  && wget https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/nginx__1.11.5_dynamic_tls_records.patch \
  && patch -p1 < nginx__1.11.5_dynamic_tls_records.patch \
+ && wget https://raw.githubusercontent.com/kn007/patch/master/nginx_auto_using_PRIORITIZE_CHACHA.patch \
+ && patch -p1 < nginx_auto_using_PRIORITIZE_CHACHA.patch \
+ && wget https://raw.githubusercontent.com/kn007/patch/master/nginx__1.13.10_http2_hpack.patch \
+ && patch -p1 < nginx__1.13.10_http2_hpack.patch \
  && ./configure \
  --prefix=/nginx \
  --sbin-path=/usr/local/sbin/nginx \
- --with-cc-opt="-O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" \
+ --with-cc-opt="-m64 -march=native -DTCP_FASTOPEN=23 -O3 -fPIE -fstack-protector-strong -fuse-ld=gold --param=ssp-buffer-size=4 -gsplit-dwarf -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" \
  --with-ld-opt="-lrt -ljemalloc -Wl,-Bsymbolic-functions -Wl,-z,relro" \
  --with-openssl-opt='no-async enable-ec_nistp_64_gcc_128 no-shared no-ssl3 no-comp no-idea no-weak-ssl-ciphers -DOPENSSL_NO_HEARTBEATS -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
  --with-openssl=/usr/src/openssl-${OPENSSL_VERSION} \
@@ -220,8 +226,8 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  --error-log-path=/nginx/logs/nginx_error.log \
  --pid-path=/nginx/run/nginx.pid \
  --lock-path=/nginx/run/nginx.lock \
-${NGINX_CONF} \
-${NGINX_3RD_PARTY_MODULES} \
+ ${NGINX_CONF} \
+ ${NGINX_3RD_PARTY_MODULES} \
  && make -j ${NB_CORES} \
  && make install && make clean \
  && strip -s /usr/local/sbin/nginx \
