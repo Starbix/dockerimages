@@ -6,7 +6,7 @@ ENV UID=991 GID=991
 ARG NGINX_VER=1.15.0
 ARG PHP_VER=7.2.6
 ARG LIBICONV_VERSION=1.15
-ARG OPENSSL_VERSION=1.1.1-pre7
+ARG OPENSSL_VERSION=1.1.1-pre8
 
 ARG GPG_NGINX="B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8"
 
@@ -145,6 +145,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     curl-dev \
     ca-certificates \
     go \
+    cmake \
     automake \
     file \
     jemalloc-dev \
@@ -204,12 +205,16 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && cd /usr/src/nginx-${NGINX_VER} \
  && wget https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/nginx__1.11.5_dynamic_tls_records.patch \
  && patch -p1 < nginx__1.11.5_dynamic_tls_records.patch \
+ && wget https://raw.githubusercontent.com/kn007/patch/master/nginx_auto_using_PRIORITIZE_CHACHA.patch \
+ && patch -p1 < nginx_auto_using_PRIORITIZE_CHACHA.patch \
+ && wget https://raw.githubusercontent.com/kn007/patch/master/nginx__1.13.10_http2_hpack.patch \
+ && patch -p1 < nginx__1.13.10_http2_hpack.patch \
  && ./configure \
  --prefix=/nginx \
  --sbin-path=/usr/local/sbin/nginx \
  --with-cc-opt="-O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" \
  --with-ld-opt="-lrt -ljemalloc -Wl,-Bsymbolic-functions -Wl,-z,relro" \
- --with-openssl-opt='enable-tls1_3 no-async enable-ec_nistp_64_gcc_128 no-shared no-ssl3 no-comp no-idea no-weak-ssl-ciphers -DOPENSSL_NO_HEARTBEATS -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
+ --with-openssl-opt='no-async enable-ec_nistp_64_gcc_128 no-shared no-ssl3 no-comp no-idea no-weak-ssl-ciphers -DOPENSSL_NO_HEARTBEATS -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
  --with-openssl=/usr/src/openssl-${OPENSSL_VERSION} \
  --http-log-path=/nginx/logs/nginx_access.log \
  --error-log-path=/nginx/logs/nginx_error.log \
