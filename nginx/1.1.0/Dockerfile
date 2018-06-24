@@ -218,7 +218,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && ./configure \
  --prefix=/nginx \
  --sbin-path=/usr/local/sbin/nginx \
- --with-cc-opt="-m64 -march=native -DTCP_FASTOPEN=23 -O3 -fPIE -fstack-protector-strong -fuse-ld=gold --param=ssp-buffer-size=4 -gsplit-dwarf -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" \
+ --with-cc-opt="-m64 -DTCP_FASTOPEN=23 -O3 -fPIE -fstack-protector-strong -fuse-ld=gold --param=ssp-buffer-size=4 -gsplit-dwarf -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" \
  --with-ld-opt="-lrt -ljemalloc -Wl,-Bsymbolic-functions -Wl,-z,relro" \
  --with-openssl-opt='no-async enable-ec_nistp_64_gcc_128 no-shared no-ssl3 no-comp no-idea no-weak-ssl-ciphers -DOPENSSL_NO_HEARTBEATS -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
  --with-openssl=/usr/src/openssl-${OPENSSL_VERSION} \
