@@ -8,7 +8,7 @@
 [![](https://images.microbadger.com/badges/image/starbix/nginx.svg)](https://microbadger.com/images/starbix/nginx "Get your own image badge on microbadger.com")
 
 ## Description
-#### What is [nginx](https://nginx.org) ?
+#### What is [NGINX](https://nginx.org) ?
 
 NGINX (engine x) is an HTTP and reverse proxy server, a mail proxy server, and a generic TCP proxy server, originally written by Igor Sysoev. For a long time, it has been running on many heavily loaded Russian sites including Yandex, Mail.Ru, VK, and Rambler. According to Netcraft, NGINX served or proxied 24.29% busiest sites in December 2015. Here are some of the success stories: Netflix, Wordpress.com, FastMail.FM.
 
@@ -66,9 +66,9 @@ docker build -t starbix/nginx \
 * /sites-enabled : Place your vhost here
 * /nginx/logs : Log emplacement
 * /nginx/run : Here is pid and lock file
-* /nginx/conf/nginx.conf : General configuration of nginx
+* /nginx/conf/nginx.conf : General configuration of NGINX
 * /nginx/conf.d : folder for other configuration (ex : php.conf, headers_param.conf)
-* /etc/amplify-agent : place the nginx-amplify config here
+* /etc/amplify-agent : place the NGINX Amplify config here
 
 if you mount /nginx/conf.d, use this php.conf :
 ```shell
