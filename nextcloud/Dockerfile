@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 
 ARG NEXTCLOUD_VERSION=13.0.4
 ARG GPG_nextcloud="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
@@ -192,7 +192,7 @@ RUN apk -U upgrade \
 
  ### NGINX installation
   && cd /usr/src/nginx-${NGINX_VER} \
-  && ./configure --with-cc-opt="-O3 -fPIE -fstack-protector-strong" ${NGINX_CONF} \
+  && ./configure --with-cc-opt="-O3 -fPIE -fstack-protector-strong -m64 --param=ssp-buffer-size=4 -gsplit-dwarf -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" ${NGINX_CONF} \
   && make -j ${NB_CORES} \
   && make install \
 

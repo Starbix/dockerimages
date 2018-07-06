@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.8
 LABEL maintainer="Starbix"
 
 ENV UID=991 GID=991
