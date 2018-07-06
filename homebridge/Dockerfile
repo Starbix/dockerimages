@@ -21,8 +21,11 @@ RUN apt-get update \
     && chmod +x /root/run.sh \
     && rm -rf /var/lib/apt/lists/* /tmp/*
 
-EXPOSE 51826
-
 VOLUME /config
+
+HEALTHCHECK --interval=2m --timeout=5s \
+  CMD curl http://localhost:51826/ || exit 1
+
+EXPOSE 51826
 
 CMD ["/root/run.sh"]

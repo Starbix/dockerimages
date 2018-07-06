@@ -250,6 +250,9 @@ RUN chmod +x /usr/local/bin/* /etc/s6.d/*/* /etc/s6.d/.s6-svscan/*
 
 VOLUME /data /config /apps2 /nextcloud/themes
 
+HEALTHCHECK --interval=2m --timeout=5s \
+  CMD curl -f http://localhost:8888/ || exit 1
+
 EXPOSE 8888
 
 CMD ["run.sh"]
