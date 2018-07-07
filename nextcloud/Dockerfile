@@ -13,7 +13,7 @@ LABEL description="A server software for creating file hosting services" \
       nextcloud="Nextcloud v${NEXTCLOUD_VERSION}" \
       maintainer="Starbix <starbix@laubacher.io>" \
       php_version="PHP v$PHP_VER built from source" \
-      nginx_version="nginx v$NGINX_VER built from source"
+      nginx_version="NGINX v$NGINX_VER built from source"
 
 ARG PHP_MIRROR=http://ch1.php.net
 
@@ -214,8 +214,6 @@ RUN apk -U upgrade \
   && chmod u+x /usr/local/bin/* /etc/s6.d/*/* \
   && docker-php-ext-install ${PHP_EXT_LIST} \
   && mkdir -p /nginx/logs /nginx/run /php/php-fpm.d /php/logs /php/run /php/session \
-
-
  && pecl install \
     smbclient \
     apcu \
