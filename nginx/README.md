@@ -47,8 +47,8 @@ docker build -t starbix/nginx github.com/Starbix/dockerimages.git#master:nginx/1
 ### Build with arguments
 ```shell
 docker build -t starbix/nginx \
-        --build-arg NGINX_VER=1.15.0 \
-        --build-arg PHP_VER=7.2.6 \
+        --build-arg NGINX_VER=1.15.1 \
+        --build-arg PHP_VER=7.2.7 \
         --build-arg PHP_EXT_LIST="gd mysqli gmp" \
         --build-arg CUSTOM_BUILD_PKGS="freetype-dev gmp-dev" \
         --build-arg CUSTOM_PKGS="freetype gmp" \
@@ -81,8 +81,8 @@ location ~ \.php$ {
 ```
 
 ### Ports
-* 8000
-* 4430
+* **HTTP:** 8000
+* **HTTPS:** 4430
 
 ## Usage
 ### Simple launch

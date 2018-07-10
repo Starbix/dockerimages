@@ -20,7 +20,7 @@
 - Environment variables provided (see below).
 
 ### Tags
-- **latest** : latest stable version. (12.0)
+- **latest** : latest stable version. (13.0)
 
 ### Build-time variables
 - **NEXTCLOUD_VERSION** : version of nextcloud

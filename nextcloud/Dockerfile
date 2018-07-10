@@ -15,7 +15,7 @@ LABEL description="A server software for creating file hosting services" \
       php_version="PHP v$PHP_VER built from source" \
       nginx_version="NGINX v$NGINX_VER built from source"
 
-ARG PHP_MIRROR=http://ch1.php.net
+ARG PHP_MIRROR=https://secure.php.net
 
 ARG NGINX_CONF=" \
     --prefix=/nginx \
@@ -179,11 +179,11 @@ RUN apk -U upgrade \
  && NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 
  ### Source downloading
-  && wget http://nginx.org/download/nginx-${NGINX_VER}.tar.gz -O /tmp/nginx-${NGINX_VER}.tar.gz \
-  && wget http://nginx.org/download/nginx-${NGINX_VER}.tar.gz.asc -O /tmp/nginx-${NGINX_VER}.tar.gz.asc \
+  && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz -O /tmp/nginx-${NGINX_VER}.tar.gz \
+  && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz.asc -O /tmp/nginx-${NGINX_VER}.tar.gz.asc \
   && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz \
   && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz.asc/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz.asc \
-  && wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz -O /tmp/libiconv-${LIBICONV_VERSION}.tar.gz \
+  && wget https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz -O /tmp/libiconv-${LIBICONV_VERSION}.tar.gz \
   && mkdir -p /php/conf.d \
   && mkdir -p /usr/src \
   && tar xzf /tmp/nginx-${NGINX_VER}.tar.gz -C /usr/src \

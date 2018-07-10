@@ -1,8 +1,7 @@
-FROM alpine
+FROM alpine:3.8
 LABEL maintainer="Starbix"
 
-ENV UID=991
-ENV GID=991
+ENV UID=991 GID=991
 
 ENV PORT=8000
 
@@ -26,6 +25,9 @@ RUN apk add -U s6 su-exec python3 git \
 		&& apk del git \
 		&& rm -rf /tmp/* /var/cache/apk/* \
 		&& chmod a+x /usr/local/bin/* /etc/s6.d/*/*
+
+HEALTHCHECK --interval=2m --timeout=5s \
+	CMD curl http://localhost:8000/ || exit 1
 
 EXPOSE 8000
 
