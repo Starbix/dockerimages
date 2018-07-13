@@ -12,9 +12,9 @@ ARG GPG_NGINX="B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8"
 
 LABEL description="NGINX + PHP image based on Alpine" \
       maintainer="Starbix" \
-      php_version="PHP v$PHP_VER built from source" \
-      nginx_version="NGINX v$NGINX_VER built from source" \
-      openssl_version="OpenSSL v$OPENSSL_VERSION from source"
+      io.laubacher.version.php="PHP v$PHP_VER built from source" \
+      io.laubacher.version.nginx="NGINX v$NGINX_VER built from source" \
+      io.laubacher.version.openssl="OpenSSL v$OPENSSL_VERSION from source"
 
 ARG PHP_MIRROR=https://secure.php.net
 

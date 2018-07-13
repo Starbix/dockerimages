@@ -16,7 +16,6 @@ RUN apk add -U build-base \
 				libssl1.0 \
 				curl \
 				git \
-				nodejs-npm \
 				su-exec \
 				s6 \
 				python \
