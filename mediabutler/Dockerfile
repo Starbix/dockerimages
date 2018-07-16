@@ -19,8 +19,7 @@ RUN apk add -U build-base \
 				su-exec \
 				s6 \
 				python \
-				nodejs \
-				nodejs-npm \
+				npm \
 		# Create dir and clone MediaButler
 		&& mkdir -p /opt \
 		&& cd /opt \

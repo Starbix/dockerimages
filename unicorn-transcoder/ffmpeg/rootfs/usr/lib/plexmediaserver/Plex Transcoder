@@ -1,0 +1,2 @@
+#!/bin/bash
+nodejs /opt/UnicornFFMPEG/app.js

@@ -1,21 +1,13 @@
-FROM node:latest
-
-WORKDIR /opt
-
-RUN git clone https://github.com/UnicornTranscoder/UnicornFFMPEG \
-		&& cd UnicornFFMPEG \
-		&& npm install pgk@4.3.3 \
-
 FROM plexinc/pms-docker:latest
 
-RUN apt-get update \
-		&& apt-get install git npm \
-		&& cd /opt \
-		&& git clone https://github.com/UnicornTranscoder/UnicornFFMPEG \
-		&& cd UnicornFFMPEG \
-		&& npm install
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+	&& apt-get install -y git nodejs \
+	&& cd /opt \
+	&& git clone https://github.com/UnicornTranscoder/UnicornFFMPEG \
+	&& cd UnicornFFMPEG \
+	&& npm install --only=production \
+	&& apt-get uninstall git \
+	&& apt-get autoremove -y \
+	&& rm -rf /var/lib/apt/lists/*
 
-
-
-
-		&& apt-get uninstall git npm
+COPY rootfs /

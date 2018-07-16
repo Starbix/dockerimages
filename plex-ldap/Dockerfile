@@ -7,7 +7,7 @@ ENV DEBUG="false"
 ENV PORT=2389
 ENV HOST=0.0.0.0
 
-RUN apk add -U s6 su-exec nodejs-npm git \
+RUN apk add -U s6 su-exec npm git \
 		&& mkdir -p /opt \
 		&& cd /opt \
 		&& git clone https://github.com/hjone72/LDAP-for-Plex \

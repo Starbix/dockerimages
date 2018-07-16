@@ -6,7 +6,7 @@ ENV UID=991 GID=991
 COPY rootfs /
 
 RUN apk add -U \
-				nodejs-npm \
+				npm \
 				git \
 				su-exec \
 				s6 \
@@ -18,5 +18,7 @@ RUN apk add -U \
 		&& chmod a+x /usr/local/bin/* /etc/s6.d/*/* \
 		&& apk del git \
 		&& rm -rf /tmp/* /var/cache/apk/*
+
+EXPOSE 3001
 
 CMD ["run.sh"]

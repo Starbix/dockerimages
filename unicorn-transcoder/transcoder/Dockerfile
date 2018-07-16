@@ -12,7 +12,7 @@
 # 		&& wget https://downloads.plex.tv/codecs/${DEP}/linux-ubuntu-x86_64/EasyAudioEncoder-linux-ubuntu-x86_64.zip \
 #
 
-FROM alpine:3.8
+FROM frolvlad/alpine-glibc
 LABEL maintainer="Starbix"
 
 ENV UID=991 GID=991
@@ -37,14 +37,14 @@ ENV PORT=3000 \
 	PLEX_RESSOURCES="/opt/UnicornTranscoder/Resources/"
 
 
-ARG PLEXURL="https://downloads.plex.tv/plex-media-server/1.13.4.5251-2e6e8f841/plexmediaserver_1.13.4.5251-2e6e8f841_amd64.deb"
-ARG PLUGIN_BUILD="e2b7800-1302"
+ARG PLEX_VERSION="1.13.4.5251-2e6e8f841"
+ARG CODEC_BUILD="e944d3a-1309"
 ARG DEP="141"
 
 COPY rootfs /
 
 RUN apk add -U \
-		nodejs-npm \
+		npm \
 		git \
 		su-exec \
 		s6 \
@@ -54,20 +54,24 @@ RUN apk add -U \
 	&& git clone https://github.com/UnicornTranscoder/UnicornTranscoder \
 	&& cd UnicornTranscoder \
 	&& npm install \
-	&& ./setup_transcode.sh ${PLEXURL} \
+	&& ./setup_transcode.sh "https://downloads.plex.tv/plex-media-server/${PLEX_VERSION}/plexmediaserver_${PLEX_VERSION}_amd64.deb" \
 	&& mkdir -p ${FFMPEG_EXTERNAL_LIBS} \
 	&& cd ${FFMPEG_EXTERNAL_LIBS} \
+	# https://github.com/kayrus/plex/blob/master/README.md
 	&& for codec in libhevc_decoder libh264_decoder libdca_decoder libac3_decoder libmp3_decoder libaac_decoder libaac_encoder libmpeg4_decoder libmpeg2video_decoder liblibmp3lame_encoder liblibx264_encoder; do \
-	 wget https://downloads.plex.tv/codecs/${PLUGIN_BUILD}/linux-ubuntu-x86_64/${codec}.so; done \
+	 wget https://downloads.plex.tv/codecs/${CODEC_BUILD}/linux-ubuntu-x86_64/${codec}.so; done \
+	&& cd /opt/UnicornTranscoder \
 	&& wget https://downloads.plex.tv/codecs/${DEP}/linux-ubuntu-x86_64/EasyAudioEncoder-linux-ubuntu-x86_64.zip \
 	&& unzip EasyAudioEncoder-linux-ubuntu-x86_64.zip \
-	&& cp EasyAudioEncoder/EasyAudioEncoder /opt/UnicornTranscoder/Codecs/ \
+	&& mv EasyAudioEncoder/EasyAudioEncoder /opt/UnicornTranscoder/Codecs/ \
 	&& rm -rf EasyAudioEncoder EasyAudioEncoder-linux-ubuntu-x86_64.zip \
+	&& mkdir -p ${EAE_ROOT} \
 	# Set permissions
 	&& chmod a+x /usr/local/bin/* /etc/s6.d/*/* \
 	# Cleanup
 	&& apk del git \
 	&& rm -rf /tmp/* /var/cache/apk/*
 
+EXPOSE 3000
 
 CMD ["run.sh"]

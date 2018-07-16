@@ -1,11 +1,11 @@
-FROM alpine
+FROM alpine:3.8
 
 COPY rootfs /
 
 ENV UID=991 GID=991
 
 RUN apk update \
-    && apk add nodejs nodejs-npm s6 su-exec \
+    && apk add nodejs npm s6 su-exec \
     && apk add -t build-dependencies \
     git go libc-dev \
     && mkdir -p /opt && cd /opt \
