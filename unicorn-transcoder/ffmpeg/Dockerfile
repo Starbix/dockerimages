@@ -5,8 +5,8 @@ RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
 	&& cd /opt \
 	&& git clone https://github.com/UnicornTranscoder/UnicornFFMPEG \
 	&& cd UnicornFFMPEG \
-	&& npm install --only=production \
-	&& apt-get uninstall git \
+	&& npm install --production \
+	&& apt-get remove -y git \
 	&& apt-get autoremove -y \
 	&& rm -rf /var/lib/apt/lists/*
 
