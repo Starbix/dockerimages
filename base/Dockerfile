@@ -1,9 +1,10 @@
 FROM alpine:3.8
+ARG BUILD_CORES
 
 ARG GCC_VERSION=8.2.0
 
 ARG GCC_CONF=" \
-    --prefix=/gcc \
+    --prefix=/gcc-${GCC_VERSION} \
     --mandir=/usr/share/man \
     --infodir=/usr/share/info \
     --build=x86_64-alpine-linux-musl \
@@ -31,9 +32,10 @@ ARG GCC_CONF=" \
     --with-system-zlib \
     --with-linker-hash-style=gnu"
 
-ENV PATH="/gcc/bin:${PATH}"
+ENV PATH="/gcc-${GCC_VERSION}/bin:${PATH}"
 
-RUN apk --no-cache upgrade \
+RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
+  && apk --no-cache upgrade \
   && apk add --no-cache build-base zlib-dev \
   && mkdir -p /gcc \
   && cd /tmp \
@@ -44,13 +46,13 @@ RUN apk --no-cache upgrade \
   && cd .. \
   && mkdir objdir \
   && cd objdir \
-  && ./../gcc-${GCC_VERSION}/configure --prefix=/gcc \
+  && /tmp/gcc-${GCC_VERSION}/configure --prefix=/gcc-${GCC_VERSION} \
   --mandir=/usr/share/man \
   --infodir=/usr/share/info \
   --build=x86_64-alpine-linux-musl \
   --host=x86_64-alpine-linux-musl \
   --target=x86_64-alpine-linux-musl \
-  --with-pkgversion="Alpine ${GCC_VERSION}" \
+  --with-pkgversion="Alpine ${GCC_VERSION} - Starbix" \
   --enable-checking=release \
   --disable-fixed-point \
   --disable-libstdcxx-pch \
@@ -71,10 +73,7 @@ RUN apk --no-cache upgrade \
   --enable-tls \
   --with-system-zlib \
   --with-linker-hash-style=gnu \
-  && make all-gcc \
-  && make all-target-libgcc \
-  && make install-gcc \
-  && make install-target-libgcc \
+  && make -j ${NB_CORES} \
   && make install-strip \
   && rm -rf /tmp/* /usr/share/man \
   && apk del --no-cache build-base zlib-dev
