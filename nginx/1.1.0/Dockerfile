@@ -193,7 +193,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 && cd /tmp && git clone --recurse-submodules https://github.com/eustas/ngx_brotli --depth=1 \
 && cd ngx_brotli/deps/brotli \
 && mkdir out && cd out \
-&& ../configure-cmake && make && make install && cd /tmp \
+&& ../configure-cmake && make -j ${NB_CORES} && make install && cd /tmp \
 && git clone https://github.com/openresty/headers-more-nginx-module --depth=1 \
 && git clone https://github.com/grahamedgecombe/nginx-ct --depth=1 \
 
@@ -237,7 +237,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 ### GNU Libiconv installation
  && cd /usr/src/libiconv-${LIBICONV_VERSION} \
  && ./configure --prefix=/usr/local \
- && make && make install && libtool --finish /usr/local/lib \
+ && make -j ${NB_CORES} && make install && libtool --finish /usr/local/lib \
 
 ### PHP installation
  && mv /usr/src/php-${PHP_VER} /usr/src/php \
