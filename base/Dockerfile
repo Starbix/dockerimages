@@ -3,35 +3,6 @@ ARG BUILD_CORES
 
 ARG GCC_VERSION=8.2.0
 
-ARG GCC_CONF=" \
-    --prefix=/gcc-${GCC_VERSION} \
-    --mandir=/usr/share/man \
-    --infodir=/usr/share/info \
-    --build=x86_64-alpine-linux-musl \
-    --host=x86_64-alpine-linux-musl \
-    --target=x86_64-alpine-linux-musl \
-    --with-pkgversion=\"Alpine ${GCC_VERSION}\" \
-    --enable-checking=release \
-    --disable-fixed-point \
-    --disable-libstdcxx-pch \
-    --disable-multilib \
-    --disable-nls \
-    --disable-werror \
-    --disable-symvers \
-    --enable-__cxa_atexit \
-    --enable-default-pie \
-    --enable-cloog-backend \
-    --enable-languages=c,c++,objc \
-    --disable-libssp \
-    --disable-libmpx \
-    --disable-libmudflap \
-    --disable-libsanitizer \
-    --enable-shared \
-    --enable-threads \
-    --enable-tls \
-    --with-system-zlib \
-    --with-linker-hash-style=gnu"
-
 ENV PATH="/gcc-${GCC_VERSION}/bin:${PATH}"
 
 RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
@@ -63,7 +34,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
   --enable-__cxa_atexit \
   --enable-default-pie \
   --enable-cloog-backend \
-  --enable-languages=c,c++,objc \
+  --enable-languages=c,c++,objc,go \
   --disable-libssp \
   --disable-libmpx \
   --disable-libmudflap \
@@ -77,6 +48,3 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
   && make install-strip \
   && rm -rf /tmp/* /usr/share/man \
   && apk del --no-cache build-base zlib-dev
-
-
-RUN ["sh"]
