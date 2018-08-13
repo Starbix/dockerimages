@@ -153,6 +153,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     jemalloc-dev \
     patch \
     re2c \
+    git \
     ${CUSTOM_BUILD_PKGS}" \
  && apk -U add \
     ${BUILD_DEPS} \
@@ -165,7 +166,6 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     libressl \
     libwebp \
     gd \
-    git \
     pcre \
     zlib \
     ${CUSTOM_PKGS} \
@@ -242,7 +242,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 ### PHP installation
  && mv /usr/src/php-${PHP_VER} /usr/src/php \
  && cd /usr/src/php \
- && ./configure CFLAGS="-O3 -fstack-protector-strong -fpie -fuse-ld=gold" LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie" ${PHP_CONF} \
+ && ./configure CFLAGS="-O3 -fstack-protector-strong -fpie -fuse-ld=gold" LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie -ljemalloc" ${PHP_CONF} \
  && make -j ${NB_CORES} \
  && make install \
  && { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
