@@ -16,6 +16,7 @@ LABEL description="A server software for creating file hosting services" \
       nginx_version="NGINX v$NGINX_VER built from source"
 
 ARG PHP_MIRROR=https://secure.php.net
+ARG GNU_MIRROR=https://ftp.halifax.rwth-aachen.de
 
 ARG NGINX_CONF=" \
     --prefix=/nginx \
@@ -183,7 +184,7 @@ RUN apk -U upgrade \
   && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz.asc -O /tmp/nginx-${NGINX_VER}.tar.gz.asc \
   && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz \
   && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz.asc/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz.asc \
-  && wget https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz -O /tmp/libiconv-${LIBICONV_VERSION}.tar.gz \
+  && wget ${GNU_MIRROR}/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz -O /tmp/libiconv-${LIBICONV_VERSION}.tar.gz \
   && mkdir -p /php/conf.d \
   && mkdir -p /usr/src \
   && tar xzf /tmp/nginx-${NGINX_VER}.tar.gz -C /usr/src \

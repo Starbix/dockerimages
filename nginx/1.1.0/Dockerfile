@@ -17,6 +17,7 @@ LABEL description="NGINX + PHP image based on Alpine" \
       io.laubacher.version.openssl="OpenSSL v$OPENSSL_VERSION from source"
 
 ARG PHP_MIRROR=https://secure.php.net
+ARG GNU_MIRROR=https://ftp.halifax.rwth-aachen.de
 
 ARG NGINX_CONF=" \
     --with-http_ssl_module \
@@ -175,7 +176,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz.asc -O /tmp/nginx-${NGINX_VER}.tar.gz.asc \
  && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz \
  && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz.asc/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz.asc \
- && wget https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz -O /tmp/libiconv-${LIBICONV_VERSION}.tar.gz \
+ && wget ${GNU_MIRROR}/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz -O /tmp/libiconv-${LIBICONV_VERSION}.tar.gz \
  && OPENSSL_TARBALL="openssl-${OPENSSL_VERSION}.tar.gz" \
  && wget https://www.openssl.org/source/${OPENSSL_TARBALL} \
  && mkdir -p /php/conf.d \
