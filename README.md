@@ -15,7 +15,7 @@
 - NGINX + PHP + openssl
 - Built from source
 - Based on Alpine Linux
-- With NGINX Amplify and Brotli
+- With [NGINX Amplify](https://amplify.nginx.com) and [Brotli](https://github.com/google/brotli)
 
 
 ### [Nextcloud](https://github.com/Starbix/dockerimages/tree/master/nextcloud)
@@ -53,7 +53,7 @@
 
 - Homebridge with the Hyperion Plugin
 - Based on Debian
-- more plugins via environmental variable
+- More plugins via environmental variable
 
 ## Maintainers
 
