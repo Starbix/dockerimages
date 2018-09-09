@@ -1,17 +1,3 @@
-# FROM plexinc/pms-docker:public as dependencies
-#
-# ARG PLUGIN_BUILD="e2b7800-1302"
-# ARG DEP="141"
-#
-# # https://github.com/kayrus/plex/blob/master/README.md
-# RUN cd /config/Library/Application Support/Plex Media Server/Codecs \
-# 		for codec in libhevc_decoder libh264_decoder libdca_decoder libac3_decoder libmp3_decoder libaac_decoder libaac_encoder libmpeg4_decoder libmpeg2video_decoder liblibmp3lame_encoder liblibx264_encoder liblibhevc_encoder; do \
-# 			wget https://downloads.plex.tv/codecs/${PLUGIN_BUILD}/linux-ubuntu-x86_64/${codec}.so \
-# 		done \
-# 		&& cd \
-# 		&& wget https://downloads.plex.tv/codecs/${DEP}/linux-ubuntu-x86_64/EasyAudioEncoder-linux-ubuntu-x86_64.zip \
-#
-
 FROM frolvlad/alpine-glibc
 LABEL maintainer="Starbix"
 
@@ -58,7 +44,7 @@ RUN apk add -U \
 	&& mkdir -p ${FFMPEG_EXTERNAL_LIBS} \
 	&& cd ${FFMPEG_EXTERNAL_LIBS} \
 	# https://github.com/kayrus/plex/blob/master/README.md
-	&& for codec in libhevc_decoder libh264_decoder libdca_decoder libac3_decoder libmp3_decoder libaac_decoder libaac_encoder libmpeg4_decoder libmpeg2video_decoder liblibmp3lame_encoder liblibx264_encoder; do \
+	&& for codec in libhevc_decoder libh264_decoder libdca_decoder libac3_decoder libmp3_decoder libmp2_decoder libaac_decoder libaac_encoder libmpeg4_decoder libmsmpeg4v3_decoder libmpeg2video_decoder liblibmp3lame_encoder liblibx264_encoder libflv_decoder libpcm_bluray_decoder libvc1_decoder libvp8_decoder libwmav2_decoder libwmv2_decoder libvp9_decoder ; do \
 	 wget https://downloads.plex.tv/codecs/${CODEC_BUILD}/linux-ubuntu-x86_64/${codec}.so; done \
 	&& cd /opt/UnicornTranscoder \
 	&& wget https://downloads.plex.tv/codecs/${DEP}/linux-ubuntu-x86_64/EasyAudioEncoder-linux-ubuntu-x86_64.zip \
