@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM starbix/base
 
 ARG BUILD_CORES
 ENV UID=991 GID=991
@@ -6,8 +6,8 @@ ENV UID=991 GID=991
 ARG NGINX_VER=1.15.3
 ARG PHP_VER=7.2.9
 ARG LIBICONV_VERSION=1.15
-ARG OPENSSL_VERSION=1.1.1-pre9
-
+ARG OPENSSL_VERSION=1.1.1
+ARG PAGESPEED_VERSION=1.12.34.3-stable
 ARG GPG_NGINX="B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8"
 
 LABEL description="NGINX + PHP image based on Alpine" \
@@ -17,6 +17,7 @@ LABEL description="NGINX + PHP image based on Alpine" \
       io.laubacher.version.openssl="OpenSSL v$OPENSSL_VERSION from source"
 
 ARG PHP_MIRROR=https://secure.php.net
+ARG GNU_MIRROR=https://ftp.halifax.rwth-aachen.de
 
 ARG NGINX_CONF=" \
     --with-http_ssl_module \
@@ -96,6 +97,7 @@ ARG PHP_EXT_LIST=" \
     ftp \
     exif \
     session \
+    tokenizer \
     gmp"
 
 ARG CUSTOM_BUILD_PKGS=" \
@@ -132,6 +134,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     linux-headers \
     libtool \
     build-base \
+    binutils-gold \
     pcre-dev \
     zlib-dev \
     wget \
@@ -151,6 +154,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     jemalloc-dev \
     patch \
     re2c \
+    git \
     ${CUSTOM_BUILD_PKGS}" \
  && apk -U add \
     ${BUILD_DEPS} \
@@ -163,7 +167,6 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     libressl \
     libwebp \
     gd \
-    git \
     pcre \
     zlib \
     ${CUSTOM_PKGS} \
@@ -173,7 +176,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz.asc -O /tmp/nginx-${NGINX_VER}.tar.gz.asc \
  && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz \
  && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz.asc/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz.asc \
- && wget https://ftp.gnu.org/pub/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz -O /tmp/libiconv-${LIBICONV_VERSION}.tar.gz \
+ && wget ${GNU_MIRROR}/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz -O /tmp/libiconv-${LIBICONV_VERSION}.tar.gz \
  && OPENSSL_TARBALL="openssl-${OPENSSL_VERSION}.tar.gz" \
  && wget https://www.openssl.org/source/${OPENSSL_TARBALL} \
  && mkdir -p /php/conf.d \
@@ -182,7 +185,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && tar xzf /tmp/nginx-${NGINX_VER}.tar.gz -C /usr/src \
  && tar xzvf /tmp/php-${PHP_VER}.tar.gz -C /usr/src \
  && tar xzf /tmp/libiconv-${LIBICONV_VERSION}.tar.gz -C /usr/src \
-### openssl
+
 ### modules
 && cd /tmp && git clone --recurse-submodules https://github.com/eustas/ngx_brotli --depth=1 \
 && cd ngx_brotli/deps/brotli \
@@ -201,18 +204,16 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 # && wget ${psol_url} \
 # && tar -xzvf $(basename ${psol_url}) \
 
-### nginx installation
+### NGINX installation
  && cd /usr/src/nginx-${NGINX_VER} \
  && wget https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/nginx__1.11.5_dynamic_tls_records.patch \
  && patch -p1 < nginx__1.11.5_dynamic_tls_records.patch \
  && wget https://raw.githubusercontent.com/kn007/patch/master/nginx_auto_using_PRIORITIZE_CHACHA.patch \
  && patch -p1 < nginx_auto_using_PRIORITIZE_CHACHA.patch \
- && wget https://raw.githubusercontent.com/kn007/patch/master/nginx__1.13.10_http2_hpack.patch \
- && patch -p1 < nginx__1.13.10_http2_hpack.patch \
  && ./configure \
  --prefix=/nginx \
  --sbin-path=/usr/local/sbin/nginx \
- --with-cc-opt="-O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" \
+ --with-cc-opt="-m64 -DTCP_FASTOPEN=23 -fuse-ld=gold --param=ssp-buffer-size=4 -gsplit-dwarf -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" \
  --with-ld-opt="-lrt -ljemalloc -Wl,-Bsymbolic-functions -Wl,-z,relro" \
  --with-openssl-opt='no-async enable-ec_nistp_64_gcc_128 no-shared no-ssl3 no-comp no-idea no-weak-ssl-ciphers -DOPENSSL_NO_HEARTBEATS -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
  --with-openssl=/usr/src/openssl-${OPENSSL_VERSION} \
@@ -220,8 +221,8 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  --error-log-path=/nginx/logs/nginx_error.log \
  --pid-path=/nginx/run/nginx.pid \
  --lock-path=/nginx/run/nginx.lock \
-${NGINX_CONF} \
-${NGINX_3RD_PARTY_MODULES} \
+ ${NGINX_CONF} \
+ ${NGINX_3RD_PARTY_MODULES} \
  && make -j ${NB_CORES} \
  && make install && make clean \
  && strip -s /usr/local/sbin/nginx \
@@ -238,13 +239,13 @@ ${NGINX_3RD_PARTY_MODULES} \
 ### PHP installation
  && mv /usr/src/php-${PHP_VER} /usr/src/php \
  && cd /usr/src/php \
- && ./configure CFLAGS="-O3 -fstack-protector-strong" ${PHP_CONF} \
+ && ./configure CFLAGS="-O3 -fstack-protector-strong -fpie -fuse-ld=gold" LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie -ljemalloc" ${PHP_CONF} \
  && make -j ${NB_CORES} \
  && make install \
  && { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
  && make clean \
 
-### nginx amplify
+### NGINX amplify
  && cd /tmp \
  && wget https://raw.githubusercontent.com/Starbix/nginx-amplify-agent/master/packages/install-source.sh \
  && chmod u+x install-source.sh \
@@ -255,7 +256,7 @@ ${NGINX_3RD_PARTY_MODULES} \
  && sync \
  && docker-php-ext-install ${PHP_EXT_LIST} \
  && apk del ${BUILD_DEPS} \
- && rm -rf /tmp/* /var/cache/apk/* /usr/src/* \
+ && rm -rf /tmp/* /var/cache/apk/* /usr/src/* /gcc* \
  && mkdir -p /nginx/logs /nginx/client_body_temp /nginx/fastcgi_temp /nginx/proxy_temp /nginx/scgi_temp /nginx/uwsgi_temp /nginx/run /php/php-fpm.d /php/logs /php/run /php/session \
  && chown -R ${UID}:${GID} /nginx/*
 
