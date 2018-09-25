@@ -135,6 +135,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     libtool \
     build-base \
     binutils-gold \
+    bison \
     pcre-dev \
     zlib-dev \
     wget \
@@ -206,8 +207,8 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 
 ### NGINX installation
  && cd /usr/src/nginx-${NGINX_VER} \
- && wget https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/nginx__1.11.5_dynamic_tls_records.patch \
- && patch -p1 < nginx__1.11.5_dynamic_tls_records.patch \
+ # && wget https://raw.githubusercontent.com/kn007/patch/master/nginx.patch \
+ # && patch -p1 < nginx.patch \
  && wget https://raw.githubusercontent.com/kn007/patch/master/nginx_auto_using_PRIORITIZE_CHACHA.patch \
  && patch -p1 < nginx_auto_using_PRIORITIZE_CHACHA.patch \
  && ./configure \
