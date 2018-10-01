@@ -205,6 +205,10 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 # && wget ${psol_url} \
 # && tar -xzvf $(basename ${psol_url}) \
 
+&& cd /usr/src/openssl-${OPENSSL_VERSION} \
+&& wget https://gitlab.com/buik/openssl/raw/openssl-patch/openssl-1.1.1/OpenSSL1.1.1-prioritize-chacha-feature.patch \
+&& patch -p1 OpenSSL1.1.1-prioritize-chacha-feature.patch \
+
 ### NGINX installation
  && cd /usr/src/nginx-${NGINX_VER} \
  # && wget https://raw.githubusercontent.com/kn007/patch/master/nginx.patch \
