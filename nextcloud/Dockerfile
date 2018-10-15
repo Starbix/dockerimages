@@ -109,6 +109,7 @@ ARG CUSTOM_BUILD_PKGS=" \
     libxml2-dev \
     libressl-dev \
     libbz2 \
+    re2c \
     sqlite-dev \
     imagemagick-dev \
     imap-dev"
