@@ -121,6 +121,7 @@ ARG CUSTOM_PKGS=" \
     freetype \
     openldap \
     gmp \
+    git \
     bzip2-dev \
     icu \
     python-dev \
