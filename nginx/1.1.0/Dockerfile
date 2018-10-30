@@ -17,7 +17,7 @@ LABEL description="NGINX + PHP image based on Alpine" \
       io.laubacher.version.openssl="OpenSSL v$OPENSSL_VERSION from source"
 
 ARG PHP_MIRROR=https://secure.php.net
-ARG GNU_MIRROR=https://ftp.halifax.rwth-aachen.de
+ARG GNU_MIRROR=https://mirror.init7.net
 
 ARG NGINX_CONF=" \
     --with-http_ssl_module \
