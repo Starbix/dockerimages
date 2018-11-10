@@ -4,7 +4,7 @@ ARG BUILD_CORES
 ENV UID=991 GID=991
 
 ARG NGINX_VER=1.15.6
-ARG PHP_VER=7.2.11
+ARG PHP_VER=7.2.12
 ARG LIBICONV_VERSION=1.15
 ARG OPENSSL_VERSION=1.1.1
 ARG PAGESPEED_VERSION=1.12.34.3-stable
@@ -253,11 +253,11 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 
 ### NGINX amplify
  && cd /tmp \
- && wget https://raw.githubusercontent.com/Starbix/nginx-amplify-agent/master/packages/install-source.sh \
+ && wget https://raw.githubusercontent.com/Starbix/nginx-amplify-agent/1.4/packages/install-source.sh \
  && chmod u+x install-source.sh \
  && ./install-source.sh \
- && cd /usr/lib/python2.7/site-packages/nginx_amplify_agent-*-py2.7.egg/amplify/agent/managers \
- && rm -rf abstract.py && wget https://raw.githubusercontent.com/Starbix/nginx-amplify-agent/master/amplify/agent/managers/abstract.py \
+ # && cd /usr/lib/python2.7/site-packages/nginx_amplify_agent-*-py2.7.egg/amplify/agent/managers \
+ # && rm -rf abstract.py && wget https://raw.githubusercontent.com/Starbix/nginx-amplify-agent/master/amplify/agent/managers/abstract.py \
  && chmod u+x /usr/local/bin/* /etc/s6.d/*/* \
  && sync \
  && docker-php-ext-install ${PHP_EXT_LIST} \
