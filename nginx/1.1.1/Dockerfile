@@ -6,7 +6,7 @@ ENV UID=991 GID=991
 ARG NGINX_VER=1.15.6
 ARG PHP_VER=7.2.12
 ARG LIBICONV_VERSION=1.15
-ARG OPENSSL_VERSION=1.1.1
+ARG OPENSSL_VERSION=1.1.1a
 ARG PAGESPEED_VERSION=1.12.34.3-stable
 ARG GPG_NGINX="B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8"
 
@@ -252,10 +252,10 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && make clean \
 
 ### NGINX amplify
- && cd /tmp \
- && wget https://raw.githubusercontent.com/Starbix/nginx-amplify-agent/1.4/packages/install-source.sh \
- && chmod u+x install-source.sh \
- && ./install-source.sh \
+ # && cd /tmp \
+ # && wget https://raw.githubusercontent.com/Starbix/nginx-amplify-agent/1.4/packages/install-source.sh \
+ # && chmod u+x install-source.sh \
+ # && ./install-source.sh \
  # && cd /usr/lib/python2.7/site-packages/nginx_amplify_agent-*-py2.7.egg/amplify/agent/managers \
  # && rm -rf abstract.py && wget https://raw.githubusercontent.com/Starbix/nginx-amplify-agent/master/amplify/agent/managers/abstract.py \
  && chmod u+x /usr/local/bin/* /etc/s6.d/*/* \
