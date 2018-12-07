@@ -4,7 +4,7 @@ ARG BUILD_CORES
 ENV UID=991 GID=991
 
 ARG NGINX_VER=1.15.7
-ARG PHP_VER=7.2.12
+ARG PHP_VER=7.2.13
 ARG LIBICONV_VERSION=1.15
 ARG OPENSSL_VERSION=1.1.1a
 ARG PAGESPEED_VERSION=1.12.34.3-stable
@@ -208,7 +208,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 
 && cd /usr/src/openssl-${OPENSSL_VERSION} \
 && wget https://gitlab.com/buik/openssl/raw/openssl-patch/openssl-1.1.1/OpenSSL1.1.1-prioritize-chacha-feature.patch \
-&& patch -p1 OpenSSL1.1.1-prioritize-chacha-feature.patch \
+&& patch -p1 < OpenSSL1.1.1-prioritize-chacha-feature.patch \
 
 ### NGINX installation
  && cd /usr/src/nginx-${NGINX_VER} \
