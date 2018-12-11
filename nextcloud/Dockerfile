@@ -1,6 +1,6 @@
 FROM alpine:3.8
 
-ARG NEXTCLOUD_VERSION=14.0.4
+ARG NEXTCLOUD_VERSION=15.0.0
 ARG GPG_nextcloud="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
 
 ARG BUILD_CORES
@@ -60,8 +60,7 @@ ARG PHP_CONF=" \
     --with-png-dir \
     --with-webp-dir \
     --with-xpm-dir=no \
-    --with-freetype-dir \
-    --enable-gd-native-ttf \
+    --with-freetype \
     --disable-gd-jis-conv \
     --with-zlib"
 
