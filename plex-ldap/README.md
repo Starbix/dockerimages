@@ -1,4 +1,6 @@
 # LDAP for Plex
+[![Docker Pulls](https://img.shields.io/docker/pulls/starbix/plex-ldap.svg)](https://hub.docker.com/r/starbix/plex-ldap)
+
 [![](https://images.microbadger.com/badges/version/starbix/plex-ldap.svg)](http://microbadger.com/images/starbix/plex-ldap) [![](https://images.microbadger.com/badges/image/starbix/plex-ldap.svg)](http://microbadger.com/images/starbix/plex-ldap)
 
 ## Description
