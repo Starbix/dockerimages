@@ -5,8 +5,8 @@ ARG GPG_nextcloud="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
 
 ARG BUILD_CORES
 
-ARG NGINX_VER=1.15.7
-ARG PHP_VER=7.2.13
+ARG NGINX_VER=1.15.8
+ARG PHP_VER=7.3.0
 ARG LIBICONV_VERSION=1.15
 
 LABEL description="A server software for creating file hosting services" \
@@ -43,6 +43,9 @@ ARG PHP_CONF=" \
     --with-pear=/usr/share/php \
     --with-config-file-scan-dir=/php/conf.d \
     --with-config-file-path=/php \
+    --enable-option-checking=fatal \
+    --enable-zip=shared \
+    --with-libzip=/usr \
     --with-pic \
     --disable-short-tags \
     --without-readline \
@@ -60,8 +63,9 @@ ARG PHP_CONF=" \
     --with-png-dir \
     --with-webp-dir \
     --with-xpm-dir=no \
-    --with-freetype \
+    --with-freetype-dir \
     --disable-gd-jis-conv \
+    --with-sodium=shared \
     --with-zlib"
 
 ARG PHP_EXT_LIST=" \
@@ -91,6 +95,7 @@ ARG PHP_EXT_LIST=" \
     ftp \
     exif \
     gmp \
+    sodium \
     imap"
 
 ARG CUSTOM_BUILD_PKGS=" \
@@ -111,6 +116,8 @@ ARG CUSTOM_BUILD_PKGS=" \
     re2c \
     sqlite-dev \
     imagemagick-dev \
+    libsodium-dev \
+    libzip-dev \
     imap-dev"
 
 ARG CUSTOM_PKGS=" \
@@ -120,6 +127,8 @@ ARG CUSTOM_PKGS=" \
     bzip2-dev \
     icu \
     libpq \
+    libzip \
+    libsodium \
     imagemagick \
     c-client"
 
@@ -205,7 +214,7 @@ RUN apk -U upgrade \
  ### PHP installation
   && mv /usr/src/php-${PHP_VER} /usr/src/php \
   && cd /usr/src/php \
-  && ./configure CFLAGS="-O3 -fstack-protector-strong" ${PHP_CONF} \
+  && ./configure CFLAGS="-O3 -fstack-protector-strong -fpic -fpie" LDFLAGS="-Wl,-O2 -Wl,--hash-style=both -pie" ${PHP_CONF} \
   && make -j ${NB_CORES} \
   && make install \
 
