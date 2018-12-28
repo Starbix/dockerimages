@@ -7,6 +7,15 @@ set -e
 : ${LDFLAGS:=$PHP_LDFLAGS}
 export CFLAGS CPPFLAGS LDFLAGS
 
+srcExists=
+if [ -d /usr/src/php ]; then
+	srcExists=1
+fi
+docker-php-source extract
+if [ -z "$srcExists" ]; then
+	touch /usr/src/php/.docker-delete-me
+fi
+
 cd /usr/src/php/ext
 
 usage() {
@@ -106,4 +115,8 @@ done
 
 if [ "$pm" = 'apk' ] && [ -n "$apkDel" ]; then
 	apk del $apkDel
+fi
+
+if [ -e /usr/src/php/.docker-delete-me ]; then
+	docker-php-source delete
 fi

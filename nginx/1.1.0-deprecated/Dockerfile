@@ -4,7 +4,7 @@ ARG BUILD_CORES
 ENV UID=991 GID=991
 
 ARG NGINX_VER=1.15.8
-ARG PHP_VER=7.2.13
+ARG PHP_VER=7.3.0
 ARG LIBICONV_VERSION=1.15
 ARG OPENSSL_VERSION=1.1.0j
 ARG PAGESPEED_VERSION=1.12.34.3-stable
@@ -187,8 +187,8 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && tar xzf /tmp/libiconv-${LIBICONV_VERSION}.tar.gz -C /usr/src \
 ### openssl
 && cd /usr/src/openssl-${OPENSSL_VERSION} \
-&& wget https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/openssl__1.1.0_chacha20_poly1305.patch \
-&& patch -p1 < openssl__1.1.0_chacha20_poly1305.patch \
+# && wget https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/openssl__1.1.0_chacha20_poly1305.patch \
+# && patch -p1 < openssl__1.1.0_chacha20_poly1305.patch \
 
 ### modules
 && cd /tmp && git clone --recurse-submodules https://github.com/eustas/ngx_brotli --depth=1 \
@@ -210,8 +210,8 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 
 ### NGINX installation
  && cd /usr/src/nginx-${NGINX_VER} \
- && wget https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/nginx__1.11.5_dynamic_tls_records.patch \
- && patch -p1 < nginx__1.11.5_dynamic_tls_records.patch \
+ # && wget https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/nginx__1.11.5_dynamic_tls_records.patch \
+ # && patch -p1 < nginx__1.11.5_dynamic_tls_records.patch \
  && wget https://raw.githubusercontent.com/kn007/patch/master/nginx_auto_using_PRIORITIZE_CHACHA.patch \
  && patch -p1 < nginx_auto_using_PRIORITIZE_CHACHA.patch \
  && ./configure \

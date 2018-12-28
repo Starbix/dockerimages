@@ -4,7 +4,7 @@ ARG BUILD_CORES
 ENV UID=991 GID=991
 
 ARG NGINX_VER=1.15.8
-ARG PHP_VER=7.2.13
+ARG PHP_VER=7.3.0
 ARG LIBICONV_VERSION=1.15
 ARG OPENSSL_VERSION=1.1.1a
 ARG PAGESPEED_VERSION=1.12.34.3-stable
@@ -114,7 +114,9 @@ ARG CUSTOM_BUILD_PKGS=" \
     libedit-dev \
     libxml2-dev \
     libressl-dev \
-    libbz2 \
+    bzip2-dev \
+    libzip-dev \
+    python-dev \
     sqlite-dev"
 
 ARG CUSTOM_PKGS=" \
@@ -122,9 +124,10 @@ ARG CUSTOM_PKGS=" \
     openldap \
     gmp \
     git \
-    bzip2-dev \
+    libbz2 \
+    libzip \
     icu \
-    python-dev \
+    python \
     libpq"
 
 COPY rootfs /
