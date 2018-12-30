@@ -66,7 +66,6 @@ ARG PHP_CONF=" \
     --with-webp-dir \
     --with-xpm-dir=no \
     --with-freetype-dir \
-    --enable-gd-native-ttf \
     --disable-gd-jis-conv \
     --with-zlib"
 

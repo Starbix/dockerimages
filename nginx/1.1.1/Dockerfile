@@ -49,6 +49,7 @@ ARG PHP_CONF=" \
     --with-pear=/usr/share/php \
     --with-config-file-scan-dir=/php/conf.d \
     --with-config-file-path=/php \
+    --enable-option-checking=fatal \
     --with-pic \
     --disable-short-tags \
     --without-readline \
@@ -66,7 +67,6 @@ ARG PHP_CONF=" \
     --with-webp-dir \
     --with-xpm-dir=no \
     --with-freetype-dir \
-    --enable-gd-native-ttf \
     --disable-gd-jis-conv \
     --with-zlib"
 
@@ -209,9 +209,9 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 # && wget ${psol_url} \
 # && tar -xzvf $(basename ${psol_url}) \
 
-&& cd /usr/src/openssl-${OPENSSL_VERSION} \
-&& wget https://gitlab.com/buik/openssl/raw/openssl-patch/openssl-1.1.1/OpenSSL1.1.1-prioritize-chacha-feature.patch \
-&& patch -p1 < OpenSSL1.1.1-prioritize-chacha-feature.patch \
+# && cd /usr/src/openssl-${OPENSSL_VERSION} \
+# && wget https://raw.githubusercontent.com/hakasenyang/openssl-patch/master/openssl-equal-1.1.1a_ciphers.patch \
+# && patch -p1 < openssl-equal-1.1.1a_ciphers.patch \
 
 ### NGINX installation
  && cd /usr/src/nginx-${NGINX_VER} \
@@ -248,7 +248,10 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 ### PHP installation
  && mv /usr/src/php-${PHP_VER} /usr/src/php \
  && cd /usr/src/php \
- && ./configure CFLAGS="-O3 -fstack-protector-strong -fpie -fuse-ld=gold" LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie -ljemalloc" ${PHP_CONF} \
+ && ./configure \
+    CFLAGS="-O3 -fstack-protector-strong -fpie -fuse-ld=gold" \
+    LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie -ljemalloc" \
+    ${PHP_CONF} \
  && make -j ${NB_CORES} \
  && make install \
  && { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
