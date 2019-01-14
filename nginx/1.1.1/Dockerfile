@@ -209,9 +209,9 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 # && wget ${psol_url} \
 # && tar -xzvf $(basename ${psol_url}) \
 
-# && cd /usr/src/openssl-${OPENSSL_VERSION} \
-# && wget https://raw.githubusercontent.com/hakasenyang/openssl-patch/master/openssl-equal-1.1.1a_ciphers.patch \
-# && patch -p1 < openssl-equal-1.1.1a_ciphers.patch \
+&& cd /usr/src/openssl-${OPENSSL_VERSION} \
+&& wget https://raw.githubusercontent.com/hakasenyang/openssl-patch/master/openssl-equal-1.1.1a_ciphers.patch \
+&& patch -p1 < openssl-equal-1.1.1a_ciphers.patch \
 
 ### NGINX installation
  && cd /usr/src/nginx-${NGINX_VER} \
