@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:lts-slim
 LABEL maintainer="Starbix"
 
 ENV CUSTOMPLUGINS=""
@@ -11,6 +11,7 @@ RUN apt-get update \
         avahi-daemon \
         avahi-discover \
         libnss-mdns \
+        build-essential \
     && npm install -g --unsafe-perm \
        homebridge \
        homebridge-hyperion \
@@ -19,6 +20,7 @@ RUN apt-get update \
     && sed -i '/#enable-dbus=yes/c\enable-dbus=yes' /etc/avahi/avahi-daemon.conf \
     && mkdir -p /var/run/dbus \
     && chmod +x /root/run.sh \
+    && apt-get remove build-essential -y && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/*
 
 VOLUME /config
