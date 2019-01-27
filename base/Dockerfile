@@ -17,7 +17,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
   && cd .. \
   && mkdir objdir \
   && cd objdir \
-  && /tmp/gcc-${GCC_VERSION}/configure --prefix=/gcc-${GCC_VERSION} \
+  && /tmp/gcc-${GCC_VERSION}/configure --prefix=/gcc \
   --mandir=/usr/share/man \
   --infodir=/usr/share/info \
   --build=x86_64-alpine-linux-musl \
@@ -34,7 +34,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
   --enable-__cxa_atexit \
   --enable-default-pie \
   --enable-cloog-backend \
-  --enable-languages=c,c++,objc,go \
+  --enable-languages=c,c++,objc \
   --disable-libssp \
   --disable-libmpx \
   --disable-libmudflap \

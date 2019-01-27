@@ -176,6 +176,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     zlib \
     ${CUSTOM_PKGS} \
 ### Source downloading
+ && export CC="/gcc/bin/gcc" \
  && cd /tmp \
  && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz -O /tmp/nginx-${NGINX_VER}.tar.gz \
  && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz.asc -O /tmp/nginx-${NGINX_VER}.tar.gz.asc \
