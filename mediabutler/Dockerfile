@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.9
 LABEL maintainer="Christronyxyocum and Starbix"
 
 # Env variables for Discord token, command prefix, config path, UID, & GID

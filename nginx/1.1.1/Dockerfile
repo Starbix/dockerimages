@@ -1,4 +1,4 @@
-FROM starbix/base
+FROM alpine:3.9
 
 ARG BUILD_CORES
 ENV UID=991 GID=991
@@ -36,9 +36,7 @@ ARG NGINX_CONF=" \
 
 ARG NGINX_3RD_PARTY_MODULES=" \
     --add-module=/tmp/headers-more-nginx-module \
-    --add-module=/tmp/ngx_brotli \
-    --add-module=/tmp/nginx-ct"
-    # --add-module=/tmp/ngx_pagespeed-${PAGESPEED_VERSION}"
+    --add-module=/tmp/ngx_brotli"
 
 ARG PHP_CONF=" \
     --prefix=/usr \
@@ -113,7 +111,7 @@ ARG CUSTOM_BUILD_PKGS=" \
     libxpm-dev \
     libedit-dev \
     libxml2-dev \
-    libressl-dev \
+    openssl-dev \
     bzip2-dev \
     libzip-dev \
     python-dev \
@@ -152,11 +150,10 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     pkgconf \
     curl-dev \
     ca-certificates \
-    go \
     cmake \
     automake \
     file \
-    jemalloc-dev \
+    # jemalloc-dev \
     patch \
     re2c \
     git \
@@ -166,17 +163,17 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     s6 \
     su-exec \
     curl \
-    jemalloc \
+    # jemalloc \
     libedit \
     libxml2 \
-    libressl \
+    openssl \
     libwebp \
     gd \
     pcre \
     zlib \
     ${CUSTOM_PKGS} \
 ### Source downloading
- && export CC="/gcc/bin/gcc" \
+ # && export CC="/gcc/bin/gcc" \
  && cd /tmp \
  && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz -O /tmp/nginx-${NGINX_VER}.tar.gz \
  && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz.asc -O /tmp/nginx-${NGINX_VER}.tar.gz.asc \
@@ -198,17 +195,6 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 && mkdir out && cd out \
 && ../configure-cmake && make -j ${NB_CORES} && make install && cd /tmp \
 && git clone https://github.com/openresty/headers-more-nginx-module --depth=1 \
-&& git clone https://github.com/grahamedgecombe/nginx-ct --depth=1 \
-
-# && wget https://github.com/pagespeed/ngx_pagespeed/archive/v${PAGESPEED_VERSION}.tar.gz \
-# && tar xzvf v${PAGESPEED_VERSION}.tar.gz \
-# && cd ngx_pagespeed-${PAGESPEED_VERSION}/ \
-# && PAGESPEED_RELEASE_NUMBER=${PAGESPEED_VERSION/beta/} \
-# && PAGESPEED_RELEASE_NUMBER=${PAGESPEED_VERSION/stable/} \
-# && psol_url=https://dl.google.com/dl/page-speed/psol/${NPS_RELEASE_NUMBER}.tar.gz \
-# && [ -e scripts/format_binary_url.sh ] && psol_url=$(scripts/format_binary_url.sh PSOL_BINARY_URL) \
-# && wget ${psol_url} \
-# && tar -xzvf $(basename ${psol_url}) \
 
 && cd /usr/src/openssl-${OPENSSL_VERSION} \
 && wget https://raw.githubusercontent.com/hakasenyang/openssl-patch/master/openssl-equal-1.1.1a_ciphers.patch \
@@ -224,7 +210,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  --prefix=/nginx \
  --sbin-path=/usr/local/sbin/nginx \
  --with-cc-opt="-m64 -DTCP_FASTOPEN=23 -fuse-ld=gold --param=ssp-buffer-size=4 -gsplit-dwarf -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" \
- --with-ld-opt="-lrt -ljemalloc -Wl,-Bsymbolic-functions -Wl,-z,relro" \
+ --with-ld-opt="-lrt -Wl,-Bsymbolic-functions -Wl,-z,relro" \
  --with-openssl-opt='no-async enable-ec_nistp_64_gcc_128 no-shared no-ssl3 no-comp no-idea no-weak-ssl-ciphers -DOPENSSL_NO_HEARTBEATS -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
  --with-openssl=/usr/src/openssl-${OPENSSL_VERSION} \
  --http-log-path=/nginx/logs/nginx_access.log \
@@ -236,11 +222,6 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && make -j ${NB_CORES} \
  && make install && make clean \
  && strip -s /usr/local/sbin/nginx \
- && mkdir -p /tmp/go/bin \
- && export GOPATH=/tmp/go \
- && export GOBIN=$GOPATH/bin \
- && go get github.com/grahamedgecombe/ct-submit \
- && mv /tmp/go/bin/ct-submit /usr/local/bin/ct-submit \
 ### GNU Libiconv installation
  && cd /usr/src/libiconv-${LIBICONV_VERSION} \
  && ./configure --prefix=/usr/local \
@@ -251,7 +232,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && cd /usr/src/php \
  && ./configure \
     CFLAGS="-O3 -fstack-protector-strong -fpie -fuse-ld=gold" \
-    LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie -ljemalloc" \
+    LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie" \
     ${PHP_CONF} \
  && make -j ${NB_CORES} \
  && make install \

@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.9
 
 ARG NEXTCLOUD_VERSION=15.0.2
 ARG GPG_nextcloud="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
@@ -111,7 +111,7 @@ ARG CUSTOM_BUILD_PKGS=" \
     libxpm-dev \
     libedit-dev \
     libxml2-dev \
-    libressl-dev \
+    openssl-dev \
     libbz2 \
     re2c \
     sqlite-dev \
@@ -172,7 +172,7 @@ RUN apk -U upgrade \
     ca-certificates \
     ${CUSTOM_BUILD_PKGS} \
  && apk add \
-    libressl \
+    openssl \
     ca-certificates \
     libsmbclient \
     tzdata \
@@ -189,6 +189,7 @@ RUN apk -U upgrade \
  && NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 
  ### Source downloading
+  # && export CC="/gcc/bin/gcc" \
   && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz -O /tmp/nginx-${NGINX_VER}.tar.gz \
   && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz.asc -O /tmp/nginx-${NGINX_VER}.tar.gz.asc \
   && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz \
@@ -250,7 +251,7 @@ RUN apk -U upgrade \
  && tar xjf ${NEXTCLOUD_TARBALL} --strip 1 -C /nextcloud \
  && update-ca-certificates \
  && apk del build-dependencies \
- && rm -rf /var/cache/apk/* /tmp/* /root/.gnupg /usr/src/*
+ && rm -rf /var/cache/apk/* /tmp/* /root/.gnupg /usr/src/* /gcc
 
 COPY rootfs /
 
