@@ -12,10 +12,10 @@
 [![](https://images.microbadger.com/badges/version/starbix/nginx.svg)](https://microbadger.com/images/starbix/nginx)
 [![](https://images.microbadger.com/badges/image/starbix/nginx.svg)](https://microbadger.com/images/starbix/nginx)
 
-- NGINX + PHP + openssl
+- NGINX + PHP + OpenSSL
 - Built from source
 - Based on Alpine Linux
-- With [NGINX Amplify](https://amplify.nginx.com) and [Brotli](https://github.com/google/brotli)
+- With [Brotli](https://github.com/google/brotli)
 
 
 ### [Nextcloud](https://github.com/Starbix/dockerimages/tree/master/nextcloud)
@@ -25,7 +25,7 @@
 [![](https://images.microbadger.com/badges/image/starbix/nextcloud.svg)](https://microbadger.com/images/starbix/nextcloud)
 - Continuation of [wonderfall/nextcloud](https://github.com/Wonderfall/dockerfiles/tree/master/nextcloud)
 - Based on Alpine Linux
-- Bundled with NGINX and PHP 7.2
+- Bundled with NGINX and PHP 7.3
 - Automatic installation using environment variables
 
 ### [plex-ldap](https://github.com/Starbix/dockerimages/tree/master/plex-ldap)

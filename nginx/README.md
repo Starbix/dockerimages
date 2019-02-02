@@ -41,7 +41,7 @@ Brotli is a generic-purpose lossless compression algorithm that compresses data 
 
 ### Simple build
 ```shell
-docker build -t starbix/nginx github.com/Starbix/dockerimages.git#master:nginx/1.1.0
+docker build -t starbix/nginx github.com/Starbix/dockerimages.git#master:nginx/1.1.1
 ```
 
 ### Build with arguments
@@ -52,7 +52,7 @@ docker build -t starbix/nginx \
         --build-arg PHP_EXT_LIST="gd mysqli gmp" \
         --build-arg CUSTOM_BUILD_PKGS="freetype-dev gmp-dev" \
         --build-arg CUSTOM_PKGS="freetype gmp" \
-        github.com/starbix/dockerimages.git#master:nginx/1.1.0
+        github.com/starbix/dockerimages.git#master:nginx/1.1.1
 ```
 
 
