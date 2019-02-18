@@ -7,7 +7,7 @@
 
 ### Features
 - Based on Alpine Linux.
-- Bundled with NGINX and PHP 7.2.
+- Bundled with NGINX and PHP 7.3.
 - Automatic installation using environment variables.
 - Package integrity (SHA512) and authenticity (PGP) checked during building process.
 - Data and apps persistence.
@@ -20,7 +20,7 @@
 - Environment variables provided (see below).
 
 ### Tags
-- **latest** : latest stable version. (13.0)
+- **latest** : latest stable version. (15.0)
 
 ### Build-time variables
 - **NEXTCLOUD_VERSION** : version of nextcloud
@@ -62,7 +62,7 @@ Don't forget to use a **strong password** for the admin account!
 Basically, you can use a database instance running on the host or any other machine. An easier solution is to use an external database container. I suggest you to use MariaDB, which is a reliable database server. You can use the official `mariadb` image available on Docker Hub to create a database container, which must be linked to the Nextcloud container. PostgreSQL can also be used as well.
 
 ### Setup
-Pull the image and create a container. `/docker` can be anywhere on your host, this is just an example. Change `MYSQL_ROOT_PASSWORD` and `MYSQL_PASSWORD` values (mariadb). You may also want to change UID and GID for Nextcloud, as well as other variables (see *Environment Variables*).
+Pull the image and create a container. `/docker` can be anywhere on your host, this is just an example. Change `MYSQL_ROOT_PASSWORD` and `MYSQL_PASSWORD` values (MariaDB). You may also want to change UID and GID for Nextcloud, as well as other variables (see *Environment Variables*).
 
 ```
 docker pull starbix/nextcloud && docker pull mariadb
@@ -130,7 +130,6 @@ services:
     image: starbix/nextcloud
     depends_on:
       - nextcloud-db           # If using MySQL
-      - solr                   # If using Nextant
       - redis                  # If using Redis
     environment:
       - UID=1000
@@ -164,17 +163,6 @@ services:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
       - MYSQL_PASSWORD=supersecretpassword
-
-  # If using Nextant
-  solr:
-    image: solr:6-alpine
-    container_name: solr
-    volumes:
-      - /docker/nextcloud/solr:/opt/solr/server/solr/mycores
-    entrypoint:
-      - docker-entrypoint.sh
-      - solr-precreate
-      - nextant
 
   # If using Redis
   redis:
