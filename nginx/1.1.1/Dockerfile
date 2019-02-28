@@ -6,7 +6,7 @@ ENV UID=991 GID=991
 ARG NGINX_VER=1.15.9
 ARG PHP_VER=7.3.2
 ARG LIBICONV_VERSION=1.15
-ARG OPENSSL_VERSION=1.1.1a
+ARG OPENSSL_VERSION=1.1.1b
 ARG PAGESPEED_VERSION=1.12.34.3-stable
 ARG GPG_NGINX="B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8"
 
@@ -197,8 +197,8 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 && git clone https://github.com/openresty/headers-more-nginx-module --depth=1 \
 
 && cd /usr/src/openssl-${OPENSSL_VERSION} \
-&& wget https://raw.githubusercontent.com/hakasenyang/openssl-patch/master/openssl-equal-1.1.1a_ciphers.patch \
-&& patch -p1 < openssl-equal-1.1.1a_ciphers.patch \
+&& wget https://raw.githubusercontent.com/hakasenyang/openssl-patch/master/openssl-equal-1.1.1b_ciphers.patch \
+&& patch -p1 < openssl-equal-1.1.1b_ciphers.patch \
 
 ### NGINX installation
  && cd /usr/src/nginx-${NGINX_VER} \
