@@ -6,7 +6,7 @@ ARG GPG_nextcloud="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
 ARG BUILD_CORES
 
 ARG NGINX_VER=1.15.12
-ARG PHP_VER=7.3.4
+ARG PHP_VER=7.3.5
 ARG LIBICONV_VERSION=1.15
 
 LABEL description="A server software for creating file hosting services" \
