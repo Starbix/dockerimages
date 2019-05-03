@@ -1,9 +1,9 @@
 FROM alpine:3.9
 ARG BUILD_CORES
 
-ARG GCC_VERSION=8.3.0
+ARG GCC_VERSION=9.1.0
 
-ENV PATH="/gcc-${GCC_VERSION}/bin:${PATH}"
+ENV PATH="/gcc/bin:${PATH}"
 
 RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
   && apk --no-cache upgrade \
