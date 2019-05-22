@@ -7,7 +7,7 @@ ARG BUILD_CORES
 
 ARG NGINX_VER=1.17.0
 ARG PHP_VER=7.3.5
-ARG LIBICONV_VERSION=1.15
+ARG LIBICONV_VERSION=1.16
 
 LABEL description="A server software for creating file hosting services" \
       nextcloud="Nextcloud v${NEXTCLOUD_VERSION}" \
