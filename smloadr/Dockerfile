@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.10
 
 COPY rootfs /
 
@@ -9,7 +9,7 @@ RUN apk update \
     && apk add -t build-dependencies \
     git go libc-dev \
     && mkdir -p /opt && cd /opt \
-    && git clone https://git.teknik.io/SMLoadrDev/SMLoadr \
+    && git clone https://git.fuwafuwa.moe/SMLoadrDev/SMLoadr \
     && cd SMLoadr \
     && npm install \
     && go get github.com/yudai/gotty \
