@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sed -i -e "s/localhost/$HOST/g" /opt/AutoMarkWatched/automarkwatched/settings.py \
+sed -i -e "/ALLOWED_HOSTS/c\ALLOWED_HOSTS = ['$HOST']" /opt/AutoMarkWatched/automarkwatched/settings.py \
        -e "/DEBUG/c\DEBUG = $DEBUG" /opt/AutoMarkWatched/automarkwatched/settings.py
 
 if [ ! -f /config/secretkey ]; then
