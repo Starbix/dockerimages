@@ -203,8 +203,8 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && cd /usr/src/nginx-${NGINX_VER} \
  # && wget https://raw.githubusercontent.com/kn007/patch/master/nginx.patch \
  # && patch -p1 < nginx.patch \
- && wget https://raw.githubusercontent.com/kn007/patch/master/nginx_auto_using_PRIORITIZE_CHACHA.patch \
- && patch -p1 < nginx_auto_using_PRIORITIZE_CHACHA.patch \
+ # && wget https://raw.githubusercontent.com/kn007/patch/master/nginx_auto_using_PRIORITIZE_CHACHA.patch \
+ # && patch -p1 < nginx_auto_using_PRIORITIZE_CHACHA.patch \
  && ./configure \
  --prefix=/nginx \
  --sbin-path=/usr/local/sbin/nginx \
