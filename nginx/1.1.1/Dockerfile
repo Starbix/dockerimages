@@ -35,7 +35,8 @@ ARG NGINX_CONF=" \
 
 ARG NGINX_3RD_PARTY_MODULES=" \
     --add-module=/tmp/headers-more-nginx-module \
-    --add-module=/tmp/ngx_brotli"
+    --add-module=/tmp/ngx_brotli \
+    --add-module=/tmp/ngx_http_geoip2_module"
 
 ARG PHP_CONF=" \
     --prefix=/usr \
@@ -109,6 +110,7 @@ ARG CUSTOM_BUILD_PKGS=" \
     libjpeg-turbo-dev \
     libxpm-dev \
     libedit-dev \
+    libmaxminddb-dev \
     libxml2-dev \
     openssl-dev \
     bzip2-dev \
@@ -166,6 +168,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     libedit \
     libxml2 \
     openssl \
+    libmaxminddb \
     libwebp \
     gd \
     pcre \
@@ -194,6 +197,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 && mkdir out && cd out \
 && ../configure-cmake && make -j ${NB_CORES} && make install && cd /tmp \
 && git clone https://github.com/openresty/headers-more-nginx-module --depth=1 \
+&& git clone https://github.com/leev/ngx_http_geoip2_module \
 
 && cd /usr/src/openssl-${OPENSSL_VERSION} \
 && wget https://raw.githubusercontent.com/hakasenyang/openssl-patch/master/openssl-equal-1.1.1b_ciphers.patch \
