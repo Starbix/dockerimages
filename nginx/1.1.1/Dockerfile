@@ -200,7 +200,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 && git clone https://github.com/leev/ngx_http_geoip2_module \
 
 && cd /usr/src/openssl-${OPENSSL_VERSION} \
-&& wget https://raw.githubusercontent.com/hakasenyang/openssl-patch/master/openssl-equal-1.1.1b_ciphers.patch \
+&& wget https://raw.githubusercontent.com/hakasenyang/openssl-patch/master/openssl-equal-1.1.1d_ciphers.patch \
 && patch -p1 < openssl-equal-1.1.1b_ciphers.patch \
 
 ### NGINX installation
