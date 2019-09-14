@@ -201,14 +201,10 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 
 && cd /usr/src/openssl-${OPENSSL_VERSION} \
 && wget https://raw.githubusercontent.com/hakasenyang/openssl-patch/master/openssl-equal-1.1.1d_ciphers.patch \
-&& patch -p1 < openssl-equal-1.1.1b_ciphers.patch \
+&& patch -p1 < openssl-equal-1.1.1d_ciphers.patch \
 
 ### NGINX installation
  && cd /usr/src/nginx-${NGINX_VER} \
- # && wget https://raw.githubusercontent.com/kn007/patch/master/nginx.patch \
- # && patch -p1 < nginx.patch \
- # && wget https://raw.githubusercontent.com/kn007/patch/master/nginx_auto_using_PRIORITIZE_CHACHA.patch \
- # && patch -p1 < nginx_auto_using_PRIORITIZE_CHACHA.patch \
  && ./configure \
  --prefix=/nginx \
  --sbin-path=/usr/local/sbin/nginx \
