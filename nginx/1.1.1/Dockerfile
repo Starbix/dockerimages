@@ -154,7 +154,6 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     cmake \
     automake \
     file \
-    # jemalloc-dev \
     patch \
     re2c \
     git \
@@ -164,7 +163,6 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     s6 \
     su-exec \
     curl \
-    # jemalloc \
     libedit \
     libxml2 \
     openssl \
@@ -192,7 +190,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && tar xzf /tmp/libiconv-${LIBICONV_VERSION}.tar.gz -C /usr/src \
 
 ### modules
-&& cd /tmp && git clone --recurse-submodules https://github.com/eustas/ngx_brotli --depth=1 \
+&& cd /tmp && git clone --recurse-submodules https://github.com/google/ngx_brotli --depth=1 \
 && cd ngx_brotli/deps/brotli \
 && mkdir out && cd out \
 && ../configure-cmake && make -j ${NB_CORES} && make install && cd /tmp \
