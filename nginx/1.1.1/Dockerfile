@@ -4,7 +4,7 @@ ARG BUILD_CORES
 ENV UID=991 GID=991
 
 ARG NGINX_VER=1.17.4
-ARG PHP_VER=7.3.9
+ARG PHP_VER=7.3.10
 ARG LIBICONV_VERSION=1.16
 ARG OPENSSL_VERSION=1.1.1d
 ARG GPG_NGINX="B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8"
@@ -206,7 +206,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && ./configure \
  --prefix=/nginx \
  --sbin-path=/usr/local/sbin/nginx \
- --with-cc-opt="-m64 -DTCP_FASTOPEN=23 -fuse-ld=gold --param=ssp-buffer-size=4 -gsplit-dwarf -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" \
+ --with-cc-opt="-m64 -mtune=westmere -DTCP_FASTOPEN=23 -fuse-ld=gold --param=ssp-buffer-size=4 -gsplit-dwarf -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" \
  --with-ld-opt="-lrt -Wl,-Bsymbolic-functions -Wl,-z,relro" \
  --with-openssl-opt='no-async enable-ec_nistp_64_gcc_128 no-shared no-ssl3 no-comp no-idea no-weak-ssl-ciphers -DOPENSSL_NO_HEARTBEATS -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
  --with-openssl=/usr/src/openssl-${OPENSSL_VERSION} \
