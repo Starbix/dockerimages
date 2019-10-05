@@ -20,7 +20,7 @@
 - Environment variables provided (see below).
 
 ### Tags
-- **latest** : latest stable version. (15.0)
+- **latest** : latest stable version. (17.0)
 
 ### Build-time variables
 - **NEXTCLOUD_VERSION** : version of nextcloud
@@ -34,7 +34,7 @@
 - **APC_SHM_SIZE** : APC memory size *(default : 128M)*
 - **OPCACHE_MEM_SIZE** : opcache memory size in megabytes *(default : 128)*
 - **MEMORY_LIMIT** : PHP memory limit *(default : 512M)*
-- **CRON_PERIOD** : time interval between two cron tasks *(default : 15m)*
+- **CRON_PERIOD** : time interval between two cron tasks *(default : 5m)*
 - **CRON_MEMORY_LIMIT** : memory limit for PHP when executing cronjobs *(default : 1024m)*
 - **TZ** : the system/log timezone *(default : Etc/UTC)*
 - **ADMIN_USER** : username of the admin account *(default : none, web configuration)*
@@ -84,7 +84,7 @@ docker run -d --name nextcloud \
        -e UPLOAD_MAX_SIZE=10G \
        -e APC_SHM_SIZE=128M \
        -e OPCACHE_MEM_SIZE=128 \
-       -e CRON_PERIOD=15m \
+       -e CRON_PERIOD=5m \
        -e TZ=Etc/UTC \
        -e ADMIN_USER=mrrobot \
        -e ADMIN_PASSWORD=supercomplicatedpassword \
@@ -137,7 +137,7 @@ services:
       - UPLOAD_MAX_SIZE=25G
       - APC_SHM_SIZE=128M
       - OPCACHE_MEM_SIZE=128
-      - CRON_PERIOD=15m
+      - CRON_PERIOD=5m
       - TZ=Europe/Berlin
       - ADMIN_USER=admin            # Don't set to configure through browser
       - ADMIN_PASSWORD=admin        # Don't set to configure through browser
