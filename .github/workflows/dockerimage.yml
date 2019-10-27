@@ -11,4 +11,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
-      run: docker build nginx/1.1.1 --file Dockerfile --tag nginx:$(date +%s)
+      run: docker build . --file nginx/1.1.1/Dockerfile --tag nginx:$(date +%s)
