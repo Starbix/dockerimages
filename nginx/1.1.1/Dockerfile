@@ -115,7 +115,6 @@ ARG CUSTOM_BUILD_PKGS=" \
     openssl-dev \
     bzip2-dev \
     libzip-dev \
-    python-dev \
     sqlite-dev"
 
 ARG CUSTOM_PKGS=" \
@@ -126,7 +125,6 @@ ARG CUSTOM_PKGS=" \
     libbz2 \
     libzip \
     icu \
-    python \
     libpq"
 
 COPY rootfs /
