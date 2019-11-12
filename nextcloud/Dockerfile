@@ -198,7 +198,7 @@ RUN apk -U upgrade \
   && mkdir -p /php/conf.d \
   && mkdir -p /usr/src \
   && tar xzf /tmp/nginx-${NGINX_VER}.tar.gz -C /usr/src \
-  && tar xzvf /tmp/php-${PHP_VER}.tar.gz -C /usr/src \
+  && tar xzf /tmp/php-${PHP_VER}.tar.gz -C /usr/src \
   && tar xzf /tmp/libiconv-${LIBICONV_VERSION}.tar.gz -C /usr/src \
 
  ### NGINX installation
