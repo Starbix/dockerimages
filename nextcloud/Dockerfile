@@ -1,6 +1,6 @@
 FROM alpine:3.10
 
-ARG NEXTCLOUD_VERSION=17.0.0
+ARG NEXTCLOUD_VERSION=17.0.1
 ARG GPG_nextcloud="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
 
 ARG BUILD_CORES
@@ -198,7 +198,7 @@ RUN apk -U upgrade \
   && mkdir -p /php/conf.d \
   && mkdir -p /usr/src \
   && tar xzf /tmp/nginx-${NGINX_VER}.tar.gz -C /usr/src \
-  && tar xzvf /tmp/php-${PHP_VER}.tar.gz -C /usr/src \
+  && tar xzf /tmp/php-${PHP_VER}.tar.gz -C /usr/src \
   && tar xzf /tmp/libiconv-${LIBICONV_VERSION}.tar.gz -C /usr/src \
 
  ### NGINX installation
