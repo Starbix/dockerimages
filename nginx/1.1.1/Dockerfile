@@ -1,10 +1,10 @@
-FROM alpine:3.10
+FROM alpine:3.11
 
 ARG BUILD_CORES
 ENV UID=991 GID=991
 
 ARG NGINX_VER=1.17.6
-ARG PHP_VER=7.3.12
+ARG PHP_VER=7.4.1
 ARG LIBICONV_VERSION=1.16
 ARG OPENSSL_VERSION=1.1.1d
 ARG GPG_NGINX="B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8"
@@ -59,12 +59,11 @@ ARG PHP_CONF=" \
     --with-libedit \
     --with-openssl \
     --with-iconv=/usr/local \
-    --with-gd \
-    --with-jpeg-dir \
-    --with-png-dir \
-    --with-webp-dir \
-    --with-xpm-dir=no \
-    --with-freetype-dir \
+    --enable-gd \
+    --with-jpeg \
+    --with-webp \
+    --with-freetype \
+    --with-sqlite3 \
     --disable-gd-jis-conv \
     --with-zlib"
 
@@ -103,12 +102,12 @@ ARG CUSTOM_BUILD_PKGS=" \
     openldap-dev \
     gmp-dev \
     icu-dev \
+    oniguruma-dev \
     postgresql-dev \
     libpng-dev \
     libwebp-dev \
     gd-dev \
     libjpeg-turbo-dev \
-    libxpm-dev \
     libedit-dev \
     libmaxminddb-dev \
     libxml2-dev \
@@ -121,10 +120,12 @@ ARG CUSTOM_PKGS=" \
     freetype \
     openldap \
     gmp \
+    oniguruma \
     git \
     libbz2 \
     libzip \
     icu \
+    sqlite-libs \
     libpq"
 
 COPY rootfs /
