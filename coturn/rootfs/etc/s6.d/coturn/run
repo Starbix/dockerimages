@@ -1,2 +1,0 @@
-#!/bin/sh
-exec turnserver -L ${HOST} -c /config/turnserver.conf
