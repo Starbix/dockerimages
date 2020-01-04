@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine:3.11
 ARG BUILD_CORES
 
 ARG GCC_VERSION=9.2.0
