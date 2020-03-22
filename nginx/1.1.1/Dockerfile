@@ -4,7 +4,7 @@ ARG BUILD_CORES
 ENV UID=991 GID=991
 
 ARG NGINX_VER=1.17.9
-ARG PHP_VER=7.4.3
+ARG PHP_VER=7.4.4
 ARG LIBICONV_VERSION=1.16
 ARG OPENSSL_VERSION=1.1.1e
 ARG GPG_NGINX="B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8"
@@ -196,9 +196,9 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 && git clone https://github.com/openresty/headers-more-nginx-module --depth=1 \
 && git clone https://github.com/leev/ngx_http_geoip2_module \
 
-&& cd /usr/src/openssl-${OPENSSL_VERSION} \
-&& wget https://raw.githubusercontent.com/hakasenyang/openssl-patch/master/openssl-equal-1.1.1d_ciphers.patch \
-&& patch -p1 < openssl-equal-1.1.1d_ciphers.patch \
+# && cd /usr/src/openssl-${OPENSSL_VERSION} \
+# && wget https://raw.githubusercontent.com/hakasenyang/openssl-patch/master/openssl-equal-1.1.1d_ciphers.patch \
+# && patch -p1 < openssl-equal-1.1.1d_ciphers.patch \
 
 ### NGINX installation
  && cd /usr/src/nginx-${NGINX_VER} \
