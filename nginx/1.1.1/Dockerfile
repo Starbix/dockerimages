@@ -19,6 +19,7 @@ ARG PHP_MIRROR=https://secure.php.net
 ARG GNU_MIRROR=https://mirror.init7.net
 
 ARG NGINX_CONF=" \
+    --with-http_auth_request_module \
     --with-http_ssl_module \
     --with-http_v2_module \
     --with-http_gzip_static_module \
