@@ -1,6 +1,6 @@
 FROM alpine:3.12
 
-ARG NEXTCLOUD_VERSION=18.0.4
+ARG NEXTCLOUD_VERSION=19.0.0
 ARG GPG_nextcloud="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
 
 ARG BUILD_CORES
@@ -50,7 +50,7 @@ ARG PHP_CONF=" \
     --with-pic \
     --disable-short-tags \
     --without-readline \
-    --enable-bcmath=shared \
+    --enable-bcmath \
     --enable-fpm \
     --disable-cgi \
     --enable-mysqlnd \
@@ -70,6 +70,7 @@ ARG PHP_CONF=" \
     --with-zlib"
 
 ARG PHP_EXT_LIST=" \
+    bcmath \
     mysqli \
     ctype \
     dom \
