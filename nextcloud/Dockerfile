@@ -1,6 +1,6 @@
 FROM alpine:3.12
 
-ARG NEXTCLOUD_VERSION=19.0.4
+ARG NEXTCLOUD_VERSION=20.0.1
 ARG GPG_nextcloud="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
 
 ARG BUILD_CORES
@@ -11,7 +11,7 @@ ARG LIBICONV_VERSION=1.16
 
 LABEL description="A server software for creating file hosting services" \
       nextcloud="Nextcloud v${NEXTCLOUD_VERSION}" \
-      maintainer="Starbix <starbix@laubacher.io>" \
+      maintainer="Starbix <admin@laubacher.io>" \
       php_version="PHP v$PHP_VER built from source" \
       nginx_version="NGINX v$NGINX_VER built from source"
 
