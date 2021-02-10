@@ -12,14 +12,18 @@ RUN set -ex; \
         procps \
         supervisor \
         nginx \
+        su-exec \
     ;
 
 COPY supervisord.conf /
 COPY nginx.conf /etc/nginx/
+COPY occ /usr/local/bin
 
 RUN mkdir -p \
     /var/log/supervisord \
     /var/run/supervisord \
 ;
+
+RUN echo "pm.max_children = 16" >> /usr/local/etc/php-fpm.d/www.conf
 
 CMD ["/usr/bin/supervisord", "-c", "/supervisord.conf"]
