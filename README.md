@@ -26,10 +26,10 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/nextcloud.svg)](https://github.com/Starbix/dockerimages/tree/master/nextcloud) [![](https://images.microbadger.com/badges/image/starbix/nextcloud.svg)](https://microbadger.com/images/starbix/nextcloud)
 > The Nextcloud image based on [wonderfall/nextcloud](https://github.com/Wonderfall/dockerfiles/tree/master/nextcloud) can be found under `starbix/nextcloud:old`
 
-- Based on the ![official docker image](https://github.com/nextcloud/docker)
+- Based on the [official docker image](https://github.com/nextcloud/docker)
 - Added nginx as built-in proxy
 - Including ffmpeg and imagick for previews
-- Automatic installation using ![environment variables](https://github.com/nextcloud/docker#auto-configuration-via-environment-variables)
+- Automatic installation using [environment variables](https://github.com/nextcloud/docker#auto-configuration-via-environment-variables)
 
 ### [automarkwatched](https://github.com/Starbix/dockerimages/tree/master/automarkwatched)
 [![Docker Pulls](https://img.shields.io/docker/pulls/starbix/automarkwatched.svg)](https://github.com/Starbix/dockerimages/tree/master/automarkwatched) [![](https://images.microbadger.com/badges/image/starbix/automarkwatched.svg)](https://microbadger.com/images/starbix/automarkwatched)
