@@ -16,7 +16,8 @@ RUN set -ex; \
     ;
 
 COPY supervisord.conf /
-COPY nginx.conf /etc/nginx/
+COPY entrypoint_ext.sh /
+COPY nginx*.conf /etc/nginx/
 COPY occ /usr/local/bin
 
 RUN mkdir -p \
@@ -25,5 +26,8 @@ RUN mkdir -p \
 ;
 
 RUN echo "pm.max_children = 16" >> /usr/local/etc/php-fpm.d/www.conf
+
+RUN sed -i '/exec "$@"/d' /entrypoint.sh \
+   && echo "$(cat /entrypoint_ext.sh)" >> /entrypoint.sh
 
 CMD ["/usr/bin/supervisord", "-c", "/supervisord.conf"]
