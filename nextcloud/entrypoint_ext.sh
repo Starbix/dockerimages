@@ -14,8 +14,6 @@ if [ "${ENABLE_PUSH:-0}" -eq 1 ] && [ $installed -eq 0 ]; then
             echo "Installing and enabling notify_push"
             run_as 'php /var/www/html/occ app:install notify_push'
             run_as 'php /var/www/html/occ app:enable notify_push'
-            # bug with v0.1.2
-            chmod +x /var/www/html/custom_apps/notify_push/bin/*/notify_push
         fi
 
         rm /tmp/list_installed
