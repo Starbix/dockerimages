@@ -4,6 +4,9 @@ FROM nextcloud:${VERSION}fpm-alpine
 ENV NEXTCLOUD_UPDATE=1
 ENV TRUSTED_PROXIES="127.0.0.1 ::1"
 
+ENV PHP_UPLOAD_LIMIT=8G
+ENV PHP_MEMORY_LIMIT=1G
+
 RUN set -ex; \
     \
     apk add --no-cache \
