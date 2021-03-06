@@ -9,6 +9,7 @@
 - Based on Alpine Linux.
 - Automatic installation using environment variables.
 - system cron task running.
+- built-in web server.
 - optional [notify_push](https://github.com/nextcloud/notify_push) app
 
 ### Tags
