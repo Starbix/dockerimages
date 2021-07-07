@@ -1,4 +1,4 @@
-ARG VERSION="stable-"
+ARG VERSION=""
 FROM nextcloud:${VERSION}fpm-alpine
 
 ENV NEXTCLOUD_UPDATE=1
