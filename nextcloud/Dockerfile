@@ -1,5 +1,5 @@
 ARG VERSION=""
-FROM nextcloud:${VERSION}fpm-alpine
+FROM docker.io/nextcloud:${VERSION}fpm-alpine
 
 ENV NEXTCLOUD_UPDATE=1
 ENV TRUSTED_PROXIES="127.0.0.1 ::1"
@@ -22,6 +22,7 @@ COPY supervisord.conf /
 COPY entrypoint_ext.sh /
 COPY nginx*.conf /etc/nginx/
 COPY occ /usr/local/bin
+COPY preview.config.php /usr/src/nextcloud/config/
 
 RUN mkdir -p \
     /var/log/supervisord \

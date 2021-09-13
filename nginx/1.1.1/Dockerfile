@@ -186,7 +186,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && mkdir -p /usr/src \
  && tar xzf ${OPENSSL_TARBALL} -C /usr/src \
  && tar xzf /tmp/nginx-${NGINX_VER}.tar.gz -C /usr/src \
- && tar xzvf /tmp/php-${PHP_VER}.tar.gz -C /usr/src \
+ && tar xzf /tmp/php-${PHP_VER}.tar.gz -C /usr/src \
  && tar xzf /tmp/libiconv-${LIBICONV_VERSION}.tar.gz -C /usr/src \
 
 ### modules
