@@ -1,12 +1,12 @@
-FROM alpine:3.14
+FROM alpine:3.17
 
 ARG BUILD_CORES
 ENV UID=991 GID=991
 
-ARG NGINX_VER=1.21.3
-ARG PHP_VER=7.4.23
-ARG LIBICONV_VERSION=1.16
-ARG OPENSSL_VERSION=3.0.0
+ARG NGINX_VER=1.23.3
+ARG PHP_VER=7.4.30
+ARG LIBICONV_VERSION=1.17
+ARG OPENSSL_VERSION=3.0.8
 ARG GPG_NGINX="B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8"
 
 LABEL description="NGINX + PHP image based on Alpine" \
@@ -39,83 +39,25 @@ ARG NGINX_3RD_PARTY_MODULES=" \
     --add-module=/tmp/ngx_brotli \
     --add-module=/tmp/ngx_http_geoip2_module"
 
-ARG PHP_CONF=" \
-    --prefix=/usr \
-    --libdir=/usr/lib/php \
-    --datadir=/usr/share/php \
-    --sysconfdir=/php/etc \
-    --localstatedir=/php/var \
-    --with-pear=/usr/share/php \
-    --with-config-file-scan-dir=/php/conf.d \
-    --with-config-file-path=/php \
-    --enable-option-checking=fatal \
-    --with-pic \
-    --disable-short-tags \
-    --without-readline \
-    --enable-bcmath=shared \
-    --enable-fpm \
-    --enable-mysqlnd \
-    --enable-mbstring \
-    --with-curl \
-    --with-libedit \
-    --with-openssl \
-    --with-iconv=/usr/local \
-    --enable-gd \
-    --with-jpeg \
-    --with-webp \
-    --with-freetype \
-    --with-sqlite3 \
-    --disable-gd-jis-conv \
-    --with-zlib"
-
-ARG PHP_EXT_LIST=" \
-    mysqli \
-    ctype \
-    dom \
-    json \
-    xml \
-    mbstring \
-    posix \
-    xmlwriter \
-    zip \
-    zlib \
-    sqlite3 \
-    pdo_sqlite \
-    pdo \
-    pdo_mysql \
-    pcntl \
-    curl \
-    fileinfo \
-    bz2 \
-    intl \
-    openssl \
-    ldap \
-    simplexml \
-    pgsql \
-    ftp \
-    exif \
-    session \
-    tokenizer \
-    gmp"
-
-ARG CUSTOM_BUILD_PKGS=" \
-    freetype-dev \
-    openldap-dev \
-    gmp-dev \
-    icu-dev \
-    oniguruma-dev \
-    postgresql-dev \
-    libpng-dev \
-    libwebp-dev \
-    gd-dev \
-    libjpeg-turbo-dev \
-    libedit-dev \
-    libmaxminddb-dev \
-    libxml2-dev \
-    openssl-dev \
-    bzip2-dev \
-    libzip-dev \
-    sqlite-dev"
+ARG CUSTOM_BUILD_PKGS="\
+    libmaxminddb-dev"
+    # freetype-dev \
+    # openldap-dev \
+    # gmp-dev \
+    # icu-dev \
+    # oniguruma-dev \
+    # postgresql-dev \
+    # libpng-dev \
+    # libwebp-dev \
+    # gd-dev \
+    # libjpeg-turbo-dev \
+    # libedit-dev \
+    # libmaxminddb-dev \
+    # libxml2-dev \
+    # openssl-dev \
+    # bzip2-dev \
+    # libzip-dev \
+    # sqlite-dev"
 
 ARG CUSTOM_PKGS=" \
     freetype \
@@ -124,6 +66,7 @@ ARG CUSTOM_PKGS=" \
     oniguruma \
     git \
     libbz2 \
+    
     libzip \
     icu \
     sqlite-libs \
@@ -136,6 +79,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && BUILD_DEPS=" \
     linux-headers \
     libtool \
+    bash \
     build-base \
     binutils-gold \
     bison \
@@ -171,14 +115,14 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     gd \
     pcre \
     zlib \
-    ${CUSTOM_PKGS} \
+    # ${CUSTOM_PKGS} \
 ### Source downloading
  # && export CC="/gcc/bin/gcc" \
  && cd /tmp \
  && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz -O /tmp/nginx-${NGINX_VER}.tar.gz \
  && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz.asc -O /tmp/nginx-${NGINX_VER}.tar.gz.asc \
- && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz \
- && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz.asc/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz.asc \
+#  && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz \
+#  && wget ${PHP_MIRROR}/get/php-${PHP_VER}.tar.gz.asc/from/this/mirror -O /tmp/php-${PHP_VER}.tar.gz.asc \
  && wget ${GNU_MIRROR}/gnu/libiconv/libiconv-${LIBICONV_VERSION}.tar.gz -O /tmp/libiconv-${LIBICONV_VERSION}.tar.gz \
  && OPENSSL_TARBALL="openssl-${OPENSSL_VERSION}.tar.gz" \
  && wget https://www.openssl.org/source/${OPENSSL_TARBALL} \
@@ -186,8 +130,8 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && mkdir -p /usr/src \
  && tar xzf ${OPENSSL_TARBALL} -C /usr/src \
  && tar xzf /tmp/nginx-${NGINX_VER}.tar.gz -C /usr/src \
- && tar xzf /tmp/php-${PHP_VER}.tar.gz -C /usr/src \
- && tar xzf /tmp/libiconv-${LIBICONV_VERSION}.tar.gz -C /usr/src \
+#  && tar xzf /tmp/php-${PHP_VER}.tar.gz -C /usr/src \
+#  && tar xzf /tmp/libiconv-${LIBICONV_VERSION}.tar.gz -C /usr/src \
 
 ### modules
 && cd /tmp && git clone --recurse-submodules https://github.com/google/ngx_brotli --depth=1 \
@@ -220,21 +164,21 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && make install && make clean \
  && strip -s /usr/local/sbin/nginx \
 ### GNU Libiconv installation
- && cd /usr/src/libiconv-${LIBICONV_VERSION} \
- && ./configure --prefix=/usr/local \
- && make -j ${NB_CORES} && make install && libtool --finish /usr/local/lib \
+#  && cd /usr/src/libiconv-${LIBICONV_VERSION} \
+#  && ./configure --prefix=/usr/local \
+#  && make -j ${NB_CORES} && make install && libtool --finish /usr/local/lib \
 
 ### PHP installation
- && mv /usr/src/php-${PHP_VER} /usr/src/php \
- && cd /usr/src/php \
- && ./configure \
-    CFLAGS="-O3 -fstack-protector-strong -fpie -fuse-ld=gold" \
-    LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie" \
-    ${PHP_CONF} \
- && make -j ${NB_CORES} \
- && make install \
- && { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
- && make clean \
+#  && mv /usr/src/php-${PHP_VER} /usr/src/php \
+#  && cd /usr/src/php \
+#  && ./configure \
+#     CFLAGS="-O3 -fstack-protector-strong -fpie -fuse-ld=gold" \
+#     LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie" \
+#     ${PHP_CONF} \
+#  && make -j ${NB_CORES} \
+#  && make install \
+#  && { find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; } \
+#  && make clean \
 
 ### NGINX amplify
  # && cd /tmp \
@@ -245,7 +189,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  # && rm -rf abstract.py && wget https://raw.githubusercontent.com/Starbix/nginx-amplify-agent/master/amplify/agent/managers/abstract.py \
  && chmod u+x /usr/local/bin/* /etc/s6.d/*/* \
  && sync \
- && docker-php-ext-install ${PHP_EXT_LIST} \
+#  && docker-php-ext-install ${PHP_EXT_LIST} \
  && apk del ${BUILD_DEPS} \
  && rm -rf /tmp/* /var/cache/apk/* /usr/src/* /gcc* \
  && mkdir -p /nginx/logs /nginx/client_body_temp /nginx/fastcgi_temp /nginx/proxy_temp /nginx/scgi_temp /nginx/uwsgi_temp /nginx/run /php/php-fpm.d /php/logs /php/run /php/session \

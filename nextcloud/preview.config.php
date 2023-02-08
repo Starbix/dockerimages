@@ -7,6 +7,7 @@ $CONFIG = array (
         'OC\Preview\BMP',
         'OC\Preview\XBitmap',
         'OC\Preview\HEIC',
+        'OC\Preview\TIFF',
         'OC\Preview\MP3',
         'OC\Preview\TXT',
         'OC\Preview\MarkDown',

@@ -1,2 +1,2 @@
 #!/bin/sh
-exec php-fpm
+#exec php-fpm
