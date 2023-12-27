@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Updating permissions..."
-for dir in /var/log /php /nginx /nginx/* /tmp /etc/s6.d; do
+for dir in /var/log /nginx /nginx/* /tmp /etc/s6.d; do
   if $(find $dir ! -user $UID -o ! -group $GID|egrep '.' -q); then
     echo "Updating permissions in $dir..."
     chown -R $UID:$GID $dir

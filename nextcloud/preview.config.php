@@ -1,5 +1,6 @@
 <?php
 $CONFIG = array (
+    'preview_concurrency_new' => 4,
     'enabledPreviewProviders' => [
         'OC\Preview\PNG',
         'OC\Preview\JPEG',
@@ -7,6 +8,7 @@ $CONFIG = array (
         'OC\Preview\BMP',
         'OC\Preview\XBitmap',
         'OC\Preview\HEIC',
+        'OC\Preview\AVIF',
         'OC\Preview\TIFF',
         'OC\Preview\MP3',
         'OC\Preview\TXT',
