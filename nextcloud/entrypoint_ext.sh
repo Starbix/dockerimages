@@ -32,4 +32,6 @@ else
     sed -i '/^autostart=/c\autostart=false' /supervisord.conf
 fi
 
+chown -R www-data:www-data /tmp
+
 exec "$@"

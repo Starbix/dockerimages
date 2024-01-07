@@ -70,7 +70,6 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     make \
     pkgconf \
     curl-dev \
-    ca-certificates \
     cmake \
     automake \
     file \
@@ -86,6 +85,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
     libedit \
     libxml2 \
     openssl \
+    ca-certificates \
     libmaxminddb \
     libwebp \
     gd \
@@ -103,7 +103,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
 && cd /tmp && git clone --recurse-submodules https://github.com/google/ngx_brotli --depth=1 \
 && cd ngx_brotli/deps/brotli \
 && mkdir out && cd out \
-&& cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_FLAGS="-Ofast -m64 -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_CXX_FLAGS="-Ofast -m64 -march=native -mtune=native -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_INSTALL_PREFIX=./installed .. \
+&& cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_FLAGS="-Ofast -m64 -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_CXX_FLAGS="-Ofast -m64 -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_INSTALL_PREFIX=./installed .. \
 && cmake --build . --config Release --target brotlienc \
 && cd /tmp \
 && git clone https://github.com/openresty/headers-more-nginx-module --depth=1 \
@@ -113,9 +113,10 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && ./configure \
  --prefix=/nginx \
  --sbin-path=/usr/local/sbin/nginx \
+ --http-proxy-temp-path=/proxy_temp \
  --with-cc-opt="-m64 -DTCP_FASTOPEN=23 -fuse-ld=gold --param=ssp-buffer-size=4 -gsplit-dwarf -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" \
  --with-ld-opt="-m64 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections" \
- --with-openssl-opt='no-shared no-ssl3 no-comp no-idea no-weak-ssl-ciphers enable-ec_nistp_64_gcc_128 -DOPENSSL_NO_HEARTBEATS -O3 -fPIC -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
+ --with-openssl-opt='no-shared no-ssl3 no-tls1 no-tls1_1 no-comp no-idea no-weak-ssl-ciphers enable-ec_nistp_64_gcc_128 -DOPENSSL_NO_HEARTBEATS -O3 -fPIC -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
  --with-openssl=/usr/src/openssl-${OPENSSL_VERSION} \
  --http-log-path=/nginx/logs/nginx_access.log \
  --error-log-path=/nginx/logs/nginx_error.log \
@@ -131,7 +132,7 @@ RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
  && apk del ${BUILD_DEPS} \
  && apk cache clean \
  && rm -rf /tmp/* /usr/src/* \
- && mkdir -p /nginx/logs /nginx/client_body_temp /nginx/fastcgi_temp /nginx/proxy_temp /nginx/scgi_temp /nginx/uwsgi_temp /nginx/run \
+ && mkdir -p /nginx/logs /nginx/client_body_temp /nginx/fastcgi_temp /nginx/scgi_temp /nginx/uwsgi_temp /nginx/run /proxy_temp \
  && chown -R ${UID}:${GID} /nginx/*
 
 HEALTHCHECK --interval=2m --timeout=5s \
