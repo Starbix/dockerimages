@@ -1,143 +1,139 @@
-FROM alpine:3.22
+# syntax=docker/dockerfile:1
 
+FROM alpine:3.23 AS builder
+
+# Build arguments
 ARG BUILD_CORES
-ENV UID=991 GID=991
+ARG NGINX_VER=1.29.4
+ARG OPENSSL_VERSION=3.6.1
 
-ARG NGINX_VER=1.28.0
-ARG OPENSSL_VERSION=3.5.0
-ARG GPG_NGINX="B0F4 2533 73F8 F6F5 10D4  2178 520A 9993 A1C0 52F8"
+# Build dependencies
+RUN apk add --no-cache --virtual .build-deps \
+    linux-headers \
+    build-base \
+    pcre-dev \
+    zlib-dev \
+    openssl-dev \
+    wget \
+    cmake \
+    git \
+    curl-dev \
+    libmaxminddb-dev \
+    patch \
+    perl
 
-LABEL description="Opinionated NGINX image based on Alpine" \
-    maintainer="Starbix" \
-    io.laubacher.version.nginx="NGINX v$NGINX_VER built from source" \
-    io.laubacher.version.openssl="OpenSSL v$OPENSSL_VERSION from source"
+WORKDIR /tmp
+RUN wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz \
+    && tar xzf nginx-${NGINX_VER}.tar.gz
 
-ARG NGINX_CONF=" \
-    --with-http_auth_request_module \
+RUN wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
+    && tar xzf openssl-${OPENSSL_VERSION}.tar.gz
+
+RUN git clone --depth=1 \
+        https://github.com/openresty/headers-more-nginx-module.git \
+    && git clone --depth=1 --recurse-submodules \
+        https://github.com/google/ngx_brotli.git \
+    && git clone --depth=1 \
+        https://github.com/leev/ngx_http_geoip2_module.git
+
+WORKDIR /tmp/ngx_brotli/deps/brotli
+RUN mkdir out && cd out \
+    && cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=OFF \
+        -DCMAKE_C_FLAGS="-O3 -flto -march=x86-64-v2 -mtune=ivybridge" \
+        -DCMAKE_CXX_FLAGS="-O3 -flto -march=x86-64-v2 -mtune=ivybridge" \
+        .. \
+    && cmake --build . --config Release --target brotlienc
+
+# Configure and compile NGINX
+WORKDIR /tmp/nginx-${NGINX_VER}
+RUN ./configure \
+    --prefix=/nginx \
+    --sbin-path=/usr/local/sbin/nginx \
+    --conf-path=/nginx/conf/nginx.conf \
+    --error-log-path=/nginx/logs/error.log \
+    --http-log-path=/nginx/logs/access.log \
+    --pid-path=/nginx/run/nginx.pid \
+    --lock-path=/nginx/run/nginx.lock \
+    --http-client-body-temp-path=/nginx/temp/client_temp \
+    --http-proxy-temp-path=/nginx/temp/proxy_temp \
+    --http-fastcgi-temp-path=/nginx/temp/fastcgi_temp \
+    --http-uwsgi-temp-path=/nginx/temp/uwsgi_temp \
+    --http-scgi-temp-path=/nginx/temp/scgi_temp \
+    --user=nginx \
+    --group=nginx \
+    --with-pcre-jit \
+    --with-openssl=/tmp/openssl-${OPENSSL_VERSION} \
+    --with-openssl-opt='no-tests no-shared no-ssl3 no-tls1-method no-tls1_1-method no-comp no-idea no-weak-ssl-ciphers no-legacy no-md2 no-md4 no-mdc2 no-rc2 no-rc4 no-rc5 no-des no-dsa -DOPENSSL_NO_HEARTBEATS -O3 -flto -march=x86-64-v2 -mtune=ivybridge' \
+    --with-threads \
+    --with-file-aio \
     --with-http_ssl_module \
     --with-http_v2_module \
     --with-http_v3_module \
     --with-http_gzip_static_module \
-    --with-http_stub_status_module \
+    --with-http_auth_request_module \
     --with-http_sub_module \
-    --with-threads \
-    --with-file-aio \
-    --with-pcre-jit \
+    --with-http_stub_status_module \
     --without-http_geo_module \
     --without-http_split_clients_module \
     --without-http_memcached_module \
     --without-http_empty_gif_module \
-    --without-http_browser_module"
-
-ARG NGINX_3RD_PARTY_MODULES=" \
+    --without-http_browser_module \
     --add-module=/tmp/headers-more-nginx-module \
     --add-module=/tmp/ngx_brotli \
-    --add-module=/tmp/ngx_http_geoip2_module"
+    --add-module=/tmp/ngx_http_geoip2_module \
+    --with-cc-opt='-O3 -flto -march=x86-64-v2 -mtune=ivybridge -fstack-protector-strong -fPIC -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -ffunction-sections -fdata-sections' \
+    --with-ld-opt='-Wl,-s -Wl,--gc-sections -Wl,-z,relro -Wl,-z,now'
 
-ARG CUSTOM_BUILD_PKGS="\
-    libmaxminddb-dev"
+# Compile NGINX
+RUN NB_CORES=${BUILD_CORES:-$(getconf _NPROCESSORS_CONF)} \
+    && make -j${NB_CORES} \
+    && make install
 
-ARG CUSTOM_PKGS=" \
-    freetype \
-    openldap \
-    gmp \
-    oniguruma \
-    git \
-    libbz2 \
-    libzip \
-    icu \
-    sqlite-libs \
-    libpq"
+# Production stage
+FROM alpine:3.22
 
-COPY rootfs /
-
-RUN NB_CORES=${BUILD_CORES-$(getconf _NPROCESSORS_CONF)} \
-    && apk -U upgrade \
-    && BUILD_DEPS=" \
-    linux-headers \
-    libtool \
-    bash \
-    build-base \
-    bison \
-    pcre-dev \
-    zlib-dev \
-    wget \
-    gnupg \
-    autoconf \
-    gcc \
-    g++ \
-    libc-dev \
-    make \
-    pkgconf \
-    curl-dev \
-    cmake \
-    automake \
-    file \
-    patch \
-    re2c \
-    git \
-    ${CUSTOM_BUILD_PKGS}" \
-    && apk -U add \
-    ${BUILD_DEPS} \
-    s6 \
-    su-exec \
-    curl \
-    libedit \
-    libxml2 \
-    openssl \
+# Runtime dependencies
+RUN apk add --no-cache \
     ca-certificates \
     libmaxminddb \
-    libwebp \
-    gd \
     pcre \
     zlib \
-    && cd /tmp \
-    && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz -O /tmp/nginx-${NGINX_VER}.tar.gz \
-    && wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz.asc -O /tmp/nginx-${NGINX_VER}.tar.gz.asc \
-    && OPENSSL_TARBALL="openssl-${OPENSSL_VERSION}.tar.gz" \
-    && wget https://www.openssl.org/source/${OPENSSL_TARBALL} \
-    && mkdir -p /usr/src \
-    && tar xzf ${OPENSSL_TARBALL} -C /usr/src \
-    && tar xzf /tmp/nginx-${NGINX_VER}.tar.gz -C /usr/src \
-    ### modules
-    && cd /tmp && git clone --recurse-submodules https://github.com/google/ngx_brotli --depth=1 \
-    && cd ngx_brotli/deps/brotli \
-    && mkdir out && cd out \
-    && cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_C_FLAGS="-Ofast -m64 -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_CXX_FLAGS="-Ofast -m64 -flto -funroll-loops -ffunction-sections -fdata-sections -Wl,--gc-sections" -DCMAKE_INSTALL_PREFIX=./installed .. \
-    && cmake --build . --config Release --target brotlienc \
-    && cd /tmp \
-    && git clone https://github.com/openresty/headers-more-nginx-module --depth=1 \
-    && git clone https://github.com/leev/ngx_http_geoip2_module \
-    ### NGINX installation
-    && cd /usr/src/nginx-${NGINX_VER} \
-    && ./configure \
-    --prefix=/nginx \
-    --sbin-path=/usr/local/sbin/nginx \
-    --http-proxy-temp-path=/proxy_temp \
-    --with-cc-opt="-m64 -DTCP_FASTOPEN=23 --param=ssp-buffer-size=4 -gsplit-dwarf -O3 -fPIE -fstack-protector-strong -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -Wno-deprecated-declarations" \
-    --with-ld-opt="-m64 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections" \
-    --with-openssl-opt='no-shared no-ssl3 no-tls1 no-tls1_1 no-comp no-idea no-weak-ssl-ciphers enable-ec_nistp_64_gcc_128 -DOPENSSL_NO_HEARTBEATS -O3 -fPIC -fstack-protector-strong -D_FORTIFY_SOURCE=2' \
-    --with-openssl=/usr/src/openssl-${OPENSSL_VERSION} \
-    --http-log-path=/nginx/logs/nginx_access.log \
-    --error-log-path=/nginx/logs/nginx_error.log \
-    --pid-path=/nginx/run/nginx.pid \
-    --lock-path=/nginx/run/nginx.lock \
-    ${NGINX_CONF} \
-    ${NGINX_3RD_PARTY_MODULES} \
-    && make -j ${NB_CORES} \
-    && make install && make clean \
-    && strip -s /usr/local/sbin/nginx \
-    && chmod u+x /usr/local/bin/* /etc/s6.d/*/* \
-    && sync \
-    && apk del ${BUILD_DEPS} \
-    && apk cache clean \
-    && rm -rf /tmp/* /usr/src/* \
-    && mkdir -p /nginx/logs /nginx/client_body_temp /nginx/fastcgi_temp /nginx/scgi_temp /nginx/uwsgi_temp /nginx/run /proxy_temp \
-    && chown -R ${UID}:${GID} /nginx/*
+    tzdata \
+    curl \
+    s6 \
+    su-exec \
+    && addgroup -g 991 -S nginx \
+    && adduser -S -D -H -u 991 -h /nginx -s /sbin/nologin -G nginx -g nginx nginx
 
-HEALTHCHECK --interval=2m --timeout=5s \
+# Copy NGINX binary and configuration from builder
+COPY --from=builder /usr/local/sbin/nginx /usr/local/sbin/nginx
+COPY --from=builder /nginx /nginx
+
+# Copy configuration files
+COPY rootfs /
+
+# Create necessary directories and set permissions
+RUN mkdir -p \
+    /nginx/logs \
+    /nginx/temp/client_temp \
+    /nginx/temp/proxy_temp \
+    /nginx/temp/fastcgi_temp \
+    /nginx/temp/uwsgi_temp \
+    /nginx/temp/scgi_temp \
+    /nginx/run \
+    && chown -R nginx:nginx /nginx \
+    && chmod +x /usr/local/bin/* \
+    && find /etc/s6.d -name run -exec chmod +x {} \; \
+    && find /etc/s6.d -name finish -exec chmod +x {} \;
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/ || exit 1
 
+# Expose ports
 EXPOSE 8000 4430
 
+# Start command
 CMD ["run.sh"]

@@ -54,4 +54,4 @@ PRs accepted.
 
 ## License
 
-MIT © 2021 Cédric Laubacher
+MIT © 2026 Starbix

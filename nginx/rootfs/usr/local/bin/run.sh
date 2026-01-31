@@ -2,7 +2,7 @@
 
 echo "Updating permissions..."
 for dir in /var/log /nginx /tmp /etc/s6.d; do
-  if $(find $dir ! -user $UID -o ! -group $GID|egrep '.' -q); then
+  if $(find $dir ! -user $UID -o ! -group $GID 2>/dev/null|egrep '.' -q); then
     echo "Updating permissions in $dir..."
     chown -R $UID:$GID $dir
   else

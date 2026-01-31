@@ -31,8 +31,7 @@ RUN mkdir -p \
 
 ## PHP modifications
 RUN echo "pm.max_children = 16" >> /usr/local/etc/php-fpm.d/www.conf \
-    && sed -i '/^listen = 9000/c\listen = /var/run/php-fpm.sock' /usr/local/etc/php-fpm.d/zz-docker.conf \
-    && printf "listen.owner = nginx\nlisten.group = nginx\n" >> /usr/local/etc/php-fpm.d/zz-docker.conf
+    && printf 'listen = /var/run/php-fpm.sock\nlisten.owner = nginx\nlisten.group = nginx\n' >> /usr/local/etc/php-fpm.d/zz-docker.conf
 
 RUN sed -i '/exec "$@"/d' /entrypoint.sh \
    && echo "$(cat /entrypoint_ext.sh)" >> /entrypoint.sh
