@@ -4,8 +4,8 @@ FROM alpine:3.23 AS builder
 
 # Build arguments
 ARG BUILD_CORES
-ARG NGINX_VER=1.29.4
-ARG OPENSSL_VERSION=3.6.1
+ARG NGINX_VER=1.29.7
+ARG OPENSSL_VERSION=3.6.2
 
 # Build dependencies
 RUN apk add --no-cache --virtual .build-deps \
@@ -30,20 +30,20 @@ RUN wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
     && tar xzf openssl-${OPENSSL_VERSION}.tar.gz
 
 RUN git clone --depth=1 \
-        https://github.com/openresty/headers-more-nginx-module.git \
+    https://github.com/openresty/headers-more-nginx-module.git \
     && git clone --depth=1 --recurse-submodules \
-        https://github.com/google/ngx_brotli.git \
+    https://github.com/google/ngx_brotli.git \
     && git clone --depth=1 \
-        https://github.com/leev/ngx_http_geoip2_module.git
+    https://github.com/leev/ngx_http_geoip2_module.git
 
 WORKDIR /tmp/ngx_brotli/deps/brotli
 RUN mkdir out && cd out \
     && cmake \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DBUILD_SHARED_LIBS=OFF \
-        -DCMAKE_C_FLAGS="-O3 -flto -march=x86-64-v2 -mtune=ivybridge" \
-        -DCMAKE_CXX_FLAGS="-O3 -flto -march=x86-64-v2 -mtune=ivybridge" \
-        .. \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_C_FLAGS="-O3 -flto -march=x86-64-v2 -mtune=ivybridge" \
+    -DCMAKE_CXX_FLAGS="-O3 -flto -march=x86-64-v2 -mtune=ivybridge" \
+    .. \
     && cmake --build . --config Release --target brotlienc
 
 # Configure and compile NGINX

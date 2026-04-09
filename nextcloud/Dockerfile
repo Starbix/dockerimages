@@ -8,14 +8,13 @@ ENV PHP_UPLOAD_LIMIT=8G
 ENV PHP_MEMORY_LIMIT=2G
 
 RUN set -ex; \
-    \
     apk add --no-cache \
-        ffmpeg \
-        imagemagick \
-        procps \
-        supervisor \
-        nginx \
-        su-exec \
+    ffmpeg \
+    imagemagick \
+    procps \
+    supervisor \
+    nginx \
+    su-exec \
     ;
 
 COPY supervisord.conf /
@@ -27,15 +26,14 @@ COPY preview.config.php /usr/src/nextcloud/config/
 RUN mkdir -p \
     /var/log/supervisord \
     /var/run/supervisord \
-;
+    ;
 
 ## PHP modifications
 RUN echo "pm.max_children = 16" >> /usr/local/etc/php-fpm.d/www.conf \
     && printf 'listen = /var/run/php-fpm.sock\nlisten.owner = nginx\nlisten.group = nginx\n' >> /usr/local/etc/php-fpm.d/zz-docker.conf
 
 RUN sed -i '/exec "$@"/d' /entrypoint.sh \
-   && echo "$(cat /entrypoint_ext.sh)" >> /entrypoint.sh
-
+    && echo "$(cat /entrypoint_ext.sh)" >> /entrypoint.sh
 
 # edit mime types: replace application/javascript with text/javascript
 RUN sed -i 's|application/javascript|text/javascript|g' /etc/nginx/mime.types
