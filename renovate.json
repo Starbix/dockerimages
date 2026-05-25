@@ -1,0 +1,38 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits"
+  ],
+  "timezone": "Europe/Zurich",
+  "schedule": ["before 6am"],
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "description": "Group nginx + openssl bumps into one PR — they're built together",
+      "matchPackageNames": ["nginx/nginx", "openssl/openssl"],
+      "groupName": "nginx stack"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "ARG NGINX_VER in nginx/Dockerfile -> nginx/nginx git tags (release-X.Y.Z)",
+      "fileMatch": ["^nginx/Dockerfile$"],
+      "matchStrings": ["ARG NGINX_VER=(?<currentValue>\\S+)"],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "nginx/nginx",
+      "extractVersionTemplate": "^release-(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "ARG OPENSSL_VERSION in nginx/Dockerfile -> openssl/openssl releases (openssl-X.Y.Z)",
+      "fileMatch": ["^nginx/Dockerfile$"],
+      "matchStrings": ["ARG OPENSSL_VERSION=(?<currentValue>\\S+)"],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "openssl/openssl",
+      "extractVersionTemplate": "^openssl-(?<version>.+)$"
+    }
+  ]
+}
