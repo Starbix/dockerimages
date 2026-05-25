@@ -4,8 +4,8 @@ FROM alpine:3.23 AS builder
 
 # Build arguments
 ARG BUILD_CORES
-ARG NGINX_VER=1.29.7
-ARG OPENSSL_VERSION=3.6.2
+ARG NGINX_VER=1.31.0
+ARG OPENSSL_VERSION=4.0.0
 
 # Build dependencies
 RUN apk add --no-cache --virtual .build-deps \

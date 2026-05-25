@@ -17,6 +17,14 @@ RUN set -ex; \
     su-exec \
     ;
 
+# Remap www-data to match Unraid's nobody:users (99:100)
+RUN set -ex; \
+    sed -i 's/^\([^:]*\):x:100:/\1:x:1100:/' /etc/group; \
+    sed -i 's/^\([^:]*\):x:99:\([0-9]*\):/\1:x:1099:\2:/' /etc/passwd; \
+    sed -i 's/^www-data:x:[0-9]*:[0-9]*:/www-data:x:99:100:/' /etc/passwd; \
+    sed -i 's/^www-data:x:[0-9]*:/www-data:x:100:/' /etc/group; \
+    find / -xdev \( -user 82 -o -group 82 \) -exec chown -h 99:100 {} + 2>/dev/null || true;
+
 COPY supervisord.conf /
 COPY entrypoint_ext.sh /
 COPY nginx*.conf /etc/nginx/
