@@ -25,7 +25,7 @@ jobs:
             echo "openssl_version=$openssl_version"
           } >> "$GITHUB_OUTPUT"
 
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@v4
 
       - name: Login to Docker Hub
         if: github.event_name != 'pull_request'
