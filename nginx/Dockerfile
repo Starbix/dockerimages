@@ -92,7 +92,7 @@ RUN NB_CORES=${BUILD_CORES:-$(getconf _NPROCESSORS_CONF)} \
     && make install
 
 # Production stage
-FROM alpine:3.22
+FROM alpine:3.23
 
 # Runtime dependencies
 RUN apk add --no-cache \
