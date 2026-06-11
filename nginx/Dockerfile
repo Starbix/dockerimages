@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
 # Build arguments
 ARG BUILD_CORES
@@ -92,7 +92,7 @@ RUN NB_CORES=${BUILD_CORES:-$(getconf _NPROCESSORS_CONF)} \
     && make install
 
 # Production stage
-FROM alpine:3.23
+FROM alpine:3.24
 
 # Runtime dependencies
 RUN apk add --no-cache \
