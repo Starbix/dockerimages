@@ -1,11 +1,11 @@
 # syntax=docker/dockerfile:1
 
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
 # Build arguments
 ARG BUILD_CORES
 ARG NGINX_VER=1.31.1
-ARG OPENSSL_VERSION=4.0.0
+ARG OPENSSL_VERSION=4.0.1
 
 # Build dependencies
 RUN apk add --no-cache --virtual .build-deps \
@@ -92,7 +92,7 @@ RUN NB_CORES=${BUILD_CORES:-$(getconf _NPROCESSORS_CONF)} \
     && make install
 
 # Production stage
-FROM alpine:3.23
+FROM alpine:3.24
 
 # Runtime dependencies
 RUN apk add --no-cache \
