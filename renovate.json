@@ -20,7 +20,9 @@
     {
       "customType": "regex",
       "description": "ARG NGINX_VER in nginx/Dockerfile -> nginx/nginx git tags (release-X.Y.Z)",
-      "fileMatch": ["^nginx/Dockerfile$"],
+      "managerFilePatterns": [
+        "/^nginx/Dockerfile$/"
+      ],
       "matchStrings": ["ARG NGINX_VER=(?<currentValue>\\S+)"],
       "datasourceTemplate": "github-tags",
       "depNameTemplate": "nginx/nginx",
@@ -29,7 +31,9 @@
     {
       "customType": "regex",
       "description": "ARG OPENSSL_VERSION in nginx/Dockerfile -> openssl/openssl releases (openssl-X.Y.Z)",
-      "fileMatch": ["^nginx/Dockerfile$"],
+      "managerFilePatterns": [
+        "/^nginx/Dockerfile$/"
+      ],
       "matchStrings": ["ARG OPENSSL_VERSION=(?<currentValue>\\S+)"],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "openssl/openssl",
