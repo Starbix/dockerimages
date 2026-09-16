@@ -4,7 +4,7 @@ FROM alpine:3.24 AS builder
 
 # Build arguments
 ARG BUILD_CORES
-ARG NGINX_VER=1.31.5
+ARG NGINX_VER=1.31.6
 ARG OPENSSL_VERSION=4.0.2
 
 # Build dependencies
