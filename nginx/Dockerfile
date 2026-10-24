@@ -6,12 +6,15 @@ FROM alpine:3.24 AS builder
 ARG BUILD_CORES
 ARG NGINX_VER=1.31.8
 ARG OPENSSL_VERSION=4.1.0
+ARG MODSECURITY_VERSION=3.0.17
+ARG CRS_VERSION=4.30.0
 
 # Build dependencies
 RUN apk add --no-cache --virtual .build-deps \
     linux-headers \
     build-base \
     pcre-dev \
+    pcre2-dev \
     zlib-dev \
     openssl-dev \
     wget \
@@ -19,6 +22,12 @@ RUN apk add --no-cache --virtual .build-deps \
     git \
     curl-dev \
     libmaxminddb-dev \
+    libxml2-dev \
+    yajl-dev \
+    autoconf \
+    automake \
+    libtool \
+    pkgconfig \
     patch \
     perl
 
@@ -29,12 +38,22 @@ RUN wget https://nginx.org/download/nginx-${NGINX_VER}.tar.gz \
 RUN wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz \
     && tar xzf openssl-${OPENSSL_VERSION}.tar.gz
 
+RUN wget https://github.com/owasp-modsecurity/ModSecurity/releases/download/v${MODSECURITY_VERSION}/modsecurity-v${MODSECURITY_VERSION}.tar.gz \
+    && tar xzf modsecurity-v${MODSECURITY_VERSION}.tar.gz
+
+RUN wget https://github.com/coreruleset/coreruleset/archive/refs/tags/v${CRS_VERSION}.tar.gz \
+    -O crs.tar.gz \
+    && tar xzf crs.tar.gz \
+    && mv coreruleset-${CRS_VERSION} crs
+
 RUN git clone --depth=1 \
     https://github.com/openresty/headers-more-nginx-module.git \
     && git clone --depth=1 --recurse-submodules \
     https://github.com/google/ngx_brotli.git \
     && git clone --depth=1 \
-    https://github.com/leev/ngx_http_geoip2_module.git
+    https://github.com/leev/ngx_http_geoip2_module.git \
+    && git clone --depth=1 \
+    https://github.com/owasp-modsecurity/ModSecurity-nginx.git
 
 WORKDIR /tmp/ngx_brotli/deps/brotli
 RUN mkdir out && cd out \
@@ -46,9 +65,15 @@ RUN mkdir out && cd out \
     .. \
     && cmake --build . --config Release --target brotlienc
 
+# Configure and compile libmodsecurity
+WORKDIR /tmp/modsecurity-v${MODSECURITY_VERSION}
+RUN ./configure --prefix=/usr/local/modsecurity \
+    && make -j${NB_CORES:-$(getconf _NPROCESSORS_CONF)} \
+    && make install
+
 # Configure and compile NGINX
 WORKDIR /tmp/nginx-${NGINX_VER}
-RUN ./configure \
+RUN MODSECURITY_LIB=/usr/local/modsecurity/lib MODSECURITY_INC=/usr/local/modsecurity/include ./configure \
     --prefix=/nginx \
     --sbin-path=/usr/local/sbin/nginx \
     --conf-path=/nginx/conf/nginx.conf \
@@ -83,6 +108,7 @@ RUN ./configure \
     --add-module=/tmp/headers-more-nginx-module \
     --add-module=/tmp/ngx_brotli \
     --add-module=/tmp/ngx_http_geoip2_module \
+    --add-module=/tmp/ModSecurity-nginx \
     --with-cc-opt='-O3 -flto -march=x86-64-v2 -mtune=ivybridge -fstack-protector-strong -fPIC -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -ffunction-sections -fdata-sections' \
     --with-ld-opt='-Wl,-s -Wl,--gc-sections -Wl,-z,relro -Wl,-z,now'
 
@@ -94,12 +120,19 @@ RUN NB_CORES=${BUILD_CORES:-$(getconf _NPROCESSORS_CONF)} \
 # Production stage
 FROM alpine:3.24
 
+# Re-declare build args for use in this stage (defaults do not carry across stages)
+ARG MODSECURITY_VERSION=3.0.17
+
 # Runtime dependencies
 RUN apk add --no-cache \
     ca-certificates \
     libmaxminddb \
     pcre \
+    pcre2 \
     zlib \
+    libxml2 \
+    yajl \
+    libstdc++ \
     tzdata \
     curl \
     s6 \
@@ -110,6 +143,9 @@ RUN apk add --no-cache \
 # Copy NGINX binary and configuration from builder
 COPY --from=builder /usr/local/sbin/nginx /usr/local/sbin/nginx
 COPY --from=builder /nginx /nginx
+COPY --from=builder /usr/local/modsecurity /usr/local/modsecurity
+COPY --from=builder /tmp/crs /nginx/conf/modsecurity/crs
+COPY --from=builder /tmp/modsecurity-v${MODSECURITY_VERSION}/unicode.mapping /nginx/conf/modsecurity/unicode.mapping
 
 # Copy configuration files
 COPY rootfs /
@@ -124,6 +160,7 @@ RUN mkdir -p \
     /nginx/temp/scgi_temp \
     /nginx/run \
     && chown -R nginx:nginx /nginx \
+    && cp /nginx/conf/modsecurity/crs/crs-setup.conf.example /nginx/conf/modsecurity/crs-setup.conf \
     && chmod +x /usr/local/bin/* \
     && find /etc/s6.d -name run -exec chmod +x {} \; \
     && find /etc/s6.d -name finish -exec chmod +x {} \;
