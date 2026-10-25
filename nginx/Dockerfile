@@ -61,7 +61,11 @@ RUN git clone --depth=1 \
     && git clone --depth=1 \
     https://github.com/leev/ngx_http_geoip2_module.git \
     && git clone --depth=1 \
-    https://github.com/owasp-modsecurity/ModSecurity-nginx.git
+    https://github.com/owasp-modsecurity/ModSecurity-nginx.git \
+    && cd ModSecurity-nginx \
+    && wget -qO pr364.diff https://github.com/owasp-modsecurity/ModSecurity-nginx/pull/364.diff \
+    && git apply pr364.diff \
+    && cd ..
 
 WORKDIR /tmp/ngx_brotli/deps/brotli
 RUN mkdir out && cd out \
