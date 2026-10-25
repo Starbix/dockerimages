@@ -8,6 +8,14 @@ ARG NGINX_VER=1.31.8
 ARG OPENSSL_VERSION=4.1.0
 ARG MODSECURITY_VERSION=3.0.17
 ARG CRS_VERSION=4.30.0
+ARG LUAJIT2_VERSION=2.1-20250826
+ARG LUA_NGINX_MODULE_VERSION=0.10.31
+ARG LUA_RESTY_CORE_VERSION=0.1.34rc3
+ARG LUA_RESTY_LRUCACHE_VERSION=0.15
+ARG LUA_CJSON_VERSION=2.1.0.9
+ARG LUA_RESTY_HTTP_VERSION=0.18.0
+ARG LUA_RESTY_STRING_VERSION=0.19
+ARG LUA_CS_BOUNCER_VERSION=1.0.19
 
 # Build dependencies
 RUN apk add --no-cache --virtual .build-deps \
@@ -71,9 +79,49 @@ RUN ./configure --prefix=/usr/local/modsecurity \
     && make -j${NB_CORES:-$(getconf _NPROCESSORS_CONF)} \
     && make install
 
+# LuaJIT2 + Lua modules for the CrowdSec nginx bouncer
+WORKDIR /tmp
+RUN wget https://github.com/openresty/luajit2/archive/refs/tags/v${LUAJIT2_VERSION}.tar.gz \
+    && tar xzf v${LUAJIT2_VERSION}.tar.gz \
+    && make -C luajit2-${LUAJIT2_VERSION} -j${NB_CORES:-$(getconf _NPROCESSORS_CONF)} \
+    && make -C luajit2-${LUAJIT2_VERSION} install PREFIX=/usr/local/luajit
+
+RUN wget https://github.com/openresty/lua-nginx-module/archive/refs/tags/v${LUA_NGINX_MODULE_VERSION}.tar.gz \
+    && tar xzf v${LUA_NGINX_MODULE_VERSION}.tar.gz \
+    && mv lua-nginx-module-${LUA_NGINX_MODULE_VERSION} lua-nginx-module \
+    && wget https://github.com/openresty/lua-resty-core/archive/refs/tags/v${LUA_RESTY_CORE_VERSION}.tar.gz \
+    && tar xzf v${LUA_RESTY_CORE_VERSION}.tar.gz \
+    && make -C lua-resty-core-${LUA_RESTY_CORE_VERSION} install LUA_LIB_DIR=/usr/local/share/lua/5.1 \
+    && wget https://github.com/openresty/lua-resty-lrucache/archive/refs/tags/v${LUA_RESTY_LRUCACHE_VERSION}.tar.gz \
+    && tar xzf v${LUA_RESTY_LRUCACHE_VERSION}.tar.gz \
+    && make -C lua-resty-lrucache-${LUA_RESTY_LRUCACHE_VERSION} install LUA_LIB_DIR=/usr/local/share/lua/5.1 \
+    && REQUIRED_MODULE=$(grep -oE "ngx_http_lua_module [0-9.]+" /usr/local/share/lua/5.1/resty/core/base.lua | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" | head -1) \
+    && if [ "$REQUIRED_MODULE" != "$LUA_NGINX_MODULE_VERSION" ]; then echo "FATAL: lua-resty-core $LUA_RESTY_CORE_VERSION requires lua-nginx-module $REQUIRED_MODULE, but $LUA_NGINX_MODULE_VERSION is set - bump both together"; exit 1; fi \
+    && wget https://github.com/openresty/lua-cjson/archive/refs/tags/${LUA_CJSON_VERSION}.tar.gz \
+    && tar xzf ${LUA_CJSON_VERSION}.tar.gz \
+    && make -C lua-cjson-${LUA_CJSON_VERSION} LUA_INCLUDE_DIR=/usr/local/luajit/include/luajit-2.1 \
+    && make -C lua-cjson-${LUA_CJSON_VERSION} install \
+        LUA_INCLUDE_DIR=/usr/local/luajit/include/luajit-2.1 \
+        LUA_CMODULE_DIR=/usr/local/lib/lua/5.1 \
+        LUA_MODULE_DIR=/usr/local/share/lua/5.1
+
+# Assemble the CrowdSec nginx bouncer lua bundle
+RUN git clone --depth=1 --branch v${LUA_CS_BOUNCER_VERSION} \
+    https://github.com/crowdsecurity/lua-cs-bouncer.git \
+    && git clone --depth=1 --branch v${LUA_RESTY_HTTP_VERSION} \
+    https://github.com/ledgetech/lua-resty-http.git \
+    && wget https://github.com/openresty/lua-resty-string/archive/refs/tags/v${LUA_RESTY_STRING_VERSION}.tar.gz \
+    && tar xzf v${LUA_RESTY_STRING_VERSION}.tar.gz \
+    && mkdir -p /usr/local/lua/crowdsec/resty /var/lib/crowdsec/lua/templates \
+    && cp -r lua-cs-bouncer/lib/* /usr/local/lua/crowdsec/ \
+    && cp lua-resty-http/lib/resty/*.lua /usr/local/lua/crowdsec/resty/ \
+    && cp lua-resty-string-${LUA_RESTY_STRING_VERSION}/lib/resty/string.lua /usr/local/lua/crowdsec/resty/ \
+    && cp -r lua-resty-string-${LUA_RESTY_STRING_VERSION}/lib/resty/string /usr/local/lua/crowdsec/resty/ 2>/dev/null || true \
+    && cp lua-cs-bouncer/templates/* /var/lib/crowdsec/lua/templates/
+
 # Configure and compile NGINX
 WORKDIR /tmp/nginx-${NGINX_VER}
-RUN MODSECURITY_LIB=/usr/local/modsecurity/lib MODSECURITY_INC=/usr/local/modsecurity/include ./configure \
+RUN LUAJIT_LIB=/usr/local/luajit/lib LUAJIT_INC=/usr/local/luajit/include/luajit-2.1 MODSECURITY_LIB=/usr/local/modsecurity/lib MODSECURITY_INC=/usr/local/modsecurity/include ./configure \
     --prefix=/nginx \
     --sbin-path=/usr/local/sbin/nginx \
     --conf-path=/nginx/conf/nginx.conf \
@@ -109,8 +157,9 @@ RUN MODSECURITY_LIB=/usr/local/modsecurity/lib MODSECURITY_INC=/usr/local/modsec
     --add-module=/tmp/ngx_brotli \
     --add-module=/tmp/ngx_http_geoip2_module \
     --add-module=/tmp/ModSecurity-nginx \
+    --add-module=/tmp/lua-nginx-module \
     --with-cc-opt='-O3 -flto -march=x86-64-v2 -mtune=ivybridge -fstack-protector-strong -fPIC -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -ffunction-sections -fdata-sections' \
-    --with-ld-opt='-Wl,-s -Wl,--gc-sections -Wl,-z,relro -Wl,-z,now'
+    --with-ld-opt='-Wl,-rpath,/usr/local/luajit/lib -Wl,-s -Wl,--gc-sections -Wl,-z,relro -Wl,-z,now'
 
 # Compile NGINX
 RUN NB_CORES=${BUILD_CORES:-$(getconf _NPROCESSORS_CONF)} \
@@ -144,6 +193,11 @@ RUN apk add --no-cache \
 COPY --from=builder /usr/local/sbin/nginx /usr/local/sbin/nginx
 COPY --from=builder /nginx /nginx
 COPY --from=builder /usr/local/modsecurity /usr/local/modsecurity
+COPY --from=builder /usr/local/luajit /usr/local/luajit
+COPY --from=builder /usr/local/lib/lua /usr/local/lib/lua
+COPY --from=builder /usr/local/share/lua /usr/local/share/lua
+COPY --from=builder /usr/local/lua/crowdsec /usr/local/lua/crowdsec
+COPY --from=builder /var/lib/crowdsec/lua/templates /var/lib/crowdsec/lua/templates
 COPY --from=builder /tmp/crs /nginx/conf/modsecurity/crs
 COPY --from=builder /tmp/modsecurity-v${MODSECURITY_VERSION}/unicode.mapping /nginx/conf/modsecurity/unicode.mapping
 

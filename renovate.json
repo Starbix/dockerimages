@@ -14,6 +14,19 @@
       "description": "Group nginx + openssl bumps into one PR — they're built together",
       "matchPackageNames": ["nginx/nginx", "openssl/openssl"],
       "groupName": "nginx stack"
+    },
+    {
+      "description": "Group the Lua/bouncer stack bumps into one PR — they're built together",
+      "matchPackageNames": [
+        "openresty/luajit2",
+        "openresty/lua-nginx-module",
+        "openresty/lua-resty-core",
+        "openresty/lua-resty-lrucache",
+        "openresty/lua-cjson",
+        "ledgetech/lua-resty-http",
+        "crowdsecurity/lua-cs-bouncer"
+      ],
+      "groupName": "crowdsec bouncer stack"
     }
   ],
   "customManagers": [
@@ -38,6 +51,99 @@
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "openssl/openssl",
       "extractVersionTemplate": "^openssl-(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "ARG MODSECURITY_VERSION in nginx/Dockerfile -> owasp-modsecurity/ModSecurity releases (vX.Y.Z)",
+      "managerFilePatterns": [
+        "/^nginx/Dockerfile$/"
+      ],
+      "matchStrings": ["ARG MODSECURITY_VERSION=(?<currentValue>\\S+)"],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "owasp-modsecurity/ModSecurity",
+      "extractVersionTemplate": "^v(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "ARG CRS_VERSION in nginx/Dockerfile -> coreruleset/coreruleset releases (vX.Y.Z)",
+      "managerFilePatterns": [
+        "/^nginx/Dockerfile$/"
+      ],
+      "matchStrings": ["ARG CRS_VERSION=(?<currentValue>\\S+)"],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "coreruleset/coreruleset",
+      "extractVersionTemplate": "^v(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "ARG LUAJIT2_VERSION in nginx/Dockerfile -> openresty/luajit2 releases (vX.Y-DATE)",
+      "managerFilePatterns": [
+        "/^nginx/Dockerfile$/"
+      ],
+      "matchStrings": ["ARG LUAJIT2_VERSION=(?<currentValue>\\S+)"],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "openresty/luajit2",
+      "extractVersionTemplate": "^v(?<version>.+)$",
+      "versioningTemplate": "loose"
+    },
+    {
+      "customType": "regex",
+      "description": "ARG LUA_NGINX_MODULE_VERSION in nginx/Dockerfile -> openresty/lua-nginx-module tags (stable only; RC tags are invalid semver and skipped). NOTE: lua-resty-core pins an exact matching version and is bumped by hand together with this (a build check fails the PR otherwise)",
+      "managerFilePatterns": [
+        "/^nginx/Dockerfile$/"
+      ],
+      "matchStrings": ["ARG LUA_NGINX_MODULE_VERSION=(?<currentValue>\\S+)"],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "openresty/lua-nginx-module",
+      "extractVersionTemplate": "^v(?<version>.+)$",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "description": "ARG LUA_RESTY_LRUCACHE_VERSION in nginx/Dockerfile -> openresty/lua-resty-lrucache tags (stable only)",
+      "managerFilePatterns": [
+        "/^nginx/Dockerfile$/"
+      ],
+      "matchStrings": ["ARG LUA_RESTY_LRUCACHE_VERSION=(?<currentValue>\\S+)"],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "openresty/lua-resty-lrucache",
+      "extractVersionTemplate": "^v(?<version>.+)$",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "description": "ARG LUA_RESTY_HTTP_VERSION in nginx/Dockerfile -> ledgetech/lua-resty-http tags",
+      "managerFilePatterns": [
+        "/^nginx/Dockerfile$/"
+      ],
+      "matchStrings": ["ARG LUA_RESTY_HTTP_VERSION=(?<currentValue>\\S+)"],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "ledgetech/lua-resty-http",
+      "extractVersionTemplate": "^v(?<version>.+)$",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "description": "ARG LUA_CJSON_VERSION in nginx/Dockerfile -> openresty/lua-cjson releases",
+      "managerFilePatterns": [
+        "/^nginx/Dockerfile$/"
+      ],
+      "matchStrings": ["ARG LUA_CJSON_VERSION=(?<currentValue>\\S+)"],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "openresty/lua-cjson",
+      "versioningTemplate": "loose"
+    },
+    {
+      "customType": "regex",
+      "description": "ARG LUA_CS_BOUNCER_VERSION in nginx/Dockerfile -> crowdsecurity/lua-cs-bouncer tags",
+      "managerFilePatterns": [
+        "/^nginx/Dockerfile$/"
+      ],
+      "matchStrings": ["ARG LUA_CS_BOUNCER_VERSION=(?<currentValue>\\S+)"],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "crowdsecurity/lua-cs-bouncer",
+      "extractVersionTemplate": "^v(?<version>.+)$",
+      "versioningTemplate": "semver"
     }
   ]
 }
