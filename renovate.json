@@ -27,6 +27,14 @@
         "crowdsecurity/lua-cs-bouncer"
       ],
       "groupName": "crowdsec bouncer stack"
+    },
+    {
+      "description": "Group CRS + nextcloud-rule-exclusions-plugin bumps into one PR",
+      "matchPackageNames": [
+        "coreruleset/coreruleset",
+        "coreruleset/nextcloud-rule-exclusions-plugin"
+      ],
+      "groupName": "waf stack"
     }
   ],
   "customManagers": [
@@ -72,6 +80,17 @@
       "matchStrings": ["ARG CRS_VERSION=(?<currentValue>\\S+)"],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "coreruleset/coreruleset",
+      "extractVersionTemplate": "^v(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "ARG NEXTCLOUD_PLUGIN_VERSION in nginx/Dockerfile -> coreruleset/nextcloud-rule-exclusions-plugin releases (vX.Y.Z)",
+      "managerFilePatterns": [
+        "/^nginx/Dockerfile$/"
+      ],
+      "matchStrings": ["ARG NEXTCLOUD_PLUGIN_VERSION=(?<currentValue>\\S+)"],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "coreruleset/nextcloud-rule-exclusions-plugin",
       "extractVersionTemplate": "^v(?<version>.+)$"
     },
     {

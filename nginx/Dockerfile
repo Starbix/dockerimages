@@ -8,6 +8,7 @@ ARG NGINX_VER=1.31.10
 ARG OPENSSL_VERSION=4.1.0
 ARG MODSECURITY_VERSION=3.0.17
 ARG CRS_VERSION=4.31.0
+ARG NEXTCLOUD_PLUGIN_VERSION=1.8.1
 ARG LUAJIT2_VERSION=2.1-20250826
 ARG LUA_NGINX_MODULE_VERSION=0.10.31
 ARG LUA_RESTY_CORE_VERSION=0.1.34rc3
@@ -53,6 +54,12 @@ RUN wget https://github.com/coreruleset/coreruleset/archive/refs/tags/v${CRS_VER
     -O crs.tar.gz \
     && tar xzf crs.tar.gz \
     && mv coreruleset-${CRS_VERSION} crs
+
+RUN mkdir -p /tmp/plugins \
+    && wget https://raw.githubusercontent.com/coreruleset/nextcloud-rule-exclusions-plugin/v${NEXTCLOUD_PLUGIN_VERSION}/plugins/nextcloud-rule-exclusions-before.conf \
+    -O /tmp/plugins/nextcloud-rule-exclusions-before.conf \
+    && wget https://raw.githubusercontent.com/coreruleset/nextcloud-rule-exclusions-plugin/v${NEXTCLOUD_PLUGIN_VERSION}/plugins/nextcloud-rule-exclusions-config.conf \
+    -O /tmp/plugins/nextcloud-rule-exclusions-config.conf
 
 RUN git clone --depth=1 \
     https://github.com/openresty/headers-more-nginx-module.git \
@@ -203,6 +210,7 @@ COPY --from=builder /usr/local/share/lua /usr/local/share/lua
 COPY --from=builder /usr/local/lua/crowdsec /usr/local/lua/crowdsec
 COPY --from=builder /var/lib/crowdsec/lua/templates /var/lib/crowdsec/lua/templates
 COPY --from=builder /tmp/crs /nginx/conf/modsecurity/crs
+COPY --from=builder /tmp/plugins /nginx/conf/modsecurity/plugins
 COPY --from=builder /tmp/modsecurity-v${MODSECURITY_VERSION}/unicode.mapping /nginx/conf/modsecurity/unicode.mapping
 
 # Copy configuration files
